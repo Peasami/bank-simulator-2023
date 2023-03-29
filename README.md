@@ -2,4 +2,4 @@
 
 ## ER-diagrammi
 
-<img src="ER_diagrammi_v2.png">
+<img src="ER_diagrammi_v4.png">
