@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const tili_asiakas = require('../models/tili_asiakas_model');
 
-router.get('/tili_asiakas',
+router.get('/',
   function (request, response) {
     tili_asiakas.getAll(function (err, dbResult) {
       if (err) {
@@ -14,7 +14,7 @@ router.get('/tili_asiakas',
     })
   });
 
-router.get('/tili_asiakas/tili/:idTili',
+router.get('/:id',
   function (request, response) {
     tili_asiakas.getById(request.params.idTili, function (err, dbResult) {
       if (err) {
@@ -25,7 +25,7 @@ router.get('/tili_asiakas/tili/:idTili',
     })
   });
 
-router.get('/tili_asiakas/asiakas/:idAsiakas',
+router.get('/:id',
   function (request, response) {
     tili_asiakas.getById(request.params.idAsiakas, function (err, dbResult) {
       if (err) {
