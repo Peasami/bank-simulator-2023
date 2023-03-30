@@ -16,7 +16,7 @@ router.get('/',
 
 router.get('/:id',
   function (request, response) {
-    tili_asiakas.getById(request.params.idTili, function (err, dbResult) {
+    tili_asiakas.getById(request.params.id, function (err, dbResult) {
       if (err) {
         response.json(err);
       } else {
@@ -25,16 +25,16 @@ router.get('/:id',
     })
   });
 
-router.get('/:id',
+/*router.get('/:id',
   function (request, response) {
-    tili_asiakas.getById(request.params.idAsiakas, function (err, dbResult) {
+    tili_asiakas.getByAsiakas(request.params.idAsiakas, function (err, dbResult) {
       if (err) {
         response.json(err);
       } else {
         response.json(dbResult);
       }
     })
-  });
+  });*/
 
 router.post('/',
   function (request, response) {
@@ -42,7 +42,7 @@ router.post('/',
       if (err) {
         response.json(err);
       } else {
-        response.json(request.body);
+        response.json(dbResult.affectedRows);
       }
     });
   });
@@ -54,7 +54,7 @@ router.delete('/:id',
       if (err) {
         response.json(err);
       } else {
-        response.json(dbResult);
+        response.json(dbResult.affectedRows);
       }
     });
   });
@@ -66,7 +66,7 @@ router.put('/:id',
       if (err) {
         response.json(err);
       } else {
-        response.json(dbResult);
+        response.json(dbResult.affectedRows);
       }
     });
   });

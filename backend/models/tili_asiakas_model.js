@@ -27,7 +27,7 @@ const tili_asiakas = {
   update: function(id, tili_asiakas, callback) {
     return db.query(
       'update tili_asiakas set idTili=?,idAsiakas=? where idTili_Asiakas=?',
-      [tili_asiakas.idTili, tili_asiakas.idAsiakas],
+      [tili_asiakas.idTili, tili_asiakas.idAsiakas, id],
       callback
     );
   }
