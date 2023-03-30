@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `pankkidb` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `pankkidb`;
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: pankkidb
 -- ------------------------------------------------------
--- Server version	8.0.30
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -71,7 +71,7 @@ CREATE TABLE `kortti` (
 
 LOCK TABLES `kortti` WRITE;
 /*!40000 ALTER TABLE `kortti` DISABLE KEYS */;
-INSERT INTO `kortti` VALUES ('06000626a5','1234',1,1,1,0),('06000d8977','9012',3,3,1,1),('0b0032a677','5678',2,2,0,1);
+INSERT INTO `kortti` VALUES ('06000626a5','$2a$10$wKftUu.Lcf/KPRS1XrCHe.6J5gY2DMrhI3mWaGf7yLkM/gSn66FRu',1,1,1,0),('06000d8977','$2a$10$YE8iX6UaMVFtlWy0abyN.eRa2wMSpUcxPhW0LTVgc2nYxRt9I79bu',3,3,1,1),('0b0032a677','$2a$10$N14CwoUeiYNaE3U.3Zq9a.xCN7H5SRowdkdbICRBTGDXAF7Q51MFy',2,2,0,1);
 /*!40000 ALTER TABLE `kortti` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,6 +163,10 @@ LOCK TABLES `tilitapahtumat` WRITE;
 INSERT INTO `tilitapahtumat` VALUES (1,1,'2023-03-28 10:33:16','Alkutalletus',130,NULL),(2,2,'2023-03-28 10:34:57','Alkutalletus',5000,NULL),(3,2,'2023-03-28 10:35:39','Alkuluotto',NULL,2000),(4,3,'2023-03-28 10:36:00','Alkutalletus',50000,NULL),(5,3,'2023-03-28 10:36:05','Alkuluotto',NULL,200000);
 /*!40000 ALTER TABLE `tilitapahtumat` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'pankkidb'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -173,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-29 10:49:15
+-- Dump completed on 2023-03-30  9:59:40

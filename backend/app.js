@@ -4,12 +4,17 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
+<<<<<<< HEAD
 var usersRouter = require('./routes/users');
 <<<<<<< HEAD
 var tilitapahtumatRouter = require('./routes/tilitapahtumat');
 =======
+=======
+var tiliRouter = require('./routes/tili');
+>>>>>>> c1f018e24f91c3d99e7f8d872291354c63a5c25f
 var asiakasRouter = require('./routes/asiakas');
 >>>>>>> main
+
 
 var app = express();
 
@@ -20,10 +25,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+<<<<<<< HEAD
 app.use('/users', usersRouter);
 <<<<<<< HEAD
 app.use('/tilitapahtumat', tilitapahtumatRouter);
 =======
+=======
+app.use('/tili', tiliRouter);
+>>>>>>> c1f018e24f91c3d99e7f8d872291354c63a5c25f
 app.use('/asiakas', asiakasRouter);
 >>>>>>> main
 
