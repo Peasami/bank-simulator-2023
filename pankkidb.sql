@@ -30,7 +30,7 @@ CREATE TABLE `asiakas` (
   `Sukunimi` varchar(45) NOT NULL,
   `Osoite` varchar(45) NOT NULL,
   PRIMARY KEY (`idAsiakas`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,8 +55,8 @@ CREATE TABLE `kortti` (
   `PIN` varchar(255) NOT NULL,
   `idAsiakas` int NOT NULL,
   `idTili` int NOT NULL,
-  `Debit` tinyint DEFAULT NULL,
-  `Credit` tinyint DEFAULT NULL,
+  `Debit` tinyint(1) DEFAULT NULL,
+  `Credit` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`idKortti`),
   KEY `Asiakas2_idx` (`idAsiakas`),
   KEY `Tili1_idx` (`idTili`),
@@ -112,14 +112,15 @@ DROP TABLE IF EXISTS `tili_asiakas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tili_asiakas` (
-  `idTili` int NOT NULL,
+  `idTili_Asiakas` int NOT NULL AUTO_INCREMENT,
   `idAsiakas` int NOT NULL,
-  PRIMARY KEY (`idTili`,`idAsiakas`),
+  `idTili` int NOT NULL,
+  PRIMARY KEY (`idTili_Asiakas`,`idAsiakas`,`idTili`),
   KEY `Asiakas1_idx` (`idAsiakas`),
-  KEY `Tili_idx` (`idTili`),
+  KEY `Tili3_idx` (`idTili`),
   CONSTRAINT `Asiakas1` FOREIGN KEY (`idAsiakas`) REFERENCES `asiakas` (`idAsiakas`),
-  CONSTRAINT `Tili` FOREIGN KEY (`idTili`) REFERENCES `tili` (`idTili`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `Tili3` FOREIGN KEY (`idTili`) REFERENCES `tili` (`idTili`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +129,7 @@ CREATE TABLE `tili_asiakas` (
 
 LOCK TABLES `tili_asiakas` WRITE;
 /*!40000 ALTER TABLE `tili_asiakas` DISABLE KEYS */;
-INSERT INTO `tili_asiakas` VALUES (1,1),(2,2),(2,3),(3,3);
+INSERT INTO `tili_asiakas` VALUES (1,1,1),(2,2,2),(3,3,2),(4,3,3);
 /*!40000 ALTER TABLE `tili_asiakas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,4 +173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-28 10:54:06
+-- Dump completed on 2023-03-29 10:49:15
