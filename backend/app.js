@@ -5,8 +5,12 @@ var logger = require('morgan');
 const dotenv=require('dotenv');
 
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+var tilitapahtumatRouter = require('./routes/tilitapahtumat');
+var tiliRouter = require('./routes/tili');
+var asiakasRouter = require('./routes/asiakas');
+const tili_asiakasRouter = require('./routes/tili_asiakas');
 var korttiRouter = require('./routes/kortti');
 var app = express();
 dotenv.config();
@@ -19,5 +23,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/tilitapahtumat', tilitapahtumatRouter);
+app.use('/tili', tiliRouter);
+app.use('/asiakas', asiakasRouter);
+app.use('/tili_asiakas', tili_asiakasRouter);
 app.use('/kortti', korttiRouter)
 module.exports = app;
