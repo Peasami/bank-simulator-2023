@@ -13,7 +13,17 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    void SetUserName(QString);
+    void IsCredit(bool);
     ~MainWindow();
+
+private slots:
+    void saldoButton_handler();
+    void vaihdaTiliButton_handler();
+    void lopetaButton_handler();
+    void lahjoitaButton_handler();
+    void nostaRahaaButton_handler();
+    void tilitapahtumatButton_handler();
 
 private:
     Ui::MainWindow *ui;
