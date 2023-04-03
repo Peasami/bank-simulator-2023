@@ -15,6 +15,13 @@ public:
     explicit VaihdaTiliaWindow(QWidget *parent = nullptr);
     ~VaihdaTiliaWindow();
 
+signals:
+    void sendIsCredit(bool);
+
+private slots:
+    void vaihdaCreditButton_handler();
+    void vaihdaDeditButton_handler();
+
 private:
     Ui::VaihdaTiliaWindow *ui;
 };
