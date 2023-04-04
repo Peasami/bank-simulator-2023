@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "insertcardwindow.h"
+#include "lahjoitarahaawindow.h"
 
 #include <QApplication>
 
@@ -9,6 +10,7 @@ int main(int argc, char *argv[])
     //InsertCardWindow w;
 
     MainWindow w;
+    //LahjoitaRahaaWindow w;
     w.show();
     return a.exec();
 }

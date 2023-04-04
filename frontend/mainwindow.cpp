@@ -15,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pVaihdaTilia,SIGNAL(sendIsCredit(bool)),
             this,SLOT(recieveIsCredit(bool)));
 
+    pLahjoitaRahaa = new LahjoitaRahaaWindow(this);
+    connect(pLahjoitaRahaa,SIGNAL(sendCharity(QString)),
+            this,SLOT(recieveCharity(QString)));
+
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -75,6 +79,7 @@ void MainWindow::lopetaButton_handler()
 void MainWindow::lahjoitaButton_handler()
 {
     qDebug()<<"lahjoita";
+    pLahjoitaRahaa->open();
 }
 
 void MainWindow::nostaRahaaButton_handler()
@@ -91,5 +96,10 @@ void MainWindow::recieveIsCredit(bool b)
 {
     qDebug()<<"recieveIsCredit";
     IsCredit(b);
+}
+
+void MainWindow::recieveCharity(QString)
+{
+    qDebug()<<"recieveCharity()";
 }
 

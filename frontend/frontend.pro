@@ -10,17 +10,20 @@ CONFIG += c++17
 
 SOURCES += \
     insertcardwindow.cpp \
+    lahjoitarahaawindow.cpp \
     main.cpp \
     mainwindow.cpp \
     vaihdatiliawindow.cpp
 
 HEADERS += \
     insertcardwindow.h \
+    lahjoitarahaawindow.h \
     mainwindow.h \
     vaihdatiliawindow.h
 
 FORMS += \
     insertcardwindow.ui \
+    lahjoitarahaawindow.ui \
     mainwindow.ui \
     vaihdatiliawindow.ui
 

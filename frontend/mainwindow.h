@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "vaihdatiliawindow.h"
+#include "lahjoitarahaawindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,10 +26,13 @@ private slots:
     void lahjoitaButton_handler();
     void nostaRahaaButton_handler();
     void tilitapahtumatButton_handler();
+
     void recieveIsCredit(bool);
+    void recieveCharity(QString);
 
 private:
     Ui::MainWindow *ui;
     VaihdaTiliaWindow * pVaihdaTilia;
+    LahjoitaRahaaWindow * pLahjoitaRahaa;
 };
 #endif // MAINWINDOW_H
