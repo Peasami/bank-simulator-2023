@@ -20,7 +20,7 @@ signals:
 
 private slots:
     void vaihdaCreditButton_handler();
-    void vaihdaDeditButton_handler();
+    void vaihdaDebitButton_handler();
 
 private:
     Ui::VaihdaTiliaWindow *ui;

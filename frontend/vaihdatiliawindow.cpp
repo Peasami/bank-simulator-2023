@@ -23,9 +23,11 @@ VaihdaTiliaWindow::~VaihdaTiliaWindow()
 void VaihdaTiliaWindow::vaihdaCreditButton_handler()
 {
     emit sendIsCredit(true);
+    done(0);
 }
 
-void VaihdaTiliaWindow::vaihdaDeditButton_handler()
+void VaihdaTiliaWindow::vaihdaDebitButton_handler()
 {
     emit sendIsCredit(false);
+    done(0);
 }

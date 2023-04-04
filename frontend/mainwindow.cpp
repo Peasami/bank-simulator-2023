@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     pVaihdaTilia = new VaihdaTiliaWindow(this);
     connect(pVaihdaTilia,SIGNAL(sendIsCredit(bool)),
-            this,SLOT(IsCredit(bool)));
+            this,SLOT(recieveIsCredit(bool)));
 
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
@@ -64,7 +64,6 @@ void MainWindow::saldoButton_handler()
 void MainWindow::vaihdaTiliButton_handler()
 {
     qDebug()<<"vaihda tiliä";
-    pVaihdaTilia = new VaihdaTiliaWindow(this);
     pVaihdaTilia->open();
 }
 
@@ -90,6 +89,7 @@ void MainWindow::tilitapahtumatButton_handler()
 
 void MainWindow::recieveIsCredit(bool b)
 {
+    qDebug()<<"recieveIsCredit";
     IsCredit(b);
 }
 
