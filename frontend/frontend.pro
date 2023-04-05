@@ -13,19 +13,25 @@ SOURCES += \
     lahjoitarahaawindow.cpp \
     main.cpp \
     mainwindow.cpp \
-    vaihdatiliawindow.cpp
+    naytatapahtumawindow.cpp \
+    vaihdatiliawindow.cpp \
+    valitsesummawindow.cpp
 
 HEADERS += \
     insertcardwindow.h \
     lahjoitarahaawindow.h \
     mainwindow.h \
-    vaihdatiliawindow.h
+    naytatapahtumawindow.h \
+    vaihdatiliawindow.h \
+    valitsesummawindow.h
 
 FORMS += \
     insertcardwindow.ui \
     lahjoitarahaawindow.ui \
     mainwindow.ui \
-    vaihdatiliawindow.ui
+    naytatapahtumawindow.ui \
+    vaihdatiliawindow.ui \
+    valitsesummawindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

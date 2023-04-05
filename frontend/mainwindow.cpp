@@ -13,11 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     pVaihdaTilia = new VaihdaTiliaWindow(this);
     connect(pVaihdaTilia,SIGNAL(sendIsCredit(bool)),
-            this,SLOT(recieveIsCredit(bool)));
+            this,SLOT(receiveIsCredit(bool)));
 
     pLahjoitaRahaa = new LahjoitaRahaaWindow(this);
     connect(pLahjoitaRahaa,SIGNAL(sendCharity(QString)),
-            this,SLOT(recieveCharity(QString)));
+            this,SLOT(receiveCharity(QString)));
 
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
@@ -80,6 +80,9 @@ void MainWindow::lahjoitaButton_handler()
 {
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
+
+    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan lahjoituksen kohde ja määrä talteen muuttujiin
+    pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
 }
 
 void MainWindow::nostaRahaaButton_handler()
@@ -92,14 +95,34 @@ void MainWindow::tilitapahtumatButton_handler()
     qDebug()<<"tilitapahtumat";
 }
 
-void MainWindow::recieveIsCredit(bool b)
+void MainWindow::receiveIsCredit(bool b)
 {
     qDebug()<<"recieveIsCredit";
     IsCredit(b);
 }
 
-void MainWindow::recieveCharity(QString)
+void MainWindow::receiveCharity(QString charity)
 {
-    qDebug()<<"recieveCharity()";
+    // kun saadaan lahjoituskohde, tehdään olio ja aukaistaan ikkuna jossa valitaan lahjoituksen määrä
+    pValitseSumma = new ValitseSummaWindow(this);
+    connect(pValitseSumma,SIGNAL(sendSumma(QString)),
+            this,SLOT(receiveCharitySumma(QString)));
+    pValitseSumma->open();
+
+    // Annetaan kohteen nimi näytäTapahtumalle
+    pNaytaTapahtuma->setLahjoitusKohde(charity);
+    qDebug()<<"recieveCharity(): "<<charity;
+}
+
+void MainWindow::receiveCharitySumma(QString charitySumma)
+{
+    qDebug()<<"receiveCharitySumma(): "<<charitySumma;
+
+    // Annetaan lahjoituksen määrä näytäTapahtumalle
+    pNaytaTapahtuma->setLahjoitusMaara(charitySumma);
+
+    // päivitetään ui ja näytetään
+    pNaytaTapahtuma->updateInfo();
+    pNaytaTapahtuma->show();
 }
 

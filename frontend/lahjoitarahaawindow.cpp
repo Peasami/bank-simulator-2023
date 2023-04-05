@@ -17,12 +17,12 @@ LahjoitaRahaaWindow::LahjoitaRahaaWindow(QWidget *parent) :
         connect(ui->rightCharitiesLayout->itemAt(i)->widget(),SIGNAL(clicked()),
                 this,SLOT(charityButtonHandler()));
 
-        // Lisää nappien nimet charityList listaan
-        charityList.append(ui->leftCharitiesLayout->itemAt(i)->widget()->objectName());
-        charityList.append(ui->rightCharitiesLayout->itemAt(i)->widget()->objectName());
+
+        /// Lisää nappien nimet charityList listaan
+        ///charityList.append(ui->leftCharitiesLayout->itemAt(i)->widget()->objectName());
+        ///charityList.append(ui->rightCharitiesLayout->itemAt(i)->widget()->objectName());
 
     }
-    qDebug()<<"hey: "<<charityList;
 }
 
 LahjoitaRahaaWindow::~LahjoitaRahaaWindow()
@@ -32,9 +32,21 @@ LahjoitaRahaaWindow::~LahjoitaRahaaWindow()
 
 void LahjoitaRahaaWindow::charityButtonHandler()
 {
+    // Otetaan talteen signaalin lähettäjä, ja otetaan napin nimi
     QObject* buttonSender = sender();
+    selectedCharity = buttonSender->objectName();
+
+    if(selectedCharity == "takaisinButton"){
+        done(0);
+        qDebug()<<"selectedCharity == takaisinButton";
+        return;
+    }
+    emit sendCharity(selectedCharity);
+    done(0);
+
 
     // etsii charityList -listasta napin nimeä vastaavan indeksin, jotta voidaan käyttää switch casea
+    /**
     switch(charityList.indexOf(buttonSender->objectName()))
     {
     case 0:
@@ -45,4 +57,5 @@ void LahjoitaRahaaWindow::charityButtonHandler()
         qDebug()<<"syöpäsäätiö";
         break;
     }
+    */
 }

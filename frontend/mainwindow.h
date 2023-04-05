@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "vaihdatiliawindow.h"
 #include "lahjoitarahaawindow.h"
+#include "valitsesummawindow.h"
+#include "naytatapahtumawindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,12 +29,16 @@ private slots:
     void nostaRahaaButton_handler();
     void tilitapahtumatButton_handler();
 
-    void recieveIsCredit(bool);
-    void recieveCharity(QString);
+    void receiveIsCredit(bool);
+    void receiveCharity(QString);
+    void receiveCharitySumma(QString);
 
 private:
     Ui::MainWindow *ui;
     VaihdaTiliaWindow * pVaihdaTilia;
     LahjoitaRahaaWindow * pLahjoitaRahaa;
+    ValitseSummaWindow * pValitseSumma;
+    NaytaTapahtumaWindow * pNaytaTapahtuma;
+
 };
 #endif // MAINWINDOW_H

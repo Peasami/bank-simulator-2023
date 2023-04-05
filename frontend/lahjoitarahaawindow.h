@@ -14,6 +14,7 @@ class LahjoitaRahaaWindow : public QDialog
 public:
     explicit LahjoitaRahaaWindow(QWidget *parent = nullptr);
     ~LahjoitaRahaaWindow();
+    QString selectedCharity;
 
 signals:
     void sendCharity(QString);
@@ -23,7 +24,7 @@ private slots:
 
 private:
     Ui::LahjoitaRahaaWindow *ui;
-    QStringList charityList;
+    //QStringList charityList;
 };
 
 #endif // LAHJOITARAHAAWINDOW_H
