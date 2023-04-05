@@ -2,6 +2,8 @@
 #define INSERTCARDWINDOW_H
 
 #include <QDialog>
+#include "dllserialport.h"
+#include "mainwindow.h"
 
 namespace Ui {
 class InsertCardWindow;
@@ -16,8 +18,16 @@ public:
     void OpenPINUI();
     ~InsertCardWindow();
 
+public slots:
+        void receiveCardNumberFromDLL(QString);
+
 private:
     Ui::InsertCardWindow *ui;
-};
+    DLLSerialPort * pcardReader;
+    QString cardNumber;
+    QString pinNumber;
+    MainWindow * pMainWindow;
 
 #endif // INSERTCARDWINDOW_H
+
+};
