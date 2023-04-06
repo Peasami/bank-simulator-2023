@@ -107,6 +107,8 @@ void MainWindow::receiveCharity(QString charity)
     pValitseSumma = new ValitseSummaWindow(this);
     connect(pValitseSumma,SIGNAL(sendSumma(QString)),
             this,SLOT(receiveCharitySumma(QString)));
+    connect(pValitseSumma,SIGNAL(requestManualSumma()),
+            this,SLOT(openManualSumma()));
     pValitseSumma->open();
 
     // Annetaan kohteen nimi näytäTapahtumalle
@@ -124,5 +126,14 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
     // päivitetään ui ja näytetään
     pNaytaTapahtuma->updateInfo();
     pNaytaTapahtuma->show();
+}
+
+void MainWindow::openManualSumma()
+{
+    pManualSumma = new ManualSummaWindow(this);
+    connect(pManualSumma,SIGNAL(sendSumma(QString)),
+            this,SLOT(receiveCharitySumma(QString)));
+    pManualSumma->open();
+    qDebug()<<"openManualSumma()";
 }
 

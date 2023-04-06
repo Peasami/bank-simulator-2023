@@ -13,6 +13,7 @@ SOURCES += \
     lahjoitarahaawindow.cpp \
     main.cpp \
     mainwindow.cpp \
+    manualsummawindow.cpp \
     naytatapahtumawindow.cpp \
     vaihdatiliawindow.cpp \
     valitsesummawindow.cpp
@@ -21,6 +22,7 @@ HEADERS += \
     insertcardwindow.h \
     lahjoitarahaawindow.h \
     mainwindow.h \
+    manualsummawindow.h \
     naytatapahtumawindow.h \
     vaihdatiliawindow.h \
     valitsesummawindow.h
@@ -29,6 +31,7 @@ FORMS += \
     insertcardwindow.ui \
     lahjoitarahaawindow.ui \
     mainwindow.ui \
+    manualsummawindow.ui \
     naytatapahtumawindow.ui \
     vaihdatiliawindow.ui \
     valitsesummawindow.ui

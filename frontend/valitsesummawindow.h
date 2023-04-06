@@ -18,6 +18,7 @@ public:
 
 signals:
     void sendSumma(QString);
+    void requestManualSumma();
 
 private slots:
     void summaButtonHandler();

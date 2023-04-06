@@ -6,6 +6,7 @@
 #include "lahjoitarahaawindow.h"
 #include "valitsesummawindow.h"
 #include "naytatapahtumawindow.h"
+#include "manualsummawindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,12 +34,14 @@ private slots:
     void receiveCharity(QString);
     void receiveCharitySumma(QString);
 
+    void openManualSumma();
 private:
     Ui::MainWindow *ui;
     VaihdaTiliaWindow * pVaihdaTilia;
     LahjoitaRahaaWindow * pLahjoitaRahaa;
     ValitseSummaWindow * pValitseSumma;
     NaytaTapahtumaWindow * pNaytaTapahtuma;
+    ManualSummaWindow * pManualSumma;
 
 };
 #endif // MAINWINDOW_H

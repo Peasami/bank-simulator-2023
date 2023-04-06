@@ -29,10 +29,11 @@ void ValitseSummaWindow::summaButtonHandler()
     // Hakee signaalin lähettäjän nimen, ja poistaa ensimmäisen kirjaimen
     QObject* buttonSender = sender();
     QString selectedSumma = buttonSender->objectName();
-    selectedSumma.remove(0,1);
+    selectedSumma.remove(0,1); // Poistetaan ensimmäinen kirjain
 
     if(selectedSumma.at(0).isLetter()){
         qDebug()<<"isLetter";
+        emit requestManualSumma();
         done(0);
     }
     else{
