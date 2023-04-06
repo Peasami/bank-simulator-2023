@@ -3,3 +3,4 @@ backend/*.env/
 frontend/build/
 frontend/*.user
 DLLPinCode/build/
+DLLPinCode/*.user

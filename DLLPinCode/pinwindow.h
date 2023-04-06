@@ -1,6 +1,6 @@
 #ifndef PINWINDOW_H
 #define PINWINDOW_H
-
+#include <QDebug>
 #include <QDialog>
 
 namespace Ui {
@@ -15,8 +15,17 @@ public:
     explicit pinwindow(QWidget *parent = nullptr);
     ~pinwindow();
 
+private slots:
+    void numButtonClickHandler();
+    void on_clearButton_clicked();
+    void on_okButton_clicked();
+
 private:
     Ui::pinwindow *ui;
+    bool pinGiven = false;
+    QString pin;
+    QString oikeaPin = "1234";
+    int yritykset = 3;
 };
 
 #endif // PINWINDOW_H
