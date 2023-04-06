@@ -33,8 +33,10 @@ private slots:
     void receiveIsCredit(bool);
     void receiveCharity(QString);
     void receiveCharitySumma(QString);
+    void receiveNostoSumma(QString);
 
-    void openManualSumma();
+    void openManualCharitySumma();
+    void openManualNostoSumma();
 private:
     Ui::MainWindow *ui;
     VaihdaTiliaWindow * pVaihdaTilia;
@@ -42,6 +44,8 @@ private:
     ValitseSummaWindow * pValitseSumma;
     NaytaTapahtumaWindow * pNaytaTapahtuma;
     ManualSummaWindow * pManualSumma;
+
+
 
 };
 #endif // MAINWINDOW_H

@@ -25,6 +25,8 @@ private slots:
 
 private:
     Ui::ValitseSummaWindow *ui;
+
+    int testiSaldo = 150;
 };
 
 #endif // VALITSESUMMAWINDOW_H

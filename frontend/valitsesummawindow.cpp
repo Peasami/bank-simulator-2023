@@ -31,13 +31,23 @@ void ValitseSummaWindow::summaButtonHandler()
     QString selectedSumma = buttonSender->objectName();
     selectedSumma.remove(0,1); // Poistetaan ensimmäinen kirjain
 
-    if(selectedSumma.at(0).isLetter()){
+
+    if(selectedSumma.at(0).isLetter()) // Jos nappi on "valise muu summa" -nappi
+    {
         qDebug()<<"isLetter";
         emit requestManualSumma();
         done(0);
     }
-    else{
+    else
+    {
         qDebug()<<"isNumber";
+        if(selectedSumma.toInt() > testiSaldo){
+            qDebug()<<"Ei tarpeeksi saldoa!";
+            done(0);
+            return;
+        }
+        testiSaldo -= selectedSumma.toInt();
+        qDebug()<<"Nostit "<<selectedSumma<<"€. Saldosi: "<<testiSaldo;
         emit sendSumma(selectedSumma);
         done(0);
     }

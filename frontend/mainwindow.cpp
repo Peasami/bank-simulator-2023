@@ -87,6 +87,13 @@ void MainWindow::lahjoitaButton_handler()
 
 void MainWindow::nostaRahaaButton_handler()
 {
+    pValitseSumma = new ValitseSummaWindow(this);
+    connect(pValitseSumma,SIGNAL(sendSumma(QString)), // ValitseSummaWindow lähettää sendSumma -signaalin, joka yhdistetään receiveNostoon
+            this,SLOT(receiveNostoSumma(QString)));
+
+    connect(pValitseSumma,SIGNAL(requestManualSumma()),
+            this,SLOT(openManualNostoSumma()));
+    pValitseSumma->open();
     qDebug()<<"nosta rahaa";
 }
 
@@ -105,10 +112,11 @@ void MainWindow::receiveCharity(QString charity)
 {
     // kun saadaan lahjoituskohde, tehdään olio ja aukaistaan ikkuna jossa valitaan lahjoituksen määrä
     pValitseSumma = new ValitseSummaWindow(this);
-    connect(pValitseSumma,SIGNAL(sendSumma(QString)),
+    connect(pValitseSumma,SIGNAL(sendSumma(QString)), // ValitseSumman sendSumma signaali yhdistetään receiveCharitySummaan
             this,SLOT(receiveCharitySumma(QString)));
+
     connect(pValitseSumma,SIGNAL(requestManualSumma()),
-            this,SLOT(openManualSumma()));
+            this,SLOT(openManualCharitySumma()));
     pValitseSumma->open();
 
     // Annetaan kohteen nimi näytäTapahtumalle
@@ -128,12 +136,30 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
     pNaytaTapahtuma->show();
 }
 
-void MainWindow::openManualSumma()
+void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
+    qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
+}
+
+void MainWindow::openManualCharitySumma()
+{
+    qDebug()<<"openManualCharitySumma()";
+
+    // Tehdään ja avataan ManualSummaWindow, yhdistetään summan lähetys receive*CHARITY*Summaan
     pManualSumma = new ManualSummaWindow(this);
     connect(pManualSumma,SIGNAL(sendSumma(QString)),
             this,SLOT(receiveCharitySumma(QString)));
     pManualSumma->open();
-    qDebug()<<"openManualSumma()";
+}
+
+void MainWindow::openManualNostoSumma()
+{
+    qDebug()<<"openManualNostoSumma()";
+
+    // Tehdään ja avataan ManualSummaWindow, yhdistetään summan lähetys receive*NOSTO*Summaan
+    pManualSumma = new ManualSummaWindow(this);
+    connect(pManualSumma,SIGNAL(sendSumma(QString)),
+            this,SLOT(receiveNostoSumma(QString)));
+    pManualSumma->open();
 }
 

@@ -37,8 +37,8 @@ void LahjoitaRahaaWindow::charityButtonHandler()
     selectedCharity = buttonSender->objectName();
 
     if(selectedCharity == "takaisinButton"){
-        done(0);
         qDebug()<<"selectedCharity == takaisinButton";
+        done(0);
         return;
     }
     emit sendCharity(selectedCharity);
