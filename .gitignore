@@ -3,3 +3,4 @@ backend/*.env/
 frontend/build/
 frontend/*.user
 DLLSerialPort/build/
+DLLSerialPort/*.user
