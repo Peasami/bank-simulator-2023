@@ -8,11 +8,21 @@
 #include <QDebug>
 
 
-class DLLPINCODE_EXPORT DLLPinCode
+class DLLPINCODE_EXPORT DLLPinCode : public QObject
 {
+    Q_OBJECT
+
 public:
-    DLLPinCode();
+    DLLPinCode(QObject * parent = nullptr);
     void openPinWindow();
+
+signals:
+    void pinNumberSignal(QString);
+
+private slots:
+    void receivePin(QString);
+
+
 
 private:
     pinwindow *pinOlio;

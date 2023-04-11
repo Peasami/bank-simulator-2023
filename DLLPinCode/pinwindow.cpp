@@ -58,7 +58,10 @@ void pinwindow::on_clearButton_clicked()
 void pinwindow::on_okButton_clicked()
 {
     qDebug()<<"ok-nappi painettu";
-    qDebug()<<pin;
+    qDebug()<<"käyttäjä syötti "+pin;
+    emit sendNumberToInterface(pin);
+
+    /*
     yritykset--;
 
     if(pin == oikeaPin)
@@ -78,5 +81,6 @@ void pinwindow::on_okButton_clicked()
     ui->lineEdit->clear();
     pin = "";
     qDebug()<<"pin cleared!";
+    */
 }
 

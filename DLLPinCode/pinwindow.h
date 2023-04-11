@@ -15,10 +15,17 @@ public:
     explicit pinwindow(QWidget *parent = nullptr);
     ~pinwindow();
 
+
 private slots:
     void numButtonClickHandler();
     void on_clearButton_clicked();
     void on_okButton_clicked();
+
+signals:
+    void sendNumberToInterface(QString);
+
+protected:
+
 
 private:
     Ui::pinwindow *ui;
