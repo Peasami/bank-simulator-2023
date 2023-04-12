@@ -18,17 +18,23 @@ public:
     QString getHttpResponse() const;
     void setHttpResponse(const QString &newHttpResponse);
 
+    QByteArray getToken() const;
+    void setToken(const QByteArray &newToken);
+
 public slots:
-    void sendLoginResponse(bool);
+
     void loginAccess(QString,QString);
     void httpRequestSlot(QNetworkReply *reply);
+    void LoginSlot(QNetworkReply *reply);
 private:
     QString httpResponse;       //säilöö httpresponsen serveriltä
     QNetworkAccessManager *postManager;     //lähetää post pyynnön
     QNetworkReply *reply;       //säilöö http vastauksen
     QByteArray response_data;//muuttuja mitä säilöö response_datan
+    QByteArray Token;
 signals:
     void httpResponseReady();
+    void LoginResponseReady();
 };
 
 #endif // REST_H

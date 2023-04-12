@@ -12,14 +12,24 @@ class DLLRESTAPI_EXPORT DLLRestAPI: public QObject
 public:
     DLLRestAPI(QObject * parent = nullptr);
     ~DLLRestAPI();
+    const QString &getLoginResponse() const;
+    void setLoginResponse(const QString &newLoginResponse);
+
+    const QString &getToken() const;
+    void setToken(const QString &newToken);
+
 public slots:
-    bool login(QString,QString);
+    void login(QString,QString);
+private slots:
+    void loginReadySlots();
 
 
 signals:
     void sendLoginReplySignal(bool);
+    void loginReady();
 private:
     rest * pRest;
+    QString loginResponse; //Token tai false
 };
 
 

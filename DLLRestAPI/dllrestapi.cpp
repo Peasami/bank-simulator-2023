@@ -13,10 +13,28 @@ DLLRestAPI::~DLLRestAPI()
 qDebug()<<"DLLRestApi tuhottu";
 }
 
-bool DLLRestAPI::login(QString id, QString pin)
+void DLLRestAPI::login(QString id, QString pin)
 {
-qDebug()<<"saatiin exelta kortti"<<id<<"ja pin"<<pin;
+    connect(pRest,SIGNAL(LoginResponseReady()),
+            this,SLOT(loginReadySlots()));
+    qDebug()<<"saatiin exelta kortti"<<id<<"ja pin"<<pin;
     pRest->loginAccess(id,pin);
 
 }
 
+
+const QString &DLLRestAPI::getLoginResponse() const
+{
+    return loginResponse;
+}
+
+void DLLRestAPI::setLoginResponse(const QString &newLoginResponse)
+{
+    loginResponse = newLoginResponse;
+}
+
+void DLLRestAPI::loginReadySlots()
+{
+    loginResponse=pRest->getToken();
+    emit loginReady();
+}
