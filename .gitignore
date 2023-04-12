@@ -4,3 +4,7 @@ frontend/build/
 frontend/*.user
 DLLPinCode/build/
 DLLPinCode/*.user
+DLLSerialPort/build/
+DLLSerialPort/*.user
+DLLRestAPI/build/
+DLLRestAPI/*.user
