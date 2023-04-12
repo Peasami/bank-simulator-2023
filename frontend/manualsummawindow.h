@@ -20,7 +20,8 @@ signals:
     void sendSumma(QString);
 
 public slots:
-    void clickHandler();
+    void okClickHandler();
+    void numClickHandler();
 
 private:
     Ui::ManualSummaWindow *ui;
