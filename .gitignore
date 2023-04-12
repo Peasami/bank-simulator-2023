@@ -4,3 +4,5 @@ frontend/build/
 frontend/*.user
 DLLSerialPort/build/
 DLLSerialPort/*.user
+DLLRestAPI/build/
+DLLRestAPI/*.user

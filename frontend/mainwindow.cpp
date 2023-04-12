@@ -11,6 +11,14 @@ MainWindow::MainWindow(QWidget *parent)
     SetUserName("Santeri");
     IsCredit(false);
 
+    pVaihdaTilia = new VaihdaTiliaWindow(this);
+    connect(pVaihdaTilia,SIGNAL(sendIsCredit(bool)),
+            this,SLOT(receiveIsCredit(bool)));
+
+    pLahjoitaRahaa = new LahjoitaRahaaWindow(this);
+    connect(pLahjoitaRahaa,SIGNAL(sendCharity(QString)),
+            this,SLOT(receiveCharity(QString)));
+
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -60,6 +68,7 @@ void MainWindow::saldoButton_handler()
 void MainWindow::vaihdaTiliButton_handler()
 {
     qDebug()<<"vaihda tiliä";
+    pVaihdaTilia->open();
 }
 
 void MainWindow::lopetaButton_handler()
@@ -70,15 +79,87 @@ void MainWindow::lopetaButton_handler()
 void MainWindow::lahjoitaButton_handler()
 {
     qDebug()<<"lahjoita";
+    pLahjoitaRahaa->open();
+
+    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan lahjoituksen kohde ja määrä talteen muuttujiin
+    pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
 }
 
 void MainWindow::nostaRahaaButton_handler()
 {
+    pValitseSumma = new ValitseSummaWindow(this);
+    connect(pValitseSumma,SIGNAL(sendSumma(QString)), // ValitseSummaWindow lähettää sendSumma -signaalin, joka yhdistetään receiveNostoon
+            this,SLOT(receiveNostoSumma(QString)));
+
+    connect(pValitseSumma,SIGNAL(requestManualSumma()),
+            this,SLOT(openManualNostoSumma()));
+    pValitseSumma->open();
     qDebug()<<"nosta rahaa";
 }
 
 void MainWindow::tilitapahtumatButton_handler()
 {
     qDebug()<<"tilitapahtumat";
+}
+
+void MainWindow::receiveIsCredit(bool b)
+{
+    qDebug()<<"recieveIsCredit";
+    IsCredit(b);
+}
+
+void MainWindow::receiveCharity(QString charity)
+{
+    // kun saadaan lahjoituskohde, tehdään olio ja aukaistaan ikkuna jossa valitaan lahjoituksen määrä
+    pValitseSumma = new ValitseSummaWindow(this);
+    connect(pValitseSumma,SIGNAL(sendSumma(QString)), // ValitseSumman sendSumma signaali yhdistetään receiveCharitySummaan
+            this,SLOT(receiveCharitySumma(QString)));
+
+    connect(pValitseSumma,SIGNAL(requestManualSumma()),
+            this,SLOT(openManualCharitySumma()));
+    pValitseSumma->open();
+
+    // Annetaan kohteen nimi näytäTapahtumalle
+    pNaytaTapahtuma->setLahjoitusKohde(charity);
+    qDebug()<<"recieveCharity(): "<<charity;
+}
+
+void MainWindow::receiveCharitySumma(QString charitySumma)
+{
+    qDebug()<<"receiveCharitySumma(): "<<charitySumma;
+
+    // Annetaan lahjoituksen määrä näytäTapahtumalle
+    pNaytaTapahtuma->setLahjoitusMaara(charitySumma);
+
+    // päivitetään ui ja näytetään
+    pNaytaTapahtuma->updateInfo();
+    pNaytaTapahtuma->show();
+}
+
+void MainWindow::receiveNostoSumma(QString nostoSumma)
+{
+    qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
+}
+
+void MainWindow::openManualCharitySumma()
+{
+    qDebug()<<"openManualCharitySumma()";
+
+    // Tehdään ja avataan ManualSummaWindow, yhdistetään summan lähetys receive*CHARITY*Summaan
+    pManualSumma = new ManualSummaWindow(this);
+    connect(pManualSumma,SIGNAL(sendSumma(QString)),
+            this,SLOT(receiveCharitySumma(QString)));
+    pManualSumma->open();
+}
+
+void MainWindow::openManualNostoSumma()
+{
+    qDebug()<<"openManualNostoSumma()";
+
+    // Tehdään ja avataan ManualSummaWindow, yhdistetään summan lähetys receive*NOSTO*Summaan
+    pManualSumma = new ManualSummaWindow(this);
+    connect(pManualSumma,SIGNAL(sendSumma(QString)),
+            this,SLOT(receiveNostoSumma(QString)));
+    pManualSumma->open();
 }
 
