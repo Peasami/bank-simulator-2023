@@ -31,7 +31,7 @@ private:
     Ui::pinwindow *ui;
     bool pinGiven = false;
     QString pin;
-    QString oikeaPin = "1234";
+    //QString oikeaPin = "1234";
     int yritykset = 3;
 };
 

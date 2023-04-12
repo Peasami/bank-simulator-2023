@@ -9,7 +9,8 @@ pinwindow::pinwindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // create a list of buttons from the children of buttonFrame
+    // Luodaan GUI:ssa frame ja asetetaan sen sisään napit muodostaen niille yhteyden.
+    // Kaikki napit joissa tekstinkoko == 1, connectataan clickhandleriin.
     QListIterator buttonList (ui->frame->children());
     while (buttonList.hasNext())
     {
@@ -32,6 +33,8 @@ pinwindow::~pinwindow()
     delete ui;
 }
 
+// Asettaa painettujen numeronappien tekstin lineEdittiin ja teksti tallentuu "pin"-muuttujaan.
+// Echomode estää lineEdittiin saapuvan tekstin näkymisen UI:ssa.
 void pinwindow::numButtonClickHandler()
 {
     QPushButton *button = qobject_cast<QPushButton*>(sender());
@@ -47,6 +50,7 @@ void pinwindow::numButtonClickHandler()
     }
 }
 
+// Clear-napilla tyhjennetään lineEdit sekä asetetaan "pin"-muuttuja takaisin nollaan.
 void pinwindow::on_clearButton_clicked()
 {
     ui->lineEdit->clear();
@@ -54,33 +58,24 @@ void pinwindow::on_clearButton_clicked()
     qDebug()<<"pin cleared!";
 }
 
-
+// Ok-nappi lähettää lineEditissä olevan pin-muuttujan interfaceen
+// Jos yritykset menee nollaan, kortti lukitaan.
 void pinwindow::on_okButton_clicked()
 {
     qDebug()<<"ok-nappi painettu";
     qDebug()<<"käyttäjä syötti "+pin;
-    emit sendNumberToInterface(pin);
 
-    /*
-    yritykset--;
-
-    if(pin == oikeaPin)
+    if(yritykset > 0)
     {
-        qDebug()<<"oikea pin!";
-        //emit oikeaPin;
+        emit sendNumberToInterface(pin);
     }
     else
     {
-        qDebug()<<"väärä pin!";
+        qDebug()<<"kortti lukittu";
     }
-    if(yritykset == 0)
-    {
-        qDebug()<<"kortti lukittu!";
-    }
-
+    yritykset--;
     ui->lineEdit->clear();
     pin = "";
-    qDebug()<<"pin cleared!";
-    */
+
 }
 

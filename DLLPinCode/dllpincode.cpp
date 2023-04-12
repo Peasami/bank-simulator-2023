@@ -14,8 +14,9 @@ void DLLPinCode::openPinWindow()
 
 }
 
+// receivePin vastaanottaa datan pinwindowilta ja lähettää sen exeen.
 void DLLPinCode::receivePin(QString pin)
 {
-    qDebug()<<"pinwidow lähetti datan "+pin;
+    qDebug()<<"pinwindow lähetti datan "+pin;
     emit pinNumberSignal(pin);
 }
