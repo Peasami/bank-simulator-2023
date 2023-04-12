@@ -10,19 +10,31 @@ CONFIG += c++17
 
 SOURCES += \
     insertcardwindow.cpp \
+    lahjoitarahaawindow.cpp \
     main.cpp \
     mainwindow.cpp \
-    vaihdatiliawindow.cpp
+    manualsummawindow.cpp \
+    naytatapahtumawindow.cpp \
+    vaihdatiliawindow.cpp \
+    valitsesummawindow.cpp
 
 HEADERS += \
     insertcardwindow.h \
+    lahjoitarahaawindow.h \
     mainwindow.h \
-    vaihdatiliawindow.h
+    manualsummawindow.h \
+    naytatapahtumawindow.h \
+    vaihdatiliawindow.h \
+    valitsesummawindow.h
 
 FORMS += \
     insertcardwindow.ui \
+    lahjoitarahaawindow.ui \
     mainwindow.ui \
-    vaihdatiliawindow.ui
+    manualsummawindow.ui \
+    naytatapahtumawindow.ui \
+    vaihdatiliawindow.ui \
+    valitsesummawindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
