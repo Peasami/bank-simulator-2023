@@ -1,4 +1,4 @@
-QT       += core gui serialport
+QT       += core gui serialport network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -35,3 +35,15 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../DLLSerialPort/build/
 
 INCLUDEPATH += $$PWD/../DLLSerialPort
 DEPENDPATH += $$PWD/../DLLSerialPort
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../DLLRestAPI/build/release/ -lDLLRestAPI
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../DLLRestAPI/build/debug/ -lDLLRestAPI
+
+INCLUDEPATH += $$PWD/../DLLRestAPI
+DEPENDPATH += $$PWD/../DLLRestAPI
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../DLLPinCode/build/release/ -lDLLPinCode
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../DLLPinCode/build/debug/ -lDLLPinCode
+
+INCLUDEPATH += $$PWD/../DLLPinCode
+DEPENDPATH += $$PWD/../DLLPinCode

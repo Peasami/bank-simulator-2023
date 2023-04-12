@@ -6,25 +6,38 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     ui(new Ui::InsertCardWindow)
 {
     ui->setupUi(this);
-    pcardReader = new DLLSerialPort(this);
+    pCardReader = new DLLSerialPort(this);
 
-    connect(pcardReader,SIGNAL(cardReadSignal(QString)),
+    connect(pCardReader,SIGNAL(cardReadSignal(QString)),
             this,SLOT(receiveCardNumberFromDLL(QString)));
 
     //Funktiokutsu lukijan avaamiseksi
-    pcardReader->openRFIDReader();
-    if(pcardReader->openRFIDReader()==true)
+    pCardReader->openRFIDReader();
+    if(pCardReader->openRFIDReader()==true)
     {
         qDebug()<<"RFIDlukijaan yhdistäminen onnistui";
+        pPinCode = new DLLPinCode(this);
+        connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
+                this,SLOT(receivePinNumberFromDLL(QString)));
+
     }
     else
     {
         qDebug()<<"RFIDlukijaan yhdistäminen epäonnistui";
     }
+
+
+
+
 }
 
-void InsertCardWindow::OpenPINUI()
+void InsertCardWindow::validateLogin()
 {
+    pRestApi = new DLLRestAPI(this);
+    connect(pRestApi, SIGNAL(loginReady()),
+            this,SLOT(loginReadySlots()));
+
+    pRestApi->login(cardNumber,pinNumber);
 
 }
 
@@ -37,5 +50,33 @@ void InsertCardWindow::receiveCardNumberFromDLL(QString cardNum)
 {
     qDebug()<<"EXE Vastaanottti DLLSerialPortilta kortinnumeron "<<cardNum;
     cardNumber = cardNum;
+    pPinCode->openPinWindow();
 
+}
+
+void InsertCardWindow::receivePinNumberFromDLL(QString pin)
+{
+    qDebug()<<"EXE Vastaanottti DLLPinCodelta pinnin "<<pin;
+    pinNumber = pin;
+    validateLogin();
+}
+
+void InsertCardWindow::loginReadySlots()
+{
+    QString response=pRestApi->getLoginResponse();
+    qDebug()<<"Saatiin restapi dll:ltä vastaus "+response;
+    pMainWindow = new MainWindow(this);
+    pMainWindow->show();
+
+    /*
+    if(QString::compare(response, "Bearer false")!=0)
+    {
+        pMainWindow = new MainWindow(this);
+        pMainWindow->show();
+    }
+    else
+    {
+        qDebug()<<"Väärä pin";
+    }
+    */
 }

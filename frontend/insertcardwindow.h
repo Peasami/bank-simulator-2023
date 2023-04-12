@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "dllserialport.h"
+#include "dllrestapi.h"
+#include "dllpincode.h"
 #include "mainwindow.h"
 
 namespace Ui {
@@ -15,18 +17,25 @@ class InsertCardWindow : public QDialog
 
 public:
     explicit InsertCardWindow(QWidget *parent = nullptr);
-    void OpenPINUI();
     ~InsertCardWindow();
+    void validateLogin();
 
 public slots:
         void receiveCardNumberFromDLL(QString);
+        void receivePinNumberFromDLL(QString);
+
+private slots:
+        void loginReadySlots();
 
 private:
     Ui::InsertCardWindow *ui;
-    DLLSerialPort * pcardReader;
+    DLLSerialPort * pCardReader;
     QString cardNumber;
     QString pinNumber;
     MainWindow * pMainWindow;
+    DLLRestAPI * pRestApi;
+    DLLPinCode * pPinCode;
+
 
 #endif // INSERTCARDWINDOW_H
 
