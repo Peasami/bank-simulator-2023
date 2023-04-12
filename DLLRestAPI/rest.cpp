@@ -46,9 +46,26 @@ void rest::httpRequestSlot(QNetworkReply *reply)
 void rest::LoginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    Token="Bearer "+response_data;
-    qDebug()<<"rest.cpp sai datan "+Token;
-    emit LoginResponseReady();
+
+    if(QString::compare(response_data,"-4078")==0 || response_data.length()==0)
+    {
+        qDebug()<<"Virhe tietokantayhteydessä";
+    }
+    else
+    {
+        if(QString::compare(response_data, "false")!=0)
+        {
+            Token="Bearer "+response_data;
+            qDebug()<<"rest.cpp sai datan "+Token;
+            emit LoginResponseReady();
+        }
+        else
+        {
+            qDebug()<<"Tunnus ja salasana eivät täsmää";
+        }
+    }
+
+
     reply->deleteLater();
     postManager->deleteLater();
 }
