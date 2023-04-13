@@ -65,18 +65,19 @@ void InsertCardWindow::loginReadySlots()
 {
     QString response=pRestApi->getLoginResponse();
     qDebug()<<"Saatiin restapi dll:ltä vastaus "+response;
-    pMainWindow = new MainWindow(this);
-    pMainWindow->show();
 
-    /*
-    if(QString::compare(response, "Bearer false")!=0)
+
+    if(QString::compare(response,"Bearer -4078")==0 || response.length()<8)
     {
-        pMainWindow = new MainWindow(this);
-        pMainWindow->show();
+        if(QString::compare(response, "Bearer false")!=0)
+        {
+            //Tähän kohtaan getillä asiakkaan tiedot
+            pMainWindow = new MainWindow(this);
+            pMainWindow->show();
+        }
+        else
+        {
+            qDebug()<<"Väärä pin";
+        }
     }
-    else
-    {
-        qDebug()<<"Väärä pin";
-    }
-    */
 }
