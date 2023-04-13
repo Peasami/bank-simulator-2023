@@ -1,9 +1,12 @@
-
+#include "enviroment.h"
 #include "rest.h"
+
 
 rest::rest(QObject *parent):QObject(parent)
 {
     qDebug()<<"rest luotu";
+
+
 }
 
 rest::~rest()
@@ -19,7 +22,7 @@ void rest::loginAccess(QString idKortti, QString PINkoodi)
     QJsonObject jsonObj;
     jsonObj.insert("idKortti",idKortti);
     jsonObj.insert("PINkoodi",PINkoodi);
-    QString site_url="http://localhost:3000/login";
+    QString site_url=Environment::getBaseUrl()+"/login";
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -46,24 +49,9 @@ void rest::httpRequestSlot(QNetworkReply *reply)
 void rest::LoginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-
-    if(QString::compare(response_data,"-4078")==0 || response_data.length()==0)
-    {
-        qDebug()<<"Virhe tietokantayhteydessä";
-    }
-    else
-    {
-        if(QString::compare(response_data, "false")!=0)
-        {
-            Token="Bearer "+response_data;
-            qDebug()<<"rest.cpp sai datan "+Token;
-            emit LoginResponseReady();
-        }
-        else
-        {
-            qDebug()<<"Tunnus ja salasana eivät täsmää";
-        }
-    }
+     Token="Bearer "+response_data;
+     qDebug()<<"rest.cpp sai datan "+Token;
+     emit LoginResponseReady();
 
 
     reply->deleteLater();

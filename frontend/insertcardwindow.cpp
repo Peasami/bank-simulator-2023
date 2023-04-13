@@ -65,9 +65,14 @@ void InsertCardWindow::loginReadySlots()
 {
     QString response=pRestApi->getLoginResponse();
     qDebug()<<"Saatiin restapi dll:ltä vastaus "+response;
+                    qDebug()<<response.length();
 
 
     if(QString::compare(response,"Bearer -4078")==0 || response.length()<8)
+    {
+        qDebug()<<"ei yhteyttä tietokantaan";
+    }
+    else
     {
         if(QString::compare(response, "Bearer false")!=0)
         {
