@@ -9,7 +9,7 @@ const kortti = {
     return db.query('select * from Kortti', callback);
   },
   getById: function(id, callback) {
-    return db.query('select * from kortti where idKortti=?', [id], callback);
+    return db.query('SELECT Etunimi,Sukunimi,Debit,Credit FROM Asiakas JOIN Kortti ON Asiakas.idAsiakas=Kortti.idAsiakas JOIN Tili ON Kortti.idTili=Tili.idTili WHERE idKortti=?', [id], callback);
   },
   add: function(Kortti, callback) {
     
