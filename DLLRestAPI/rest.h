@@ -27,9 +27,12 @@ public slots:
     void loginAccess(QString,QString);
     void httpRequestSlot(QNetworkReply *reply);
     void LoginSlot(QNetworkReply *reply);
+    void getMainWindowInfoAccess(QString);
+
 private:
     QString httpResponse;       //säilöö httpresponsen serveriltä
     QNetworkAccessManager *postManager;     //lähetää post pyynnön
+    QNetworkAccessManager *getManager;      //lähettää get pyynnön
     QNetworkReply *reply;       //säilöö http vastauksen
     QByteArray response_data;//muuttuja mitä säilöö response_datan
     QByteArray Token;

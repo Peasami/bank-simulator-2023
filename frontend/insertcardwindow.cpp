@@ -77,12 +77,29 @@ void InsertCardWindow::loginReadySlots()
         if(QString::compare(response, "Bearer false")!=0)
         {
             //Tähän kohtaan getillä asiakkaan tiedot
+
             pMainWindow = new MainWindow(this);
-            pMainWindow->show();
+
+            connect(pRestApi, SIGNAL(httpReady()),
+                    this, SLOT(httpReadySlot()));
+
+            pRestApi->getMainwindowInfo(cardNumber);
+
         }
         else
         {
             qDebug()<<"Väärä pin";
         }
     }
+
+}
+
+void InsertCardWindow::httpReadySlot()
+{
+    QString username = pRestApi->getHttpResponse();
+    pMainWindow->SetUserName(username);
+
+    pMainWindow->show();
+
+    qDebug()<<"Insertcardwindowiin response: "<<username;
 }

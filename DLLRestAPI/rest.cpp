@@ -58,6 +58,24 @@ void rest::LoginSlot(QNetworkReply *reply)
     postManager->deleteLater();
 }
 
+void rest::getMainWindowInfoAccess(QString cardNum)
+{
+    qDebug()<<"saatiin interfacelta korttiID: "<<cardNum<<" getMainWindowInfoAccessiin";
+
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+    QString site_url=Environment::getBaseUrl()+"/kortti/"+cardNum;
+    qDebug()<<"Site_url: "<<site_url;
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    getManager = new QNetworkAccessManager(this);
+    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(httpRequestSlot(QNetworkReply*)));
+
+    reply = getManager->get(request);
+}
+
 QByteArray rest::getToken() const
 {
     return Token;

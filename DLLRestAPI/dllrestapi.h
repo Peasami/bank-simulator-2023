@@ -15,21 +15,30 @@ public:
     const QString &getLoginResponse() const;
     void setLoginResponse(const QString &newLoginResponse);
 
-    const QString &getToken() const;
-    void setToken(const QString &newToken);
+    //const QString &getToken() const;
+    //void setToken(const QString &newToken);
+
+    const QString &getHttpResponse() const;
 
 public slots:
     void login(QString,QString);
+    void getMainwindowInfo(QString);
+
+
 private slots:
     void loginReadySlots();
+    void httpReadySlot();
 
 
 signals:
     void sendLoginReplySignal(bool);
     void loginReady();
+    void httpReady();
+
 private:
     rest * pRest;
     QString loginResponse; //Token tai false
+    QString httpResponse;
 };
 
 

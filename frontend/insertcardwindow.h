@@ -26,6 +26,7 @@ public slots:
 
 private slots:
         void loginReadySlots();
+        void httpReadySlot();
 
 private:
     Ui::InsertCardWindow *ui;

@@ -22,6 +22,13 @@ void DLLRestAPI::login(QString id, QString pin)
 
 }
 
+void DLLRestAPI::getMainwindowInfo(QString cardNum)
+{
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(httpReadySlot()));
+    pRest->getMainWindowInfoAccess(cardNum);
+}
+
 
 const QString &DLLRestAPI::getLoginResponse() const
 {
@@ -37,4 +44,18 @@ void DLLRestAPI::loginReadySlots()
 {
     loginResponse=pRest->getToken();
     emit loginReady();
+}
+
+void DLLRestAPI::httpReadySlot()
+{
+
+    httpResponse = pRest->getHttpResponse();
+    qDebug()<<"httpReadySlot: "<<httpResponse;
+    emit httpReady();
+}
+
+const QString &DLLRestAPI::getHttpResponse() const
+{
+    qDebug()<<"getHttpResponse: "<<httpResponse;
+    return httpResponse;
 }
