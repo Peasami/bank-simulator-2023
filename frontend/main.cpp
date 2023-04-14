@@ -1,4 +1,5 @@
 #include "insertcardwindow.h"
+#include "mainwindow.h" // Debuggausta varten,jos mainwindow pitää saada auki ilman kortinlukijaa
 
 #include <QApplication>
 

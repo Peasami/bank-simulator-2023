@@ -18,18 +18,19 @@ VaihdaTiliaWindow::VaihdaTiliaWindow(QWidget *parent) :
 VaihdaTiliaWindow::~VaihdaTiliaWindow()
 {
     delete ui;
+    qDebug()<<"VaihdaTiliaWindow tuhottu";
 }
 
 // Painetaan Credit -nappia
 void VaihdaTiliaWindow::vaihdaCreditButton_handler()
 {
     emit sendIsCredit(true);
-    done(0);
+    emit deleteWindow(this);
 }
 
 // Painetaan Dedit -nappia
 void VaihdaTiliaWindow::vaihdaDebitButton_handler()
 {
     emit sendIsCredit(false);
-    done(0);
+    emit deleteWindow(this);
 }
