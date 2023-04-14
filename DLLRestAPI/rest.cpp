@@ -42,7 +42,9 @@ void rest::httpRequestSlot(QNetworkReply *reply)
     qDebug()<<"rest.cpp sai datan "+httpResponse;
     emit httpResponseReady();
     reply->deleteLater();
-    postManager->deleteLater();
+    //postManager->deleteLater(); //Tämä aiheutti exen crashin
+    getManager->deleteLater();
+
 
 }
 
@@ -86,12 +88,12 @@ void rest::setToken(const QByteArray &newToken)
     Token = newToken;
 }
 
-QString rest::getHttpResponse() const
+QByteArray rest::getHttpResponse() const
 {
     return httpResponse;
 }
 
-void rest::setHttpResponse(const QString &newHttpResponse)
+void rest::setHttpResponse(const QByteArray &newHttpResponse)
 {
     httpResponse = newHttpResponse;
 }

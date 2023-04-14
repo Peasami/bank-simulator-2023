@@ -54,6 +54,11 @@ void MainWindow::IsCredit(bool isCredit)
     }
 }
 
+void MainWindow::disableVaihdaBtn()
+{
+    ui->vaihdaTiliButton->setDisabled(true);
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;

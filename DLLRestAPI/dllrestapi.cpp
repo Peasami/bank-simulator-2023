@@ -54,7 +54,7 @@ void DLLRestAPI::httpReadySlot()
     emit httpReady();
 }
 
-const QString &DLLRestAPI::getHttpResponse() const
+const QByteArray &DLLRestAPI::getHttpResponse() const
 {
     qDebug()<<"getHttpResponse: "<<httpResponse;
     return httpResponse;

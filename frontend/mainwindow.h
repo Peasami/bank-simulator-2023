@@ -20,6 +20,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     void SetUserName(QString);
     void IsCredit(bool);
+    void disableVaihdaBtn();
     ~MainWindow();
 
 private slots:

@@ -18,7 +18,7 @@ public:
     //const QString &getToken() const;
     //void setToken(const QString &newToken);
 
-    const QString &getHttpResponse() const;
+    const QByteArray &getHttpResponse() const;
 
 public slots:
     void login(QString,QString);
@@ -38,7 +38,7 @@ signals:
 private:
     rest * pRest;
     QString loginResponse; //Token tai false
-    QString httpResponse;
+    QByteArray httpResponse;
 };
 
 

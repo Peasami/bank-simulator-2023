@@ -15,8 +15,8 @@ public:
     ~rest();
 
 
-    QString getHttpResponse() const;
-    void setHttpResponse(const QString &newHttpResponse);
+    QByteArray getHttpResponse() const;
+    void setHttpResponse(const QByteArray &newHttpResponse);
 
     QByteArray getToken() const;
     void setToken(const QByteArray &newToken);
@@ -30,7 +30,7 @@ public slots:
     void getMainWindowInfoAccess(QString);
 
 private:
-    QString httpResponse;       //säilöö httpresponsen serveriltä
+    QByteArray httpResponse;       //säilöö httpresponsen serveriltä //Tämän muutin byteArreyksi
     QNetworkAccessManager *postManager;     //lähetää post pyynnön
     QNetworkAccessManager *getManager;      //lähettää get pyynnön
     QNetworkReply *reply;       //säilöö http vastauksen
