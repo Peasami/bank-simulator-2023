@@ -13,7 +13,7 @@ router.post('/',
       
         login.checkPIN(kortti, function(dbError, dbResult) {
           if(dbError){
-            response.json(dbError);
+            response.json(dbError.errno);
           }
           else{
             if (dbResult.length > 0) {

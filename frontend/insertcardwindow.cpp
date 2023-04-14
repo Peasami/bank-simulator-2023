@@ -65,18 +65,73 @@ void InsertCardWindow::loginReadySlots()
 {
     QString response=pRestApi->getLoginResponse();
     qDebug()<<"Saatiin restapi dll:ltä vastaus "+response;
-    pMainWindow = new MainWindow(this);
-    pMainWindow->show();
+                    qDebug()<<response.length();
 
-    /*
-    if(QString::compare(response, "Bearer false")!=0)
+
+    if(QString::compare(response,"Bearer -4078")==0 || response.length()<8)
     {
-        pMainWindow = new MainWindow(this);
-        pMainWindow->show();
+        qDebug()<<"ei yhteyttä tietokantaan";
     }
     else
     {
-        qDebug()<<"Väärä pin";
+        if(QString::compare(response, "Bearer false")!=0)
+        {
+            //Tähän kohtaan getillä asiakkaan tiedot
+
+            pMainWindow = new MainWindow(this);
+
+            connect(pRestApi, SIGNAL(httpReady()),
+                    this, SLOT(httpReadySlot()));
+
+            pRestApi->getMainwindowInfo(cardNumber);
+
+        }
+        else
+        {
+            qDebug()<<"Väärä pin";
+        }
     }
-    */
+
+
+}
+
+void InsertCardWindow::httpReadySlot()
+{
+    delete pPinCode;
+    pPinCode=nullptr;
+
+    QByteArray username = pRestApi->getHttpResponse();
+    QJsonDocument json_doc = QJsonDocument::fromJson(username);
+    QJsonArray json_array = json_doc.array();
+    QString name;
+    QString cardType;
+    foreach (const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        name += json_obj["Etunimi"].toString()+" "+json_obj["Sukunimi"].toString();
+        cardType += QString::number(json_obj["Debit"].toInt())+QString::number(json_obj["Credit"].toInt());
+    }
+    qDebug()<<"Kortin tyyppi "+cardType;
+
+    switch(cardType.toInt()){
+    case 0:
+        delete pMainWindow;
+        pMainWindow=nullptr;
+        return;
+    case 1:
+        pMainWindow->IsCredit(true);
+        pMainWindow->disableVaihdaBtn();
+        break;
+    case 10:
+        pMainWindow->IsCredit(false);
+        break;
+    case 11:
+        pMainWindow->IsCredit(false);
+        break;
+    }
+
+    pMainWindow->SetUserName(name);
+
+    pMainWindow->show();
+
+    qDebug()<<"Insertcardwindowiin response: "<<username;
 }

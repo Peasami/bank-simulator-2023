@@ -11,11 +11,13 @@ CONFIG += c++17
 
 SOURCES += \
     dllrestapi.cpp \
+    enviroment.cpp \
     rest.cpp
 
 HEADERS += \
     DLLRestAPI_global.h \
     dllrestapi.h \
+    enviroment.h \
     rest.h
 
 # Default rules for deployment.
