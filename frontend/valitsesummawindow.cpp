@@ -7,6 +7,8 @@ ValitseSummaWindow::ValitseSummaWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setAttribute(Qt::WA_DeleteOnClose); // Olio tuhoutuu ruksia painaessa
+
 
     // Käy läpi kaikki napit
     for(int i=0;i<3;i++)
@@ -22,6 +24,7 @@ ValitseSummaWindow::ValitseSummaWindow(QWidget *parent) :
 ValitseSummaWindow::~ValitseSummaWindow()
 {
     delete ui;
+    qDebug()<<"valitseSummaWindow Tuhottu";
 }
 
 void ValitseSummaWindow::summaButtonHandler()
@@ -36,7 +39,7 @@ void ValitseSummaWindow::summaButtonHandler()
     {
         qDebug()<<"isLetter";
         emit requestManualSumma();
-        done(0);
+        emit deleteWindow(this);
     }
     else
     {
@@ -44,12 +47,12 @@ void ValitseSummaWindow::summaButtonHandler()
         if(selectedSumma.toInt() > testiSaldo){
             qDebug()<<"Ei tarpeeksi saldoa!";
             done(0);
-            return;
+            emit deleteWindow(this);
         }
         testiSaldo -= selectedSumma.toInt();
         qDebug()<<"Nostit "<<selectedSumma<<"€. Saldosi: "<<testiSaldo;
         emit sendSumma(selectedSumma);
-        done(0);
+        emit deleteWindow(this);
     }
     qDebug()<<selectedSumma;
 }

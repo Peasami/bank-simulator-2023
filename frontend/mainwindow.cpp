@@ -11,13 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
     SetUserName("Santeri");
     IsCredit(false);
 
-    pVaihdaTilia = new VaihdaTiliaWindow(this);
-    connect(pVaihdaTilia,SIGNAL(sendIsCredit(bool)),
-            this,SLOT(receiveIsCredit(bool)));
 
-    pLahjoitaRahaa = new LahjoitaRahaaWindow(this);
-    connect(pLahjoitaRahaa,SIGNAL(sendCharity(QString)),
-            this,SLOT(receiveCharity(QString)));
+
+
 
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
@@ -72,6 +68,12 @@ void MainWindow::saldoButton_handler()
 
 void MainWindow::vaihdaTiliButton_handler()
 {
+    pVaihdaTilia = new VaihdaTiliaWindow(this);
+    connect(pVaihdaTilia,SIGNAL(sendIsCredit(bool)),
+            this,SLOT(receiveIsCredit(bool)));
+    connect(pVaihdaTilia,SIGNAL(deleteWindow(QWidget*)),
+            this, SLOT(deleteWindowSlot(QWidget*)));
+
     qDebug()<<"vaihda tiliä";
     pVaihdaTilia->open();
 }
@@ -83,6 +85,12 @@ void MainWindow::lopetaButton_handler()
 
 void MainWindow::lahjoitaButton_handler()
 {
+    pLahjoitaRahaa = new LahjoitaRahaaWindow(this);
+    connect(pLahjoitaRahaa,SIGNAL(sendCharity(QString)),
+            this,SLOT(receiveCharity(QString)));
+    connect(pLahjoitaRahaa,SIGNAL(deleteWindow(QWidget*)),
+            this, SLOT(deleteWindowSlot(QWidget*)));
+
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
@@ -98,6 +106,8 @@ void MainWindow::nostaRahaaButton_handler()
 
     connect(pValitseSumma,SIGNAL(requestManualSumma()),
             this,SLOT(openManualNostoSumma()));
+    connect(pValitseSumma,SIGNAL(deleteWindow(QWidget*)),
+            this, SLOT(deleteWindowSlot(QWidget*)));
     pValitseSumma->open();
     qDebug()<<"nosta rahaa";
 }
@@ -122,6 +132,9 @@ void MainWindow::receiveCharity(QString charity)
 
     connect(pValitseSumma,SIGNAL(requestManualSumma()),
             this,SLOT(openManualCharitySumma()));
+    connect(pValitseSumma,SIGNAL(deleteWindow(QWidget*)),
+            this, SLOT(deleteWindowSlot(QWidget*)));
+
     pValitseSumma->open();
 
     // Annetaan kohteen nimi näytäTapahtumalle
@@ -154,6 +167,8 @@ void MainWindow::openManualCharitySumma()
     pManualSumma = new ManualSummaWindow(this);
     connect(pManualSumma,SIGNAL(sendSumma(QString)),
             this,SLOT(receiveCharitySumma(QString)));
+    connect(pManualSumma,SIGNAL(deleteWindow(QWidget*)),
+            this, SLOT(deleteWindowSlot(QWidget*)));
     pManualSumma->open();
 }
 
@@ -165,6 +180,14 @@ void MainWindow::openManualNostoSumma()
     pManualSumma = new ManualSummaWindow(this);
     connect(pManualSumma,SIGNAL(sendSumma(QString)),
             this,SLOT(receiveNostoSumma(QString)));
+    connect(pManualSumma,SIGNAL(deleteWindow(QWidget*)),
+            this, SLOT(deleteWindowSlot(QWidget*)));
     pManualSumma->open();
+}
+
+void MainWindow::deleteWindowSlot(QWidget * pWindow)
+{
+    delete pWindow;
+    pWindow = nullptr;
 }
 
