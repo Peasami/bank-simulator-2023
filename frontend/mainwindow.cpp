@@ -104,6 +104,9 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
+
+
+
     qDebug()<<"tilitapahtumat";
 }
 
@@ -145,6 +148,8 @@ void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
 }
+
+
 
 void MainWindow::openManualCharitySumma()
 {

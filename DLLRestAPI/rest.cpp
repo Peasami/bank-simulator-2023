@@ -78,6 +78,25 @@ void rest::getMainWindowInfoAccess(QString cardNum)
     reply = getManager->get(request);
 }
 
+void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+    QString site_url=Environment::getBaseUrl()+"/Tilitapahtumat/"+cardNum;
+    qDebug()<<"Site_url: "<<site_url;
+    QNetworkRequest request((site_url));
+    //QByteArray myToken="Bearer "+response_data;
+    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    getManager = new QNetworkAccessManager(this);
+    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(httpRequestSlot(QNetworkReply*)));
+
+    reply = getManager->get(request);
+}
+
+
 QByteArray rest::getToken() const
 {
     return Token;

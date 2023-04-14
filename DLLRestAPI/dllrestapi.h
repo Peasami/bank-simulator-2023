@@ -23,17 +23,20 @@ public:
 public slots:
     void login(QString,QString);
     void getMainwindowInfo(QString);
+    void getAccountHistoryInfo(QString);
 
 
 private slots:
     void loginReadySlots();
     void httpReadySlot();
+    void accountHistorySlot();
 
 
 signals:
     void sendLoginReplySignal(bool);
     void loginReady();
     void httpReady();
+    void accountHistorySignal();
 
 private:
     rest * pRest;

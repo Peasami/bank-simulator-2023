@@ -28,6 +28,7 @@ public slots:
     void httpRequestSlot(QNetworkReply *reply);
     void LoginSlot(QNetworkReply *reply);
     void getMainWindowInfoAccess(QString);
+    void getAccountHistory(QString);    //tilitapahtumaSlotti
 
 private:
     QByteArray httpResponse;       //säilöö httpresponsen serveriltä //Tämän muutin byteArreyksi
