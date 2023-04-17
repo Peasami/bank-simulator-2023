@@ -29,6 +29,7 @@ ManualSummaWindow::ManualSummaWindow(QWidget *parent) :
 ManualSummaWindow::~ManualSummaWindow()
 {
     delete ui;
+    qDebug()<<"ManualSummaWindow tuhottu";
 }
 
 void ManualSummaWindow::okClickHandler()
@@ -37,7 +38,7 @@ void ManualSummaWindow::okClickHandler()
     QString manualSummaEdit = ui->summaEdit->text();
     emit sendSumma(manualSummaEdit);
     qDebug()<<manualSummaEdit;
-    done(0);
+    emit deleteWindow(this);
 }
 
 void ManualSummaWindow::numClickHandler()

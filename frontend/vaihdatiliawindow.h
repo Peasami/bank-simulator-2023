@@ -2,6 +2,7 @@
 #define VAIHDATILIAWINDOW_H
 
 #include <QDialog>
+#include <QDebug>
 
 namespace Ui {
 class VaihdaTiliaWindow;
@@ -17,6 +18,7 @@ public:
 
 signals:
     void sendIsCredit(bool);
+    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
 
 private slots:
     void vaihdaCreditButton_handler();

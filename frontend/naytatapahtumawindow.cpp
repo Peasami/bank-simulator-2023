@@ -11,6 +11,7 @@ NaytaTapahtumaWindow::NaytaTapahtumaWindow(QWidget *parent) :
 NaytaTapahtumaWindow::~NaytaTapahtumaWindow()
 {
     delete ui;
+    qDebug()<<"NaytaTapahtumaWindow tuhottu";
 }
 
 void NaytaTapahtumaWindow::setLahjoitusMaara(const QString &newLahjoitusMaara)

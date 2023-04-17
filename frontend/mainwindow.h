@@ -42,6 +42,8 @@ private slots:
 
     void openManualCharitySumma();
     void openManualNostoSumma();
+
+    void deleteWindowSlot(QWidget *);
 private:
     Ui::MainWindow *ui;
     VaihdaTiliaWindow * pVaihdaTilia;
