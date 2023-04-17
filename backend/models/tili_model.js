@@ -5,7 +5,7 @@ const Tili = {
     return db.query('select * from Tili', callback);
   },
   getById: function(id, callback) {
-    return db.query('select * from Tili where idTili=?', [id], callback);
+    return db.query('SELECT t.TilinroDebit, t.SaldoDebit, t.TilinroCredit, t.SaldoCredit FROM tili t INNER JOIN kortti k ON t.idTili = k.idTili WHERE k.idKortti =?', [id], callback);
   },
   add: function(Tili, callback) {
     return db.query(

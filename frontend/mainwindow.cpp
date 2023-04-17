@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    RestApi = new DLLRestAPI(this);
 
     SetUserName("Santeri");
     IsCredit(false);
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->tilitapahtumatButton,SIGNAL(clicked(bool)),
             this,SLOT(tilitapahtumatButton_handler()));
 
+
 }
 
 void MainWindow::SetUserName(QString name)
@@ -55,6 +57,8 @@ void MainWindow::disableVaihdaBtn()
     ui->vaihdaTiliButton->setDisabled(true);
 }
 
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -63,7 +67,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::saldoButton_handler()
 {
-    qDebug()<<"saldo";
+    //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
+
+    //RestApi->getSaldoInfo(cardNum);
+
 }
 
 void MainWindow::vaihdaTiliButton_handler()
@@ -114,8 +121,11 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
+    //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
+    //RestApi->getAccountHistoryInfo(cardNum);
     qDebug()<<"tilitapahtumat";
 }
+
 
 void MainWindow::receiveIsCredit(bool b)
 {
@@ -158,6 +168,29 @@ void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
 }
+
+void MainWindow::printSaldoDataSlot()
+{
+    qDebug() << "getSaldo called";
+    QByteArray saldoData = RestApi->getHttpResponse();
+    qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
+
+
+}
+
+void MainWindow::printAccountHistoryDataSlot()
+
+{
+
+    qDebug() << "getAccount called";
+    QByteArray accountHistoryData = RestApi->getHttpResponse();
+
+    qDebug() << "exe vastaan otti datan, joka on: " << accountHistoryData;
+
+    accountHistoryData.clear();
+}
+
+
 
 void MainWindow::openManualCharitySumma()
 {

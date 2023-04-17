@@ -7,6 +7,7 @@
 #include "valitsesummawindow.h"
 #include "naytatapahtumawindow.h"
 #include "manualsummawindow.h"
+#include "dllrestapi.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,6 +37,9 @@ private slots:
     void receiveCharitySumma(QString);
     void receiveNostoSumma(QString);
 
+    void printSaldoDataSlot();
+    void printAccountHistoryDataSlot();
+
     void openManualCharitySumma();
     void openManualNostoSumma();
 
@@ -47,6 +51,7 @@ private:
     ValitseSummaWindow * pValitseSumma;
     NaytaTapahtumaWindow * pNaytaTapahtuma;
     ManualSummaWindow * pManualSumma;
+     DLLRestAPI * RestApi;
 
 
 

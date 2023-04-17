@@ -37,6 +37,8 @@ void rest::loginAccess(QString idKortti, QString PINkoodi)
 
 void rest::httpRequestSlot(QNetworkReply *reply)
 {
+
+    httpResponse.clear();
     response_data=reply->readAll();
     httpResponse=response_data;
     qDebug()<<"rest.cpp sai datan "+httpResponse;
@@ -67,6 +69,8 @@ void rest::getMainWindowInfoAccess(QString cardNum)
     QJsonObject jsonObj;
     jsonObj.insert("idKortti",cardNum);
     QString site_url=Environment::getBaseUrl()+"/kortti/"+cardNum;
+    //QByteArray myToken="Bearer "+response_data;
+    //request.setRawHeader(QByteArray("Authorization"),(myToken));
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -77,6 +81,47 @@ void rest::getMainWindowInfoAccess(QString cardNum)
 
     reply = getManager->get(request);
 }
+
+void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
+{
+    qDebug() << "getAccount called";
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+    QString site_url=Environment::getBaseUrl()+"/Tilitapahtumat/"+cardNum;
+    qDebug()<<"Site_url: "<<site_url;
+    QNetworkRequest request((site_url));
+    //QByteArray myToken="Bearer "+response_data;
+    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    getManager = new QNetworkAccessManager(this);
+    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(httpRequestSlot(QNetworkReply*)));
+
+    reply = getManager->get(request);
+}
+
+void rest::getSaldo(QString cardNum)    //tilin saldo get
+{
+    qDebug() << "getSaldo called";
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+    QString site_url=Environment::getBaseUrl()+"/Tili/"+cardNum;
+    qDebug()<<"Site_url: "<<site_url;
+    QNetworkRequest request((site_url));
+    //QByteArray myToken="Bearer "+response_data;
+    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    getManager = new QNetworkAccessManager(this);
+    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(httpRequestSlot(QNetworkReply*)));
+
+    reply = getManager->get(request);
+}
+
+
+
 
 QByteArray rest::getToken() const
 {
