@@ -123,6 +123,7 @@ void InsertCardWindow::httpReadySlot()
         break;
     case 10:
         pMainWindow->IsCredit(false);
+        pMainWindow->disableVaihdaBtn();
         break;
     case 11:
         pMainWindow->IsCredit(false);
