@@ -34,7 +34,7 @@ public slots:
     void getSaldo(QString);          //tilitapahtumaSlotti
 
 private:
-    QByteArray httpResponse;       //säilöö httpresponsen serveriltä //Tämän muutin byteArreyksi
+    QByteArray httpResponse;       // säilöö httpresponsen serveriltä //Tämän muutin byteArreyksi
     QNetworkAccessManager *postManager;     //lähetää post pyynnön
     QNetworkAccessManager *getManager;      //lähettää get pyynnön
     QNetworkReply *reply;       //säilöö http vastauksen
