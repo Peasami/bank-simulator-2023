@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "saldowindow.h"
+#include "tilitapahtumawindow.h"
 #include "vaihdatiliawindow.h"
 #include "lahjoitarahaawindow.h"
 #include "valitsesummawindow.h"
@@ -45,6 +47,8 @@ private:
     ValitseSummaWindow * pValitseSumma;
     NaytaTapahtumaWindow * pNaytaTapahtuma;
     ManualSummaWindow * pManualSumma;
+    saldoWindow * pSaldo;
+    TiliTapahtumaWindow * pTiliTapahtuma;
 
 
 

@@ -69,6 +69,7 @@ MainWindow::~MainWindow()
 void MainWindow::saldoButton_handler()
 {
     qDebug()<<"saldo";
+    pSaldo->open();
 }
 
 void MainWindow::vaihdaTiliButton_handler()
@@ -79,7 +80,7 @@ void MainWindow::vaihdaTiliButton_handler()
 
 void MainWindow::lopetaButton_handler()
 {
-    qDebug()<<"lopeta";
+    qDebug()<<"Hei lopeta!";
     InsertCardWindow W;
 
 
@@ -109,6 +110,7 @@ void MainWindow::nostaRahaaButton_handler()
 void MainWindow::tilitapahtumatButton_handler()
 {
     qDebug()<<"tilitapahtumat";
+    pTiliTapahtuma->open();
 }
 
 void MainWindow::receiveIsCredit(bool b)
