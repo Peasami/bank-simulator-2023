@@ -37,6 +37,8 @@ private slots:
     void receiveCharitySumma(QString);
     void receiveNostoSumma(QString);
 
+    void printSaldoDataSlot();
+    void printAccountHistoryDataSlot();
 
     void openManualCharitySumma();
     void openManualNostoSumma();
@@ -47,7 +49,7 @@ private:
     ValitseSummaWindow * pValitseSumma;
     NaytaTapahtumaWindow * pNaytaTapahtuma;
     ManualSummaWindow * pManualSumma;
-
+     DLLRestAPI * RestApi;
 
 
 

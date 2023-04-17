@@ -22,13 +22,16 @@ public:
     void setToken(const QByteArray &newToken);
 
 
+
+
 public slots:
 
     void loginAccess(QString,QString);
     void httpRequestSlot(QNetworkReply *reply);
     void LoginSlot(QNetworkReply *reply);
     void getMainWindowInfoAccess(QString);
-    void getAccountHistory(QString);    //tilitapahtumaSlotti
+    void getAccountHistory(QString);
+    void getSaldo(QString);          //tilitapahtumaSlotti
 
 private:
     QByteArray httpResponse;       //säilöö httpresponsen serveriltä //Tämän muutin byteArreyksi
@@ -39,9 +42,13 @@ private:
     QByteArray Token;
 
 
+
+
 signals:
     void httpResponseReady();
     void LoginResponseReady();
+
+
 };
 
 #endif // REST_H
