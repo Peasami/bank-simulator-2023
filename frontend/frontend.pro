@@ -15,6 +15,8 @@ SOURCES += \
     mainwindow.cpp \
     manualsummawindow.cpp \
     naytatapahtumawindow.cpp \
+    saldowindow.cpp \
+    tilitapahtumawindow.cpp \
     vaihdatiliawindow.cpp \
     valitsesummawindow.cpp
 
@@ -24,6 +26,8 @@ HEADERS += \
     mainwindow.h \
     manualsummawindow.h \
     naytatapahtumawindow.h \
+    saldowindow.h \
+    tilitapahtumawindow.h \
     vaihdatiliawindow.h \
     valitsesummawindow.h
 
@@ -33,6 +37,8 @@ FORMS += \
     mainwindow.ui \
     manualsummawindow.ui \
     naytatapahtumawindow.ui \
+    saldowindow.ui \
+    tilitapahtumawindow.ui \
     vaihdatiliawindow.ui \
     valitsesummawindow.ui
 

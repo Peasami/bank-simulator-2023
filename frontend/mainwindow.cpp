@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "insertcardwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 
@@ -79,6 +80,9 @@ void MainWindow::vaihdaTiliButton_handler()
 void MainWindow::lopetaButton_handler()
 {
     qDebug()<<"lopeta";
+    InsertCardWindow W;
+
+
 }
 
 void MainWindow::lahjoitaButton_handler()
