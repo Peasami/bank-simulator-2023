@@ -27,8 +27,8 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     {
         qDebug()<<"RFIDlukijaan yhdistäminen epäonnistui";
     }
-    delete pMainWindow;
-    pMainWindow = nullptr;
+    /*delete pMainWindow;
+    pMainWindow = nullptr;*/
     QWidget::show();
 }
 

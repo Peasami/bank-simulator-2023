@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pLahjoitaRahaa,SIGNAL(sendCharity(QString)),
             this,SLOT(receiveCharity(QString)));
 
+    pSaldo = new saldoWindow(this);
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -35,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->nostaRahaaButton,SIGNAL(clicked(bool)),
             this,SLOT(nostaRahaaButton_handler()));
 
+    pTiliTapahtuma = new TiliTapahtumaWindow(this);
     connect(ui->tilitapahtumatButton,SIGNAL(clicked(bool)),
             this,SLOT(tilitapahtumatButton_handler()));
 
@@ -91,7 +93,8 @@ void MainWindow::lahjoitaButton_handler()
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
-    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan lahjoituksen kohde ja määrä talteen muuttujiin
+    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan
+    // lahjoituksen kohde ja määrä talteen muuttujiin
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
 }
 

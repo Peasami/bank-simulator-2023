@@ -15,6 +15,7 @@ SOURCES += \
     mainwindow.cpp \
     manualsummawindow.cpp \
     naytatapahtumawindow.cpp \
+    rivi.cpp \
     saldowindow.cpp \
     tilitapahtumawindow.cpp \
     vaihdatiliawindow.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     mainwindow.h \
     manualsummawindow.h \
     naytatapahtumawindow.h \
+    rivi.h \
     saldowindow.h \
     tilitapahtumawindow.h \
     vaihdatiliawindow.h \
