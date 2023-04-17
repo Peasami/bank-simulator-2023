@@ -67,9 +67,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::saldoButton_handler()
 {
-    QString cardNum = "06000d8977";
+    //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
 
-    RestApi->getSaldoInfo(cardNum);
+    //RestApi->getSaldoInfo(cardNum);
 
 }
 
@@ -121,8 +121,8 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
-    QString cardNum = "06000d8977";
-    RestApi->getAccountHistoryInfo(cardNum);
+    //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
+    //RestApi->getAccountHistoryInfo(cardNum);
     qDebug()<<"tilitapahtumat";
 }
 
