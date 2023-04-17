@@ -67,6 +67,8 @@ void MainWindow::disableVaihdaBtn()
     ui->vaihdaTiliButton->setDisabled(true);
 }
 
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -76,6 +78,7 @@ MainWindow::~MainWindow()
 void MainWindow::saldoButton_handler()
 {
     QString cardNum = "06000d8977";
+
     RestApi->getSaldoInfo(cardNum);
 
 }
@@ -118,6 +121,7 @@ void MainWindow::tilitapahtumatButton_handler()
     RestApi->getAccountHistoryInfo(cardNum);
     qDebug()<<"tilitapahtumat";
 }
+
 
 void MainWindow::receiveIsCredit(bool b)
 {
@@ -163,12 +167,20 @@ void MainWindow::printSaldoDataSlot()
     qDebug() << "getSaldo called";
     QByteArray saldoData = RestApi->getHttpResponse();
     qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
+
+
 }
 
 void MainWindow::printAccountHistoryDataSlot()
-{   qDebug() << "getAccount called";
+
+{
+
+    qDebug() << "getAccount called";
     QByteArray accountHistoryData = RestApi->getHttpResponse();
+
     qDebug() << "exe vastaan otti datan, joka on: " << accountHistoryData;
+
+    accountHistoryData.clear();
 }
 
 
