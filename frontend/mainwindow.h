@@ -2,11 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "saldowindow.h"
+#include "tilitapahtumawindow.h"
 #include "vaihdatiliawindow.h"
 #include "lahjoitarahaawindow.h"
 #include "valitsesummawindow.h"
 #include "naytatapahtumawindow.h"
 #include "manualsummawindow.h"
+#include "dllrestapi.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,8 +39,13 @@ private slots:
     void receiveCharitySumma(QString);
     void receiveNostoSumma(QString);
 
+    void printSaldoDataSlot();
+    void printAccountHistoryDataSlot();
+
     void openManualCharitySumma();
     void openManualNostoSumma();
+
+    void deleteWindowSlot(QWidget *);
 private:
     Ui::MainWindow *ui;
     VaihdaTiliaWindow * pVaihdaTilia;
@@ -45,6 +53,9 @@ private:
     ValitseSummaWindow * pValitseSumma;
     NaytaTapahtumaWindow * pNaytaTapahtuma;
     ManualSummaWindow * pManualSumma;
+    saldoWindow * pSaldo;
+    TiliTapahtumaWindow * pTiliTapahtuma;
+     DLLRestAPI * RestApi;
 
 
 

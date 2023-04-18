@@ -18,6 +18,7 @@ public:
 
 signals:
     void sendSumma(QString);
+    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
 
 public slots:
     void okClickHandler();

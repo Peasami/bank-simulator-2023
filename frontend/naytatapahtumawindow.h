@@ -2,6 +2,7 @@
 #define NAYTATAPAHTUMAWINDOW_H
 
 #include <QDialog>
+#include <QDebug>
 
 namespace Ui {
 class NaytaTapahtumaWindow;
@@ -18,6 +19,7 @@ public:
     void setLahjoitusMaara(const QString &newLahjoitusMaara);
     void setLahjoitusKohde(const QString &newLahjoitusKohde);
     void updateInfo();
+    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
 
 private:
     Ui::NaytaTapahtumaWindow *ui;

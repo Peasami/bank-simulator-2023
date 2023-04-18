@@ -29,6 +29,23 @@ void DLLRestAPI::getMainwindowInfo(QString cardNum)
     pRest->getMainWindowInfoAccess(cardNum);
 }
 
+void DLLRestAPI::getAccountHistoryInfo(QString cardNum) //tilitapahtuma tieto
+{
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(accountHistorySlot()));
+    pRest->getAccountHistory(cardNum);
+}
+
+void DLLRestAPI::getSaldoInfo(QString cardNum)      //Tilin Saldon tiedot
+{
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(getSaldoSlot()));
+    pRest->getSaldo(cardNum);
+}
+
+
+
+
 
 const QString &DLLRestAPI::getLoginResponse() const
 {
@@ -44,6 +61,8 @@ void DLLRestAPI::loginReadySlots()
 {
     loginResponse=pRest->getToken();
     emit loginReady();
+    delete pRest;
+    pRest=nullptr;
 }
 
 void DLLRestAPI::httpReadySlot()
@@ -52,10 +71,35 @@ void DLLRestAPI::httpReadySlot()
     httpResponse = pRest->getHttpResponse();
     qDebug()<<"httpReadySlot: "<<httpResponse;
     emit httpReady();
+    delete pRest;
+    pRest=nullptr;
 }
+
+void DLLRestAPI::accountHistorySlot()   //Slotti Tilitapahtuma
+{
+     httpResponse = pRest->getHttpResponse();
+     //qDebug()<<"accountHistorySlotissa kayty ";
+     emit accountHistorySignal();           //Signaali joka menisi exelle.
+
+
+
+}
+
+void DLLRestAPI::getSaldoSlot()
+{
+
+    httpResponse = pRest->getHttpResponse();
+   // qDebug()<<"getSaldoSlotissa kayty: ";
+    emit getSaldoSignal();
+
+
+
+}
+
+
 
 const QByteArray &DLLRestAPI::getHttpResponse() const
 {
-    qDebug()<<"getHttpResponse: "<<httpResponse;
+    //qDebug()<<"getHttpResponse: "<<httpResponse;
     return httpResponse;
 }

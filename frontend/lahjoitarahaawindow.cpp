@@ -28,6 +28,7 @@ LahjoitaRahaaWindow::LahjoitaRahaaWindow(QWidget *parent) :
 LahjoitaRahaaWindow::~LahjoitaRahaaWindow()
 {
     delete ui;
+    qDebug()<<"LahjoitaRahaaWindow tuhottu";
 }
 
 void LahjoitaRahaaWindow::charityButtonHandler()
@@ -38,11 +39,10 @@ void LahjoitaRahaaWindow::charityButtonHandler()
 
     if(selectedCharity == "takaisinButton"){
         qDebug()<<"selectedCharity == takaisinButton";
-        done(0);
-        return;
+        emit deleteWindow(this);
     }
     emit sendCharity(selectedCharity);
-    done(0);
+    emit deleteWindow(this);
 
 
     /** //etsii charityList -listasta napin nimeä vastaavan indeksin, jotta voidaan käyttää switch casea
