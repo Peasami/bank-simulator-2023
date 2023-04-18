@@ -61,8 +61,8 @@ void DLLRestAPI::loginReadySlots()
 {
     loginResponse=pRest->getToken();
     emit loginReady();
-    delete pRest;
-    pRest=nullptr;
+    //delete pRest;
+    //pRest=nullptr;
 }
 
 void DLLRestAPI::httpReadySlot()
@@ -71,8 +71,8 @@ void DLLRestAPI::httpReadySlot()
     httpResponse = pRest->getHttpResponse();
     qDebug()<<"httpReadySlot: "<<httpResponse;
     emit httpReady();
-    delete pRest;
-    pRest=nullptr;
+    //delete pRest;
+    //pRest=nullptr;
 }
 
 void DLLRestAPI::accountHistorySlot()   //Slotti Tilitapahtuma
@@ -91,7 +91,6 @@ void DLLRestAPI::getSaldoSlot()
     httpResponse = pRest->getHttpResponse();
    // qDebug()<<"getSaldoSlotissa kayty: ";
     emit getSaldoSignal();
-
 
 
 }

@@ -20,8 +20,7 @@ public:
 
     const QByteArray &getHttpResponse() const;
 
-    const QByteArray &getSaldoResponse() const;
-    void setSaldoResponse(const QByteArray &newSaldoResponse);
+
 
 public slots:
     void login(QString,QString);
@@ -46,7 +45,7 @@ private:
     rest * pRest;
     QString loginResponse; //Token tai false
     QByteArray httpResponse;
-    QByteArray SaldoResponse;
+
 };
 
 

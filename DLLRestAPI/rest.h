@@ -36,7 +36,9 @@ public slots:
 private:
     QByteArray httpResponse;       // säilöö httpresponsen serveriltä //Tämän muutin byteArreyksi
     QNetworkAccessManager *postManager;     //lähetää post pyynnön
-    QNetworkAccessManager *getManager;      //lähettää get pyynnön
+    QNetworkAccessManager *getManager;
+    QNetworkAccessManager *getSaldoManager;
+    QNetworkAccessManager *getAccountManager;//lähettää get pyynnön
     QNetworkReply *reply;       //säilöö http vastauksen
     QByteArray response_data;//muuttuja mitä säilöö response_datan
     QByteArray Token;

@@ -38,14 +38,18 @@ void rest::loginAccess(QString idKortti, QString PINkoodi)
 void rest::httpRequestSlot(QNetworkReply *reply)
 {
 
-    httpResponse.clear();
+
     response_data=reply->readAll();
     httpResponse=response_data;
     qDebug()<<"rest.cpp sai datan "+httpResponse;
     emit httpResponseReady();
     reply->deleteLater();
     //postManager->deleteLater(); //Tämä aiheutti exen crashin
-    getManager->deleteLater();
+    //getManager->deleteLater();
+    getSaldoManager->deleteLater();
+    //getAccountManager->deleteLater();
+
+
 
 
 }
@@ -94,11 +98,11 @@ void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
     //request.setRawHeader(QByteArray("Authorization"),(myToken));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    getManager = new QNetworkAccessManager(this);
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+    getAccountManager = new QNetworkAccessManager(this);
+    connect(getAccountManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
-    reply = getManager->get(request);
+    reply = getAccountManager->get(request);
 }
 
 void rest::getSaldo(QString cardNum)    //tilin saldo get
@@ -113,11 +117,11 @@ void rest::getSaldo(QString cardNum)    //tilin saldo get
     //request.setRawHeader(QByteArray("Authorization"),(myToken));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    getManager = new QNetworkAccessManager(this);
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+    getSaldoManager = new QNetworkAccessManager(this);
+    connect(getSaldoManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
-    reply = getManager->get(request);
+    reply = getSaldoManager->get(request);
 }
 
 

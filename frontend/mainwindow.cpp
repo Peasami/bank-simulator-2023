@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -67,9 +66,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::saldoButton_handler()
 {
-    //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
+    connect(RestApi, SIGNAL(getSaldoSignal()),
+            this,SLOT(printSaldoDataSlot()));
 
-    //RestApi->getSaldoInfo(cardNum);
+    QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
+
+    RestApi->getSaldoInfo(cardNum);
 
 }
 
@@ -121,8 +123,11 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
-    //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
-    //RestApi->getAccountHistoryInfo(cardNum);
+    connect(RestApi, SIGNAL(accountHistorySignal()),
+            this,SLOT(printAccountHistoryDataSlot()));
+
+    QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
+    RestApi->getAccountHistoryInfo(cardNum);
     qDebug()<<"tilitapahtumat";
 }
 
