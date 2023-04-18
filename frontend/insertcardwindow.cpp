@@ -1,6 +1,5 @@
 #include "insertcardwindow.h"
 #include "ui_insertcardwindow.h"
-#include "mainwindow.h"
 
 
 InsertCardWindow::InsertCardWindow(QWidget *parent) :
@@ -125,6 +124,7 @@ void InsertCardWindow::httpReadySlot()
         break;
     case 10:
         pMainWindow->IsCredit(false);
+        pMainWindow->disableVaihdaBtn();
         break;
     case 11:
         pMainWindow->IsCredit(false);

@@ -8,7 +8,7 @@ const tapahtuma =
     },
     getById: function(id, callback)
     {
-        return db.query('select * from tilitapahtumat where idTilitapahtumat=?', [id], callback);
+        return db.query('SELECT pvm, TapahtumaNimi, SummaDebit, SummaCredit FROM tilitapahtumat JOIN Tili ON tilitapahtumat.idTili=Tili.idTili JOIN Kortti ON Tili.idTili=Kortti.idTili WHERE Kortti.idKortti=?', [id], callback);
     },
     add: function(tilitapahtumat, callback)
     {

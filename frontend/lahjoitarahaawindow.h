@@ -18,6 +18,7 @@ public:
 
 signals:
     void sendCharity(QString);
+    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
 
 private slots:
     void charityButtonHandler();
