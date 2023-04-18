@@ -20,6 +20,7 @@ private slots:
     void numButtonClickHandler();
     void on_clearButton_clicked();
     void on_okButton_clicked();
+    void updateTimer();
 
 signals:
     void sendNumberToInterface(QString);
@@ -33,6 +34,8 @@ private:
     QString pin;
     //QString oikeaPin = "1234";
     int yritykset = 3;
+    QTimer *pQTimer;
+    short time = 10;
 };
 
 #endif // PINWINDOW_H

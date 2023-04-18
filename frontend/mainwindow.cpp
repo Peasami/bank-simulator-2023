@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "insertcardwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 
@@ -7,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    RestApi = new DLLRestAPI(this);
 
     SetUserName("Santeri");
     IsCredit(false);
@@ -15,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+    pSaldo = new saldoWindow(this);
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -30,8 +33,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->nostaRahaaButton,SIGNAL(clicked(bool)),
             this,SLOT(nostaRahaaButton_handler()));
 
+    pTiliTapahtuma = new TiliTapahtumaWindow(this);
     connect(ui->tilitapahtumatButton,SIGNAL(clicked(bool)),
             this,SLOT(tilitapahtumatButton_handler()));
+
 
 }
 
@@ -55,6 +60,8 @@ void MainWindow::disableVaihdaBtn()
     ui->vaihdaTiliButton->setDisabled(true);
 }
 
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -64,6 +71,10 @@ MainWindow::~MainWindow()
 void MainWindow::saldoButton_handler()
 {
     qDebug()<<"saldo";
+    pSaldo->open();
+    //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
+
+    //RestApi->getSaldoInfo(cardNum);
 }
 
 void MainWindow::vaihdaTiliButton_handler()
@@ -80,7 +91,10 @@ void MainWindow::vaihdaTiliButton_handler()
 
 void MainWindow::lopetaButton_handler()
 {
-    qDebug()<<"lopeta";
+    qDebug()<<"Hei lopeta!";
+    InsertCardWindow W;
+
+
 }
 
 void MainWindow::lahjoitaButton_handler()
@@ -94,7 +108,8 @@ void MainWindow::lahjoitaButton_handler()
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
-    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan lahjoituksen kohde ja määrä talteen muuttujiin
+    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan
+    // lahjoituksen kohde ja määrä talteen muuttujiin
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
 }
 
@@ -114,8 +129,12 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
+    //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
+    //RestApi->getAccountHistoryInfo(cardNum);
     qDebug()<<"tilitapahtumat";
+    pTiliTapahtuma->open();
 }
+
 
 void MainWindow::receiveIsCredit(bool b)
 {
@@ -158,6 +177,29 @@ void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
 }
+
+void MainWindow::printSaldoDataSlot()
+{
+    qDebug() << "getSaldo called";
+    QByteArray saldoData = RestApi->getHttpResponse();
+    qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
+
+
+}
+
+void MainWindow::printAccountHistoryDataSlot()
+
+{
+
+    qDebug() << "getAccount called";
+    QByteArray accountHistoryData = RestApi->getHttpResponse();
+
+    qDebug() << "exe vastaan otti datan, joka on: " << accountHistoryData;
+
+    accountHistoryData.clear();
+}
+
+
 
 void MainWindow::openManualCharitySumma()
 {

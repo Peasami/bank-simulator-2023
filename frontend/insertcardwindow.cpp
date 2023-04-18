@@ -1,6 +1,7 @@
 #include "insertcardwindow.h"
 #include "ui_insertcardwindow.h"
 
+
 InsertCardWindow::InsertCardWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InsertCardWindow)
@@ -16,20 +17,17 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     if(pCardReader->openRFIDReader()==true)
     {
         qDebug()<<"RFIDlukijaan yhdistäminen onnistui";
-        pPinCode = new DLLPinCode(this);
-        connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
-                this,SLOT(receivePinNumberFromDLL(QString)));
 
     }
     else
     {
         qDebug()<<"RFIDlukijaan yhdistäminen epäonnistui";
     }
-
-
-
-
+    /*delete pMainWindow;
+    pMainWindow = nullptr;*/
+    QWidget::show();
 }
+
 
 void InsertCardWindow::validateLogin()
 {
@@ -44,12 +42,20 @@ void InsertCardWindow::validateLogin()
 InsertCardWindow::~InsertCardWindow()
 {
     delete ui;
+    qDebug()<<"insertcardwindow tuhottu";
 }
 
 void InsertCardWindow::receiveCardNumberFromDLL(QString cardNum)
 {
     qDebug()<<"EXE Vastaanottti DLLSerialPortilta kortinnumeron "<<cardNum;
     cardNumber = cardNum;
+
+    pPinCode = new DLLPinCode(this);
+    connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
+            this,SLOT(receivePinNumberFromDLL(QString)));
+
+
+
     pPinCode->openPinWindow();
 
 }
@@ -89,6 +95,7 @@ void InsertCardWindow::loginReadySlots()
         else
         {
             qDebug()<<"Väärä pin";
+           // pPinCode->
         }
     }
 
@@ -123,6 +130,7 @@ void InsertCardWindow::httpReadySlot()
         break;
     case 10:
         pMainWindow->IsCredit(false);
+        pMainWindow->disableVaihdaBtn();
         break;
     case 11:
         pMainWindow->IsCredit(false);

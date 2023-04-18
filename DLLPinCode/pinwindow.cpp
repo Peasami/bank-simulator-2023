@@ -1,6 +1,6 @@
 #include "pinwindow.h"
 #include "ui_pinwindow.h"
-
+#include <QTimer>
 
 
 pinwindow::pinwindow(QWidget *parent) :
@@ -8,6 +8,12 @@ pinwindow::pinwindow(QWidget *parent) :
     ui(new Ui::pinwindow)
 {
     ui->setupUi(this);
+
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
+
+    connect(pQTimer, SIGNAL(timeout()),
+    this,SLOT(updateTimer()));
 
     // Luodaan GUI:ssa frame ja asetetaan sen sisään napit muodostaen niille yhteyden.
     // Kaikki napit joissa tekstinkoko == 1, connectataan clickhandleriin.
@@ -31,6 +37,7 @@ pinwindow::pinwindow(QWidget *parent) :
 pinwindow::~pinwindow()
 {
     delete ui;
+    qDebug()<<"pinwindow tuhottu";
 }
 
 // Asettaa painettujen numeronappien tekstin lineEdittiin ja teksti tallentuu "pin"-muuttujaan.
@@ -41,6 +48,8 @@ void pinwindow::numButtonClickHandler()
     ;
     if(button)
     {
+        time=10;
+        pQTimer->start(1000); // tickrate 1sec
         ui->lineEdit->setEchoMode(QLineEdit::Password);
 
         pin.append(button->text());
@@ -77,5 +86,19 @@ void pinwindow::on_okButton_clicked()
     ui->lineEdit->clear();
     pin = "";
 
+}
+// Aikakatkaisu-toiminto, jolla suljetaan PIN UI
+// jos käyttäjä ei tee mitään 10 sekunttiin.
+void pinwindow::updateTimer()
+{
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
+    }
 }
 
