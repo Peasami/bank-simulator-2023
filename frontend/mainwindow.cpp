@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent, QString cardNum)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     SetUserName("Santeri");
     IsCredit(false);
+    cardNumber = cardNum;
 
 
 
@@ -69,9 +70,9 @@ void MainWindow::saldoButton_handler()
     connect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
 
-    QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
-
-    RestApi->getSaldoInfo(cardNum);
+    //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
+    qDebug()<<" saldobuttonin  mainwindowissa kortinnumero on "+cardNumber;
+    RestApi->getSaldoInfo(cardNumber);
 
 }
 
@@ -126,8 +127,9 @@ void MainWindow::tilitapahtumatButton_handler()
     connect(RestApi, SIGNAL(accountHistorySignal()),
             this,SLOT(printAccountHistoryDataSlot()));
 
-    QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
-    RestApi->getAccountHistoryInfo(cardNum);
+
+    //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
+    RestApi->getAccountHistoryInfo(cardNumber);
     qDebug()<<"tilitapahtumat";
 }
 
@@ -176,7 +178,8 @@ void MainWindow::receiveNostoSumma(QString nostoSumma)
 
 void MainWindow::printSaldoDataSlot()
 {
-    qDebug() << "getSaldo called";
+    disconnect(RestApi, SIGNAL(getSaldoSignal()),
+            this,SLOT(printSaldoDataSlot()));
     QByteArray saldoData = RestApi->getHttpResponse();
     qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
 
@@ -186,8 +189,10 @@ void MainWindow::printSaldoDataSlot()
 void MainWindow::printAccountHistoryDataSlot()
 
 {
+    disconnect(RestApi, SIGNAL(accountHistorySignal()),
+            this,SLOT(printAccountHistoryDataSlot()));
 
-    qDebug() << "getAccount called";
+
     QByteArray accountHistoryData = RestApi->getHttpResponse();
 
     qDebug() << "exe vastaan otti datan, joka on: " << accountHistoryData;

@@ -78,7 +78,7 @@ void InsertCardWindow::loginReadySlots()
         {
             //Tähän kohtaan getillä asiakkaan tiedot
 
-            pMainWindow = new MainWindow(this);
+            pMainWindow = new MainWindow(this,cardNumber);
 
             connect(pRestApi, SIGNAL(httpReady()),
                     this, SLOT(httpReadySlot()));

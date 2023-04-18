@@ -9,6 +9,7 @@
 #include "manualsummawindow.h"
 #include "dllrestapi.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr, QString cardNum = "");
     void SetUserName(QString);
     void IsCredit(bool);
     void disableVaihdaBtn();
@@ -51,7 +52,8 @@ private:
     ValitseSummaWindow * pValitseSumma;
     NaytaTapahtumaWindow * pNaytaTapahtuma;
     ManualSummaWindow * pManualSumma;
-     DLLRestAPI * RestApi;
+    DLLRestAPI * RestApi;
+    QString cardNumber;
 
 
 

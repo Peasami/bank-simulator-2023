@@ -43,6 +43,15 @@ private:
     QByteArray response_data;//muuttuja mitä säilöö response_datan
     QByteArray Token;
 
+    short state;
+
+    enum states
+    {
+        GETMANAGER,
+        GETSALDOMANAGER,
+        GETACCOUNTMANAGER
+    };
+
 
 
 

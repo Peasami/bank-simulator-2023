@@ -45,10 +45,22 @@ void rest::httpRequestSlot(QNetworkReply *reply)
     emit httpResponseReady();
     reply->deleteLater();
     //postManager->deleteLater(); //Tämä aiheutti exen crashin
-    //getManager->deleteLater();
-    getSaldoManager->deleteLater();
-    //getAccountManager->deleteLater();
 
+    switch(state)
+    {
+    case GETMANAGER:
+        qDebug()<<"getManager tuhottu";
+        getManager->deleteLater();
+        break;
+    case GETSALDOMANAGER:
+        qDebug()<<"getSaldoManager tuhottu";
+        getSaldoManager->deleteLater();
+        break;
+    case GETACCOUNTMANAGER:
+        qDebug()<<"getAccountManager tuhottu";
+        getAccountManager->deleteLater();
+        break;
+    }
 
 
 
@@ -84,6 +96,8 @@ void rest::getMainWindowInfoAccess(QString cardNum)
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
     reply = getManager->get(request);
+
+    state = GETMANAGER;
 }
 
 void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
@@ -103,6 +117,8 @@ void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
     reply = getAccountManager->get(request);
+
+    state = GETACCOUNTMANAGER;
 }
 
 void rest::getSaldo(QString cardNum)    //tilin saldo get
@@ -122,6 +138,8 @@ void rest::getSaldo(QString cardNum)    //tilin saldo get
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
     reply = getSaldoManager->get(request);
+
+    state = GETSALDOMANAGER;
 }
 
 

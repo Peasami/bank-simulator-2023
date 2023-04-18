@@ -6,6 +6,11 @@ DLLRestAPI::DLLRestAPI(QObject *parent):QObject(parent)
 {
     qDebug()<<"DLLRestApi luotu";
     pRest = new rest(this);
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(getSaldoSlot()));
+
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(accountHistorySlot()));
 }
 
 DLLRestAPI::~DLLRestAPI()
@@ -31,15 +36,13 @@ void DLLRestAPI::getMainwindowInfo(QString cardNum)
 
 void DLLRestAPI::getAccountHistoryInfo(QString cardNum) //tilitapahtuma tieto
 {
-    connect(pRest,SIGNAL(httpResponseReady()),
-            this,SLOT(accountHistorySlot()));
+
     pRest->getAccountHistory(cardNum);
 }
 
 void DLLRestAPI::getSaldoInfo(QString cardNum)      //Tilin Saldon tiedot
 {
-    connect(pRest,SIGNAL(httpResponseReady()),
-            this,SLOT(getSaldoSlot()));
+
     pRest->getSaldo(cardNum);
 }
 
