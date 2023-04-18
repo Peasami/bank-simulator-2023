@@ -80,6 +80,7 @@ void rest::getMainWindowInfoAccess(QString cardNum)
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
     reply = getManager->get(request);
+
 }
 
 void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
