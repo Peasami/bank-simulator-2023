@@ -14,7 +14,9 @@ class DLLPINCODE_EXPORT DLLPinCode : public QObject
 
 public:
     DLLPinCode(QObject * parent = nullptr);
+    ~DLLPinCode();
     void openPinWindow();
+    void writeInfoText(QString);
 
 signals:
     void pinNumberSignal(QString);
