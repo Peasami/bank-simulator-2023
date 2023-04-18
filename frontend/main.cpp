@@ -9,10 +9,6 @@ bool pinWindowTest=0;   // PINui:n testaus päällä jos 1 ja mWindowTest 0
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-<<<<<<< HEAD
-    MainWindow w;
-    w.show();
-=======
     InsertCardWindow w;
 
 //    if (mWindowTest==0&&pinWindowTest==0)
@@ -36,6 +32,5 @@ int main(int argc, char *argv[])
 //            }
 //        }
 //    }
->>>>>>> origin
     return a.exec();
 }
