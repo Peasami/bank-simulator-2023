@@ -38,7 +38,7 @@ void ManualSummaWindow::okClickHandler()
     QString manualSummaEdit = ui->summaEdit->text();
     emit sendSumma(manualSummaEdit);
     qDebug()<<manualSummaEdit;
-    emit deleteWindow(this);
+    deleteLater();
 }
 
 void ManualSummaWindow::numClickHandler()
