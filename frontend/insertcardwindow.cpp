@@ -42,6 +42,7 @@ void InsertCardWindow::validateLogin()
 InsertCardWindow::~InsertCardWindow()
 {
     delete ui;
+    qDebug()<<"insertcardwindow tuhottu";
 }
 
 void InsertCardWindow::receiveCardNumberFromDLL(QString cardNum)
