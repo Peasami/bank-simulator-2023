@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr, QString cardNum = "");//, QByteArray token1 = "");
+    MainWindow(QWidget *parent = nullptr, QString cardNum = "",DLLRestAPI *pointer=nullptr);//, QByteArray token1 = "");
     void SetUserName(QString);
     void IsCredit(bool);
     void disableVaihdaBtn();

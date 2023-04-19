@@ -2,13 +2,14 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent, QString cardNum)//, QByteArray token1)
+MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//, QByteArray token1)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     //token = token1;
-    RestApi = new DLLRestAPI(this);
+    //RestApi = new DLLRestAPI(this);
+    RestApi = pointer;
 
     SetUserName("Santeri");
     IsCredit(false);

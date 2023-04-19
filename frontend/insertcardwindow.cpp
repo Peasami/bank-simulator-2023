@@ -82,7 +82,7 @@ void InsertCardWindow::loginReadySlots()
         {
             //Tähän kohtaan getillä asiakkaan tiedot
 
-            pMainWindow = new MainWindow(this,cardNumber);//,token);
+
 
             connect(pRestApi, SIGNAL(httpReady()),
                     this, SLOT(httpReadySlot()));
@@ -101,6 +101,7 @@ void InsertCardWindow::loginReadySlots()
 
 void InsertCardWindow::httpReadySlot()
 {
+    pMainWindow = new MainWindow(this,cardNumber,pRestApi);//,token);
     delete pPinCode;
     pPinCode=nullptr;
 
