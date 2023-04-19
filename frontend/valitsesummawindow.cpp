@@ -39,7 +39,7 @@ void ValitseSummaWindow::summaButtonHandler()
     {
         qDebug()<<"isLetter";
         emit requestManualSumma();
-        emit deleteWindow(this);
+        deleteLater();
     }
     else
     {
@@ -47,12 +47,12 @@ void ValitseSummaWindow::summaButtonHandler()
         if(selectedSumma.toInt() > testiSaldo){
             qDebug()<<"Ei tarpeeksi saldoa!";
             done(0);
-            emit deleteWindow(this);
+            deleteLater();
         }
         testiSaldo -= selectedSumma.toInt();
         qDebug()<<"Nostit "<<selectedSumma<<"€. Saldosi: "<<testiSaldo;
         emit sendSumma(selectedSumma);
-        emit deleteWindow(this);
+        deleteLater();
     }
     qDebug()<<selectedSumma;
 }

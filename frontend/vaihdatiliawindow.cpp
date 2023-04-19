@@ -25,12 +25,12 @@ VaihdaTiliaWindow::~VaihdaTiliaWindow()
 void VaihdaTiliaWindow::vaihdaCreditButton_handler()
 {
     emit sendIsCredit(true);
-    emit deleteWindow(this);
+    deleteLater();
 }
 
 // Painetaan Dedit -nappia
 void VaihdaTiliaWindow::vaihdaDebitButton_handler()
 {
     emit sendIsCredit(false);
-    emit deleteWindow(this);
+    deleteLater();
 }

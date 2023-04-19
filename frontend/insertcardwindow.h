@@ -33,6 +33,7 @@ private:
     DLLSerialPort * pCardReader;
     QString cardNumber;
     QString pinNumber;
+    QByteArray token;
     MainWindow * pMainWindow;
     DLLRestAPI * pRestApi;
     DLLPinCode * pPinCode;
