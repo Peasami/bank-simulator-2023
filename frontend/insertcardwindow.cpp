@@ -95,7 +95,7 @@ void InsertCardWindow::loginReadySlots()
         else
         {
             qDebug()<<"Väärä pin";
-           // pPinCode->
+
         }
     }
 

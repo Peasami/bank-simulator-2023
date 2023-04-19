@@ -22,10 +22,6 @@ void DLLPinCode::openPinWindow()
 
 }
 
-void DLLPinCode::writeInfoText(QString info)
-{
-    //info = pinOlio->
-}
 
 // receivePin vastaanottaa datan pinwindowilta ja lähettää sen exeen.
 void DLLPinCode::receivePin(QString pin)

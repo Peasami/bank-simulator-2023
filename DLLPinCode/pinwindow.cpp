@@ -31,7 +31,7 @@ pinwindow::pinwindow(QWidget *parent) :
             }
         }
     }
-
+    qDebug()<<"pin-ikkuna aukeaa";
 }
 
 pinwindow::~pinwindow()
@@ -74,23 +74,31 @@ void pinwindow::on_okButton_clicked()
     qDebug()<<"ok-nappi painettu";
     qDebug()<<"käyttäjä syötti "+pin;
 
+
+
     if(yritykset > 0)
     {
         emit sendNumberToInterface(pin);
     }
     else
     {
-        qDebug()<<"kortti lukittu";
+        qDebug()<<"kortti lukittu ja poistu pinWindow";
+        deleteLater();
     }
     yritykset--;
+    if(yritykset--)
+    {
+        ui->label->setText(wrongPin);
+    }
+
     ui->lineEdit->clear();
-    pin = "";
 
 }
 // Aikakatkaisu-toiminto, jolla suljetaan PIN UI
 // jos käyttäjä ei tee mitään 10 sekunttiin.
 void pinwindow::updateTimer()
 {
+    ui->label->setText(normalText);
     time--;
     qDebug()<<time;
     if(time == 0)
@@ -101,4 +109,3 @@ void pinwindow::updateTimer()
         deleteLater();
     }
 }
-
