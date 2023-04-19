@@ -38,14 +38,30 @@ void rest::loginAccess(QString idKortti, QString PINkoodi)
 void rest::httpRequestSlot(QNetworkReply *reply)
 {
 
-    httpResponse.clear();
+
     response_data=reply->readAll();
     httpResponse=response_data;
     qDebug()<<"rest.cpp sai datan "+httpResponse;
     emit httpResponseReady();
     reply->deleteLater();
     //postManager->deleteLater(); //Tämä aiheutti exen crashin
-    getManager->deleteLater();
+
+    switch(state)
+    {
+    case GETMANAGER:
+        qDebug()<<"getManager tuhottu";
+        getManager->deleteLater();
+        break;
+    case GETSALDOMANAGER:
+        qDebug()<<"getSaldoManager tuhottu";
+        getSaldoManager->deleteLater();
+        break;
+    case GETACCOUNTMANAGER:
+        qDebug()<<"getAccountManager tuhottu";
+        getAccountManager->deleteLater();
+        break;
+    }
+
 
 
 }
@@ -69,10 +85,10 @@ void rest::getMainWindowInfoAccess(QString cardNum)
     QJsonObject jsonObj;
     jsonObj.insert("idKortti",cardNum);
     QString site_url=Environment::getBaseUrl()+"/kortti/"+cardNum;
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"GetMainWindowinfo: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     getManager = new QNetworkAccessManager(this);
@@ -81,6 +97,7 @@ void rest::getMainWindowInfoAccess(QString cardNum)
 
     reply = getManager->get(request);
 
+    state = GETMANAGER;
 }
 
 void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
@@ -91,15 +108,17 @@ void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
     QString site_url=Environment::getBaseUrl()+"/Tilitapahtumat/"+cardNum;
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"tilitapahtumat: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    getManager = new QNetworkAccessManager(this);
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+    getAccountManager = new QNetworkAccessManager(this);
+    connect(getAccountManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
-    reply = getManager->get(request);
+    reply = getAccountManager->get(request);
+
+    state = GETACCOUNTMANAGER;
 }
 
 void rest::getSaldo(QString cardNum)    //tilin saldo get
@@ -110,15 +129,17 @@ void rest::getSaldo(QString cardNum)    //tilin saldo get
     QString site_url=Environment::getBaseUrl()+"/Tili/"+cardNum;
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"saldo: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    getManager = new QNetworkAccessManager(this);
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+    getSaldoManager = new QNetworkAccessManager(this);
+    connect(getSaldoManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
-    reply = getManager->get(request);
+    reply = getSaldoManager->get(request);
+
+    state = GETSALDOMANAGER;
 }
 
 

@@ -6,6 +6,11 @@ DLLRestAPI::DLLRestAPI(QObject *parent):QObject(parent)
 {
     qDebug()<<"DLLRestApi luotu";
     pRest = new rest(this);
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(getSaldoSlot()));
+
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(accountHistorySlot()));
 }
 
 DLLRestAPI::~DLLRestAPI()
@@ -29,17 +34,16 @@ void DLLRestAPI::getMainwindowInfo(QString cardNum)
     pRest->getMainWindowInfoAccess(cardNum);
 }
 
-void DLLRestAPI::getAccountHistoryInfo(QString cardNum) //tilitapahtuma tieto
+void DLLRestAPI::getAccountHistoryInfo(QString cardNum)//,QByteArray token) //tilitapahtuma tieto
 {
-    connect(pRest,SIGNAL(httpResponseReady()),
-            this,SLOT(accountHistorySlot()));
+    //pRest->setToken(token);
     pRest->getAccountHistory(cardNum);
+
 }
 
 void DLLRestAPI::getSaldoInfo(QString cardNum)      //Tilin Saldon tiedot
 {
-    connect(pRest,SIGNAL(httpResponseReady()),
-            this,SLOT(getSaldoSlot()));
+
     pRest->getSaldo(cardNum);
 }
 
@@ -71,8 +75,8 @@ void DLLRestAPI::httpReadySlot()
     httpResponse = pRest->getHttpResponse();
     qDebug()<<"httpReadySlot: "<<httpResponse;
     emit httpReady();
-   // delete pRest;
-   // pRest=nullptr;
+    //delete pRest;
+    //pRest=nullptr;
 }
 
 void DLLRestAPI::accountHistorySlot()   //Slotti Tilitapahtuma
@@ -91,7 +95,6 @@ void DLLRestAPI::getSaldoSlot()
     httpResponse = pRest->getHttpResponse();
    // qDebug()<<"getSaldoSlotissa kayty: ";
     emit getSaldoSignal();
-
 
 
 }
