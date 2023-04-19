@@ -34,10 +34,11 @@ void DLLRestAPI::getMainwindowInfo(QString cardNum)
     pRest->getMainWindowInfoAccess(cardNum);
 }
 
-void DLLRestAPI::getAccountHistoryInfo(QString cardNum) //tilitapahtuma tieto
+void DLLRestAPI::getAccountHistoryInfo(QString cardNum)//,QByteArray token) //tilitapahtuma tieto
 {
-
+    //pRest->setToken(token);
     pRest->getAccountHistory(cardNum);
+
 }
 
 void DLLRestAPI::getSaldoInfo(QString cardNum)      //Tilin Saldon tiedot

@@ -25,7 +25,7 @@ public:
 public slots:
     void login(QString,QString);
     void getMainwindowInfo(QString);
-    void getAccountHistoryInfo(QString);
+    void getAccountHistoryInfo(QString);//,QByteArray);
     void getSaldoInfo(QString);
 
 private slots:

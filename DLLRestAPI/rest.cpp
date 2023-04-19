@@ -85,10 +85,10 @@ void rest::getMainWindowInfoAccess(QString cardNum)
     QJsonObject jsonObj;
     jsonObj.insert("idKortti",cardNum);
     QString site_url=Environment::getBaseUrl()+"/kortti/"+cardNum;
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"GetMainWindowinfo: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     getManager = new QNetworkAccessManager(this);
@@ -108,8 +108,8 @@ void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
     QString site_url=Environment::getBaseUrl()+"/Tilitapahtumat/"+cardNum;
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"tilitapahtumat: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     getAccountManager = new QNetworkAccessManager(this);
@@ -129,8 +129,8 @@ void rest::getSaldo(QString cardNum)    //tilin saldo get
     QString site_url=Environment::getBaseUrl()+"/Tili/"+cardNum;
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"saldo: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     getSaldoManager = new QNetworkAccessManager(this);

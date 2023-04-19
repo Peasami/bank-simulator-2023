@@ -2,11 +2,12 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent, QString cardNum)
+MainWindow::MainWindow(QWidget *parent, QString cardNum)//, QByteArray token1)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //token = token1;
     RestApi = new DLLRestAPI(this);
 
     SetUserName("Santeri");
@@ -129,7 +130,7 @@ void MainWindow::tilitapahtumatButton_handler()
 
 
     //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
-    RestApi->getAccountHistoryInfo(cardNumber);
+    RestApi->getAccountHistoryInfo(cardNumber);//,token);
     qDebug()<<"tilitapahtumat";
 }
 

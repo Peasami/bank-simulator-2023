@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr, QString cardNum = "");
+    MainWindow(QWidget *parent = nullptr, QString cardNum = "");//, QByteArray token1 = "");
     void SetUserName(QString);
     void IsCredit(bool);
     void disableVaihdaBtn();
@@ -54,6 +54,7 @@ private:
     ManualSummaWindow * pManualSumma;
     DLLRestAPI * RestApi;
     QString cardNumber;
+    QByteArray token;
 
 
 
