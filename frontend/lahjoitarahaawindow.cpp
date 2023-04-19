@@ -39,12 +39,15 @@ void LahjoitaRahaaWindow::charityButtonHandler()
 
     if(selectedCharity == "takaisinButton"){
         qDebug()<<"selectedCharity == takaisinButton";
-        emit deleteWindow(this);
+        //emit deleteWindow(this);
+        deleteLater();
     }
+    else
+    {
     emit sendCharity(selectedCharity);
-    emit deleteWindow(this);
-
-
+    //emit deleteWindow(this);
+    deleteLater();
+    }
     /** //etsii charityList -listasta napin nimeä vastaavan indeksin, jotta voidaan käyttää switch casea
     switch(charityList.indexOf(buttonSender->objectName()))
     {
