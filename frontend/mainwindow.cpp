@@ -1,18 +1,18 @@
 #include "mainwindow.h"
 #include "insertcardwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent, DLLRestAPI *pointer)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    RestApi = new DLLRestAPI(this);
+                                RestApi=pointer;
 
     SetUserName("Santeri");
     IsCredit(false);
-
 
 
 

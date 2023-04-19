@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr,DLLRestAPI *pointer=nullptr);
     void SetUserName(QString);
     void IsCredit(bool);
     void disableVaihdaBtn();
@@ -55,7 +55,7 @@ private:
     ManualSummaWindow * pManualSumma;
     saldoWindow * pSaldo;
     TiliTapahtumaWindow * pTiliTapahtuma;
-     DLLRestAPI * RestApi;
+    DLLRestAPI * RestApi;
 
 
 

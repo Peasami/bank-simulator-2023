@@ -10,25 +10,26 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    if (mWindowTest==0&&pinWindowTest==0)
-    {
-        InsertCardWindow w;
-    }
-    else
-    {
-        if(mWindowTest==1)
-        {
-            MainWindow w;
-            w.show();
-        }
-        else
-        {
-            if(pinWindowTest==1)
-            {
-                DLLPinCode w;
-                w.openPinWindow();
-            }
-        }
-    }
+//    if (mWindowTest==0&&pinWindowTest==0)
+//    {
+//        InsertCardWindow w;
+//    }
+//    else
+//    {
+//        if(mWindowTest==1)
+//        {
+//            MainWindow w;
+//            w.show();
+//        }
+//        else
+//        {
+//            if(pinWindowTest==1)
+//            {
+//                DLLPinCode w;
+//                w.openPinWindow();
+//            }
+//        }
+//    }
+    InsertCardWindow w;
     return a.exec();
 }
