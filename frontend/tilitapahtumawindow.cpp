@@ -8,6 +8,13 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->takaisinButton,SIGNAL(clicked(bool)),
+            this,SLOT(takaisinButtonHandler()));
+    connect(ui->uudetButton,SIGNAL(clicked(bool)),
+            this,SLOT(uudemmatButtonHandler()));
+    connect(ui->aiemmatButton,SIGNAL(clicked(bool)),
+            this,SLOT(aiemmatButtonHandler()));
+
     if (listaTesti) //tekee esimerkkilistan jos listaTesti = 1
     {
         QList<rivi*> eventList;
