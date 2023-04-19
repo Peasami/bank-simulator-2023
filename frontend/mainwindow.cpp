@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "insertcardwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
 
 
 
+    pSaldo = new saldoWindow(this);
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -33,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
     connect(ui->nostaRahaaButton,SIGNAL(clicked(bool)),
             this,SLOT(nostaRahaaButton_handler()));
 
+    pTiliTapahtuma = new TiliTapahtumaWindow(this);
     connect(ui->tilitapahtumatButton,SIGNAL(clicked(bool)),
             this,SLOT(tilitapahtumatButton_handler()));
 
@@ -72,6 +75,8 @@ void MainWindow::saldoButton_handler()
     connect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
 
+    qDebug()<<"saldo";
+    pSaldo->open();
     //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
     qDebug()<<" saldobuttonin  mainwindowissa kortinnumero on "+cardNumber;
     RestApi->getSaldoInfo(cardNumber);
@@ -92,7 +97,10 @@ void MainWindow::vaihdaTiliButton_handler()
 
 void MainWindow::lopetaButton_handler()
 {
-    qDebug()<<"lopeta";
+    qDebug()<<"Hei lopeta!";
+    InsertCardWindow W;
+
+
 }
 
 void MainWindow::lahjoitaButton_handler()
@@ -106,7 +114,8 @@ void MainWindow::lahjoitaButton_handler()
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
-    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan lahjoituksen kohde ja määrä talteen muuttujiin
+    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan
+    // lahjoituksen kohde ja määrä talteen muuttujiin
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
 }
 
@@ -133,6 +142,7 @@ void MainWindow::tilitapahtumatButton_handler()
     //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
     RestApi->getAccountHistoryInfo(cardNumber);//,token);
     qDebug()<<"tilitapahtumat";
+    pTiliTapahtuma->open();
 }
 
 

@@ -1,6 +1,7 @@
 #include "insertcardwindow.h"
 #include "ui_insertcardwindow.h"
 
+
 InsertCardWindow::InsertCardWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InsertCardWindow)
@@ -25,11 +26,11 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     {
         qDebug()<<"RFIDlukijaan yhdistäminen epäonnistui";
     }
-
-
-
-
+    /*delete pMainWindow;
+    pMainWindow = nullptr;*/
+    QWidget::show();
 }
+
 
 void InsertCardWindow::validateLogin()
 {
@@ -93,6 +94,7 @@ void InsertCardWindow::loginReadySlots()
         else
         {
             qDebug()<<"Väärä pin";
+           // pPinCode->
         }
     }
 

@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
     /*if (mWindowTest==pinWindowTest==0)
     {
         InsertCardWindow w;
-        w.show();
     }
     else
     {
