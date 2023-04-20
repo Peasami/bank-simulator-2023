@@ -69,6 +69,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     qDebug()<<"MainWindow tuhottiin";
+    emit loggedOut(true);
 }
 
 
@@ -101,7 +102,6 @@ void MainWindow::lopetaButton_handler()
 {
     qDebug()<<"Hei lopeta!";
     //InsertCardWindow W;
-    emit loggedOut(true);
     deleteLater();
 
 
