@@ -2,6 +2,7 @@
 #include "insertcardwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,7 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
     SetUserName("Santeri");
     IsCredit(false);
 
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
 
+    connect(pQTimer, SIGNAL(timeout()),
+    this,SLOT(mainTimer()));
 
 
 
@@ -225,6 +230,20 @@ void MainWindow::openManualNostoSumma()
     connect(pManualSumma,SIGNAL(deleteWindow(QWidget*)),
             this, SLOT(deleteWindowSlot(QWidget*)));
     pManualSumma->open();
+}
+
+void MainWindow::mainTimer()
+{
+    mainTime--;
+    qDebug()<<mainTime;
+
+
+    if(mainTime == 0)
+    {
+        qDebug()<<"mainin timeout";
+        pQTimer->stop();
+        deleteLater();
+    }
 }
 
 void MainWindow::deleteWindowSlot(QWidget * pWindow)

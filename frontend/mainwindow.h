@@ -44,7 +44,7 @@ private slots:
 
     void openManualCharitySumma();
     void openManualNostoSumma();
-
+    void mainTimer();
     void deleteWindowSlot(QWidget *);
 private:
     Ui::MainWindow *ui;
@@ -55,9 +55,9 @@ private:
     ManualSummaWindow * pManualSumma;
     saldoWindow * pSaldo;
     TiliTapahtumaWindow * pTiliTapahtuma;
-     DLLRestAPI * RestApi;
-
-
+    DLLRestAPI * RestApi;
+    QTimer *pQTimer;
+    short mainTime = 30;
 
 };
 #endif // MAINWINDOW_H
