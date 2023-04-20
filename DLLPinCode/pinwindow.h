@@ -15,7 +15,7 @@ class pinwindow : public QDialog
 public:
     explicit pinwindow(QWidget *parent = nullptr);
     ~pinwindow();
-
+    void setInfoText(QString);
 
 private slots:
     void numButtonClickHandler();
@@ -23,12 +23,10 @@ private slots:
     void on_okButton_clicked();
     void updateTimer();
 
-
 signals:
     void sendNumberToInterface(QString);
 
 protected:
-
 
 private:
     Ui::pinwindow *ui;    
@@ -36,7 +34,6 @@ private:
     int yritykset = 3;
     QTimer *pQTimer;
     short time = 10;
-    QString wrongPin = "VÄÄRÄ PIN!";
     QString normalText = "Näppäile tunnusluku ja paina OK";
 };
 
