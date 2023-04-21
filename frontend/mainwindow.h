@@ -42,6 +42,7 @@ private slots:
 
     void printSaldoDataSlot();
     void printAccountHistoryDataSlot();
+    void receiveTransferDataSlot();
 
     void openManualCharitySumma();
     void openManualNostoSumma();
@@ -59,6 +60,11 @@ private:
     DLLRestAPI * RestApi;
     QString cardNumber;
     QByteArray token;
+signals:
+
+    void sendTransfer(QString, int);
+    void CharityTransfer(QString,int);
+    void cardType(QString);
 
 
 

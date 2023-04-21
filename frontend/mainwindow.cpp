@@ -13,6 +13,12 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
     //RestApi = new DLLRestAPI(this);
     RestApi = pointer;
 
+    connect(this,SIGNAL(cardType(QString)),
+            RestApi,SLOT(getTilityyppi(QString)));
+
+
+
+
     SetUserName("Santeri");
     IsCredit(false);
     cardNumber = cardNum;
@@ -52,9 +58,11 @@ void MainWindow::IsCredit(bool isCredit)
 {
     if(isCredit == true){
         ui->tiliLabel->setText("Credit");
+        emit cardType("Credit");
     }
     else{
         ui->tiliLabel->setText("Debit");
+        emit cardType("Debit");
     }
 }
 
@@ -112,12 +120,15 @@ void MainWindow::lahjoitaButton_handler()
     connect(pLahjoitaRahaa,SIGNAL(deleteWindow(QWidget*)),
             this, SLOT(deleteWindowSlot(QWidget*)));
 
+
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
     // Tehdään olio näytäTapahtumasta, jotta sinne saadaan
     // lahjoituksen kohde ja määrä talteen muuttujiin
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
+
+
 }
 
 void MainWindow::nostaRahaaButton_handler()
@@ -131,7 +142,11 @@ void MainWindow::nostaRahaaButton_handler()
     connect(pValitseSumma,SIGNAL(deleteWindow(QWidget*)),
             this, SLOT(deleteWindowSlot(QWidget*)));
     pValitseSumma->open();
+    connect(this,SIGNAL(sendTransfer(QString,int)),
+            RestApi,SLOT(receiveTransfer(QString,int)));
+
     qDebug()<<"nosta rahaa";
+
 }
 
 void MainWindow::tilitapahtumatButton_handler()
@@ -169,6 +184,12 @@ void MainWindow::receiveCharity(QString charity)
 
     // Annetaan kohteen nimi näytäTapahtumalle
     pNaytaTapahtuma->setLahjoitusKohde(charity);
+
+    connect(this,SIGNAL(CharityTransfer(QString,int)),
+              RestApi,SLOT(receiveTransfer(QString,int)));
+
+
+
     qDebug()<<"recieveCharity(): "<<charity;
 }
 
@@ -179,14 +200,42 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
     // Annetaan lahjoituksen määrä näytäTapahtumalle
     pNaytaTapahtuma->setLahjoitusMaara(charitySumma);
 
+
+
     // päivitetään ui ja näytetään
     pNaytaTapahtuma->updateInfo();
     pNaytaTapahtuma->show();
+
+    emit CharityTransfer("lahjoitus", charitySumma.toInt());
+    disconnect(this,SIGNAL(CharityTransfer(QString,int)),
+               RestApi,SLOT(receiveTransfer(QString,int)));
+    connect(RestApi, SIGNAL(updateSaldoSignal()),
+            this, SLOT(receiveTransferDataSlot()));
+
+
+    RestApi->updateSaldoInfo(cardNumber);
+
+
+
 }
 
 void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
+
+    emit sendTransfer("nosto",nostoSumma.toInt());
+    disconnect(this,SIGNAL(sendTransfer(QString,int)),
+               RestApi,SLOT(receiveTransfer(QString,int)));
+
+    connect(RestApi, SIGNAL(updateSaldoSignal()),
+            this, SLOT(receiveTransferDataSlot()));
+
+
+    RestApi->updateSaldoInfo(cardNumber);
+
+
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
+
+
 }
 
 void MainWindow::printSaldoDataSlot()
@@ -212,6 +261,14 @@ void MainWindow::printAccountHistoryDataSlot()
 
     accountHistoryData.clear();
 }
+
+void MainWindow::receiveTransferDataSlot()
+{
+    QByteArray TransferData = RestApi->getHttpResponse();
+    qDebug()<< "exe vastaan otti datan,joka on: "<<TransferData;
+}
+
+
 
 
 
