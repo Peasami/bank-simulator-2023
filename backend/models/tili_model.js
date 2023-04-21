@@ -23,6 +23,22 @@ const Tili = {
       [Tili.TilinroDebit, Tili.SaldoDebit, Tili.TilinroCredit, Tili.SaldoCredit, id],
       callback
     );
+  },
+
+  debit_transfer: function(debitTransfer, callback) {
+    return db.query(
+      'call debit_transfer(?, ?, ?);',
+      [debitTransfer.idKortti, debitTransfer.tapahtumaNimi, debitTransfer.maara],
+      callback
+    );
+  },
+
+  credit_transfer: function(creditTransfer, callback) {
+    return db.query(
+      'call credit_transfer(?, ?, ?);',
+      [creditTransfer.idKortti, creditTransfer.tapahtumaNimi, creditTransfer.maara],
+      callback
+    );
   }
 };
 module.exports = Tili;
