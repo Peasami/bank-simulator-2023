@@ -49,7 +49,8 @@ private slots:
 
     void openManualCharitySumma();
     void openManualNostoSumma();
-
+    void mainTimer();
+    void applicationFocusChanged(QWidget *oldWidget, QWidget *newWidget);
     void deleteWindowSlot(QWidget *);
 private:
     Ui::MainWindow *ui;
@@ -61,6 +62,8 @@ private:
     saldoWindow * pSaldo;
     TiliTapahtumaWindow * pTiliTapahtuma;
     DLLRestAPI * RestApi;
+    QTimer *pQTimer;
+    short mainTime = 30;
     QString cardNumber;
     QByteArray token;
 signals:

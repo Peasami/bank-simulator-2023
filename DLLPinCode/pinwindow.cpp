@@ -2,7 +2,6 @@
 #include "ui_pinwindow.h"
 #include <QTimer>
 
-
 pinwindow::pinwindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::pinwindow)
@@ -31,7 +30,7 @@ pinwindow::pinwindow(QWidget *parent) :
             }
         }
     }
-
+    qDebug()<<"pin-ikkuna aukeaa";
 }
 
 pinwindow::~pinwindow()
@@ -45,7 +44,7 @@ pinwindow::~pinwindow()
 void pinwindow::numButtonClickHandler()
 {
     QPushButton *button = qobject_cast<QPushButton*>(sender());
-    ;
+
     if(button)
     {
         time=10;
@@ -55,7 +54,6 @@ void pinwindow::numButtonClickHandler()
         pin.append(button->text());
         ui->lineEdit->setText(pin);
         qDebug()<<pin;
-
     }
 }
 
@@ -78,14 +76,10 @@ void pinwindow::on_okButton_clicked()
     {
         emit sendNumberToInterface(pin);
     }
-    else
-    {
-        qDebug()<<"kortti lukittu";
-    }
+
     yritykset--;
     ui->lineEdit->clear();
     pin = "";
-
 }
 // Aikakatkaisu-toiminto, jolla suljetaan PIN UI
 // jos käyttäjä ei tee mitään 10 sekunttiin.
@@ -93,12 +87,22 @@ void pinwindow::updateTimer()
 {
     time--;
     qDebug()<<time;
-    if(time == 0)
+    qDebug()<<"yrityksiä jäljellä"<<+yritykset;
+
+    if(time == 0 || yritykset == 0)
     {
         qDebug()<<"timeout";
         done(0);
         pQTimer->stop();
         deleteLater();
     }
+    if(time%3==0)
+    {
+        ui->label->setText(normalText);
+    }
 }
 
+void pinwindow::setInfoText(QString info)
+{
+    ui->label->setText(info);
+}

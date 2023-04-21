@@ -3,6 +3,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QTimer>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//, QByteArray token1)
     : QMainWindow(parent)
@@ -22,9 +24,14 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
     SetUserName("Santeri");
     IsCredit(false);
     cardNumber = cardNum;
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
 
+    connect(pQTimer, SIGNAL(timeout()),
+            this,SLOT(mainTimer()));
 
-
+    connect(qApp, &QApplication::focusChanged,
+            this,&MainWindow::applicationFocusChanged);
 
     pSaldo = new saldoWindow(this);
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
@@ -300,6 +307,34 @@ void MainWindow::openManualNostoSumma()
             this, SLOT(deleteWindowSlot(QWidget*)));
     pManualSumma->open();
 }
+
+void MainWindow::mainTimer()
+{
+    mainTime--;
+    qDebug()<<mainTime;
+
+    if(mainTime == 0)
+    {
+        qDebug()<<"mainin timeout";
+        pQTimer->stop();
+        deleteLater();
+    }
+}
+
+void MainWindow::applicationFocusChanged(QWidget *oldWidget, QWidget *newWidget)
+{
+    if(!oldWidget)
+    {
+        pQTimer->start();
+    }
+    else if(newWidget)
+    {
+        pQTimer->stop();
+        mainTime=30;
+    }
+}
+
+
 
 void MainWindow::deleteWindowSlot(QWidget * pWindow)
 {

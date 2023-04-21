@@ -124,7 +124,8 @@ void InsertCardWindow::loginReadySlots()
         {
             ui->infoLabel->clear();
             qDebug()<<"Väärä pin";
-           // pPinCode->
+            QString info = "VÄÄRÄ PIN!";
+            pPinCode->writeInfoText(info);
         }
     }
 

@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QDialog>
 
+
 namespace Ui {
 class pinwindow;
 }
@@ -14,7 +15,7 @@ class pinwindow : public QDialog
 public:
     explicit pinwindow(QWidget *parent = nullptr);
     ~pinwindow();
-
+    void setInfoText(QString);
 
 private slots:
     void numButtonClickHandler();
@@ -27,15 +28,13 @@ signals:
 
 protected:
 
-
 private:
-    Ui::pinwindow *ui;
-    bool pinGiven = false;
-    QString pin;
-    //QString oikeaPin = "1234";
+    Ui::pinwindow *ui;    
+    QString pin;    
     int yritykset = 3;
     QTimer *pQTimer;
     short time = 10;
+    QString normalText = "Näppäile tunnusluku ja paina OK";
 };
 
 #endif // PINWINDOW_H

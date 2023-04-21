@@ -24,8 +24,6 @@ signals:
 private slots:
     void receivePin(QString);
 
-
-
 private:
     pinwindow *pinOlio;
 };
