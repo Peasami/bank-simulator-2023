@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QTimer>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,9 +19,10 @@ MainWindow::MainWindow(QWidget *parent)
     pQTimer->start(1000); // tickrate 1sec
 
     connect(pQTimer, SIGNAL(timeout()),
-    this,SLOT(mainTimer()));
+            this,SLOT(mainTimer()));
 
-
+    connect(qApp, &QApplication::focusChanged,
+            this,&MainWindow::applicationFocusChanged);
 
     pSaldo = new saldoWindow(this);
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
@@ -237,7 +239,6 @@ void MainWindow::mainTimer()
     mainTime--;
     qDebug()<<mainTime;
 
-
     if(mainTime == 0)
     {
         qDebug()<<"mainin timeout";
@@ -245,6 +246,21 @@ void MainWindow::mainTimer()
         deleteLater();
     }
 }
+
+void MainWindow::applicationFocusChanged(QWidget *oldWidget, QWidget *newWidget)
+{
+    if(!oldWidget)
+    {
+        pQTimer->start();
+    }
+    else if(newWidget)
+    {
+        pQTimer->stop();
+        mainTime=30;
+    }
+}
+
+
 
 void MainWindow::deleteWindowSlot(QWidget * pWindow)
 {

@@ -45,6 +45,7 @@ private slots:
     void openManualCharitySumma();
     void openManualNostoSumma();
     void mainTimer();
+    void applicationFocusChanged(QWidget *oldWidget, QWidget *newWidget);
     void deleteWindowSlot(QWidget *);
 private:
     Ui::MainWindow *ui;
