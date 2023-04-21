@@ -76,6 +76,8 @@ void MainWindow::disableVaihdaBtn()
 MainWindow::~MainWindow()
 {
     delete ui;
+    qDebug()<<"MainWindow tuhottiin";
+    emit loggedOut(true);
 }
 
 
@@ -107,7 +109,8 @@ void MainWindow::vaihdaTiliButton_handler()
 void MainWindow::lopetaButton_handler()
 {
     qDebug()<<"Hei lopeta!";
-    InsertCardWindow W;
+    //InsertCardWindow W;
+    deleteLater();
 
 
 }

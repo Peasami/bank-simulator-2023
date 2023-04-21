@@ -20,9 +20,11 @@ public:
     ~InsertCardWindow();
     void validateLogin();
 
+
 public slots:
         void receiveCardNumberFromDLL(QString);
         void receivePinNumberFromDLL(QString);
+        void loggedOutSlot(bool);
 
 private slots:
         void loginReadySlots();

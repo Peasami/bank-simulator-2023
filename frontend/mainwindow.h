@@ -27,6 +27,9 @@ public:
     void disableVaihdaBtn();
     ~MainWindow();
 
+signals:
+    void loggedOut(bool);
+
 private slots:
     void saldoButton_handler();
     void vaihdaTiliButton_handler();
