@@ -1,20 +1,29 @@
 #include "mainwindow.h"
 #include "insertcardwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QTimer>
 #include <QApplication>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//, QByteArray token1)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    RestApi = new DLLRestAPI(this);
+    //token = token1;
+    //RestApi = new DLLRestAPI(this);
+    RestApi = pointer;
+
+    connect(this,SIGNAL(cardType(QString)),
+            RestApi,SLOT(getTilityyppi(QString)));
+
+
+
 
     SetUserName("Santeri");
     IsCredit(false);
-
+    cardNumber = cardNum;
     pQTimer = new QTimer(this);
     pQTimer->start(1000); // tickrate 1sec
 
@@ -56,9 +65,11 @@ void MainWindow::IsCredit(bool isCredit)
 {
     if(isCredit == true){
         ui->tiliLabel->setText("Credit");
+        emit cardType("Credit");
     }
     else{
         ui->tiliLabel->setText("Debit");
+        emit cardType("Debit");
     }
 }
 
@@ -72,16 +83,22 @@ void MainWindow::disableVaihdaBtn()
 MainWindow::~MainWindow()
 {
     delete ui;
+    qDebug()<<"MainWindow tuhottiin";
+    emit loggedOut(true);
 }
 
 
 void MainWindow::saldoButton_handler()
 {
+    connect(RestApi, SIGNAL(getSaldoSignal()),
+            this,SLOT(printSaldoDataSlot()));
+
     qDebug()<<"saldo";
     pSaldo->open();
     //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
+    qDebug()<<" saldobuttonin  mainwindowissa kortinnumero on "+cardNumber;
+    RestApi->getSaldoInfo(cardNumber);
 
-    //RestApi->getSaldoInfo(cardNum);
 }
 
 void MainWindow::vaihdaTiliButton_handler()
@@ -99,7 +116,8 @@ void MainWindow::vaihdaTiliButton_handler()
 void MainWindow::lopetaButton_handler()
 {
     qDebug()<<"Hei lopeta!";
-    InsertCardWindow W;
+    //InsertCardWindow W;
+    deleteLater();
 
 
 }
@@ -112,12 +130,15 @@ void MainWindow::lahjoitaButton_handler()
     connect(pLahjoitaRahaa,SIGNAL(deleteWindow(QWidget*)),
             this, SLOT(deleteWindowSlot(QWidget*)));
 
+
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
     // Tehdään olio näytäTapahtumasta, jotta sinne saadaan
     // lahjoituksen kohde ja määrä talteen muuttujiin
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
+
+
 }
 
 void MainWindow::nostaRahaaButton_handler()
@@ -131,13 +152,21 @@ void MainWindow::nostaRahaaButton_handler()
     connect(pValitseSumma,SIGNAL(deleteWindow(QWidget*)),
             this, SLOT(deleteWindowSlot(QWidget*)));
     pValitseSumma->open();
+    connect(this,SIGNAL(sendTransfer(QString,int)),
+            RestApi,SLOT(receiveTransfer(QString,int)));
+
     qDebug()<<"nosta rahaa";
+
 }
 
 void MainWindow::tilitapahtumatButton_handler()
 {
+    connect(RestApi, SIGNAL(accountHistorySignal()),
+            this,SLOT(printAccountHistoryDataSlot()));
+
+
     //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
-    //RestApi->getAccountHistoryInfo(cardNum);
+    RestApi->getAccountHistoryInfo(cardNumber);//,token);
     qDebug()<<"tilitapahtumat";
     pTiliTapahtuma->open();
 }
@@ -165,6 +194,12 @@ void MainWindow::receiveCharity(QString charity)
 
     // Annetaan kohteen nimi näytäTapahtumalle
     pNaytaTapahtuma->setLahjoitusKohde(charity);
+
+    connect(this,SIGNAL(CharityTransfer(QString,int)),
+              RestApi,SLOT(receiveTransfer(QString,int)));
+
+
+
     qDebug()<<"recieveCharity(): "<<charity;
 }
 
@@ -175,19 +210,48 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
     // Annetaan lahjoituksen määrä näytäTapahtumalle
     pNaytaTapahtuma->setLahjoitusMaara(charitySumma);
 
+
+
     // päivitetään ui ja näytetään
     pNaytaTapahtuma->updateInfo();
     pNaytaTapahtuma->show();
+
+    emit CharityTransfer("lahjoitus", charitySumma.toInt());
+    disconnect(this,SIGNAL(CharityTransfer(QString,int)),
+               RestApi,SLOT(receiveTransfer(QString,int)));
+    connect(RestApi, SIGNAL(updateSaldoSignal()),
+            this, SLOT(receiveTransferDataSlot()));
+
+
+    RestApi->updateSaldoInfo(cardNumber);
+
+
+
 }
 
 void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
+
+    emit sendTransfer("nosto",nostoSumma.toInt());
+    disconnect(this,SIGNAL(sendTransfer(QString,int)),
+               RestApi,SLOT(receiveTransfer(QString,int)));
+
+    connect(RestApi, SIGNAL(updateSaldoSignal()),
+            this, SLOT(receiveTransferDataSlot()));
+
+
+    RestApi->updateSaldoInfo(cardNumber);
+
+
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
+
+
 }
 
 void MainWindow::printSaldoDataSlot()
 {
-    qDebug() << "getSaldo called";
+    disconnect(RestApi, SIGNAL(getSaldoSignal()),
+            this,SLOT(printSaldoDataSlot()));
     QByteArray saldoData = RestApi->getHttpResponse();
     qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
 
@@ -197,14 +261,24 @@ void MainWindow::printSaldoDataSlot()
 void MainWindow::printAccountHistoryDataSlot()
 
 {
+    disconnect(RestApi, SIGNAL(accountHistorySignal()),
+            this,SLOT(printAccountHistoryDataSlot()));
 
-    qDebug() << "getAccount called";
+
     QByteArray accountHistoryData = RestApi->getHttpResponse();
 
     qDebug() << "exe vastaan otti datan, joka on: " << accountHistoryData;
 
     accountHistoryData.clear();
 }
+
+void MainWindow::receiveTransferDataSlot()
+{
+    QByteArray TransferData = RestApi->getHttpResponse();
+    qDebug()<< "exe vastaan otti datan,joka on: "<<TransferData;
+}
+
+
 
 
 

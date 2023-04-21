@@ -12,15 +12,21 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     connect(pCardReader,SIGNAL(cardReadSignal(QString)),
             this,SLOT(receiveCardNumberFromDLL(QString)));
 
+    ///TESTI KOODI DEBUGGAUSTA VARTEN ILMAN KORTINLUKIJAA///
+    receiveCardNumberFromDLL("06000d8977");
+
     //Funktiokutsu lukijan avaamiseksi
     pCardReader->openRFIDReader();
     if(pCardReader->openRFIDReader()==true)
     {
+        ui->infoLabel->clear();
         qDebug()<<"RFIDlukijaan yhdistäminen onnistui";
+
 
     }
     else
     {
+        ui->infoLabel->setText("EI YHTEYTTÄ KORTINLUKIJAAN!\nKYTKE KORTINLUKIJA JA\nKÄYNNISTÄ OHJELMA UUDESTAAN!");
         qDebug()<<"RFIDlukijaan yhdistäminen epäonnistui";
     }
     /*delete pMainWindow;
@@ -39,6 +45,28 @@ void InsertCardWindow::validateLogin()
 
 }
 
+void InsertCardWindow::loggedOutSlot(bool state)
+{
+    if(state==false)
+    {
+        //Jos login onnistui niin irroitetaan lukijan yhteys
+        disconnect(pCardReader,SIGNAL(cardReadSignal(QString)),
+                this,SLOT(receiveCardNumberFromDLL(QString)));
+        qDebug()<<"lukija disconnect";
+    }
+    else
+    {
+        //Mainwindowin lopeta nappi kytkee lukijan yhteyden takaisin
+        connect(pCardReader,SIGNAL(cardReadSignal(QString)),
+                this,SLOT(receiveCardNumberFromDLL(QString)));
+
+        //Kun mainwindowi tuhotaan niin tuhotaan myös restApiDLL
+        pRestApi->deleteLater();
+        qDebug()<<"lukija connect";
+    }
+
+}
+
 InsertCardWindow::~InsertCardWindow()
 {
     delete ui;
@@ -49,14 +77,11 @@ void InsertCardWindow::receiveCardNumberFromDLL(QString cardNum)
 {
     qDebug()<<"EXE Vastaanottti DLLSerialPortilta kortinnumeron "<<cardNum;
     cardNumber = cardNum;
-
     pPinCode = new DLLPinCode(this);
     connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
             this,SLOT(receivePinNumberFromDLL(QString)));
-
-
-
     pPinCode->openPinWindow();
+    //loggedOutSlot(false);
 
 }
 
@@ -70,21 +95,24 @@ void InsertCardWindow::receivePinNumberFromDLL(QString pin)
 void InsertCardWindow::loginReadySlots()
 {
     QString response=pRestApi->getLoginResponse();
+    token = response.toUtf8();
     qDebug()<<"Saatiin restapi dll:ltä vastaus "+response;
                     qDebug()<<response.length();
 
 
     if(QString::compare(response,"Bearer -4078")==0 || response.length()<8)
     {
+        ui->infoLabel->setText("EI YHTEYTTÄ TIETOKANTAAN!");
+        pPinCode->deleteLater();
         qDebug()<<"ei yhteyttä tietokantaan";
     }
     else
     {
         if(QString::compare(response, "Bearer false")!=0)
         {
-            //Tähän kohtaan getillä asiakkaan tiedot
+            ui->infoLabel->clear();
 
-            pMainWindow = new MainWindow(this);
+            loggedOutSlot(false); //katkaisee yhteyden kortinlukijaan
 
             connect(pRestApi, SIGNAL(httpReady()),
                     this, SLOT(httpReadySlot()));
@@ -94,6 +122,7 @@ void InsertCardWindow::loginReadySlots()
         }
         else
         {
+            ui->infoLabel->clear();
             qDebug()<<"Väärä pin";
             QString info = "VÄÄRÄ PIN!";
             pPinCode->writeInfoText(info);
@@ -105,6 +134,14 @@ void InsertCardWindow::loginReadySlots()
 
 void InsertCardWindow::httpReadySlot()
 {
+    disconnect(pRestApi, SIGNAL(httpReady()),
+            this, SLOT(httpReadySlot()));
+
+    pMainWindow = new MainWindow(this,cardNumber,pRestApi);//,token);
+
+    connect(pMainWindow,SIGNAL(loggedOut(bool)),
+            this,SLOT(loggedOutSlot(bool)));
+
     delete pPinCode;
     pPinCode=nullptr;
 

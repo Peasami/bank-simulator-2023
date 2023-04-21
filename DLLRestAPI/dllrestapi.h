@@ -20,20 +20,26 @@ public:
 
     const QByteArray &getHttpResponse() const;
 
-    const QByteArray &getSaldoResponse() const;
-    void setSaldoResponse(const QByteArray &newSaldoResponse);
+
 
 public slots:
     void login(QString,QString);
     void getMainwindowInfo(QString);
-    void getAccountHistoryInfo(QString);
+    void getAccountHistoryInfo(QString);//,QByteArray);
     void getSaldoInfo(QString);
+    void updateSaldoInfo(QString);
+    void getTilityyppi(QString);
+
+    void receiveTransfer(QString, int);
+
 
 private slots:
     void loginReadySlots();
     void httpReadySlot();
     void accountHistorySlot();
     void getSaldoSlot();
+    void updateSaldoSlot();
+
 
 signals:
     void sendLoginReplySignal(bool);
@@ -41,12 +47,16 @@ signals:
     void httpReady();
     void accountHistorySignal();
     void getSaldoSignal();
-
+    void updateSaldoSignal();
 private:
     rest * pRest;
     QString loginResponse; //Token tai false
     QByteArray httpResponse;
-    QByteArray SaldoResponse;
+    QString tilityyppi;
+    QString tapahtumaNimi;
+
+
+
 };
 
 

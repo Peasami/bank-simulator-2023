@@ -11,6 +11,7 @@
 #include "manualsummawindow.h"
 #include "dllrestapi.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,11 +21,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr, QString cardNum = "",DLLRestAPI *pointer=nullptr);//, QByteArray token1 = "");
     void SetUserName(QString);
     void IsCredit(bool);
     void disableVaihdaBtn();
     ~MainWindow();
+
+signals:
+    void loggedOut(bool);
 
 private slots:
     void saldoButton_handler();
@@ -41,6 +45,7 @@ private slots:
 
     void printSaldoDataSlot();
     void printAccountHistoryDataSlot();
+    void receiveTransferDataSlot();
 
     void openManualCharitySumma();
     void openManualNostoSumma();
@@ -59,6 +64,15 @@ private:
     DLLRestAPI * RestApi;
     QTimer *pQTimer;
     short mainTime = 30;
+    QString cardNumber;
+    QByteArray token;
+signals:
+
+    void sendTransfer(QString, int);
+    void CharityTransfer(QString,int);
+    void cardType(QString);
+
+
 
 };
 #endif // MAINWINDOW_H

@@ -26,10 +26,10 @@ void rest::loginAccess(QString idKortti, QString PINkoodi)
     QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    postManager = new QNetworkAccessManager(this);
-    connect(postManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(LoginSlot(QNetworkReply*)));
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(LoginSlot(QNetworkReply*)));
 
-    reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
+    reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
 
 
 }
@@ -38,14 +38,17 @@ void rest::loginAccess(QString idKortti, QString PINkoodi)
 void rest::httpRequestSlot(QNetworkReply *reply)
 {
 
-    httpResponse.clear();
+
     response_data=reply->readAll();
     httpResponse=response_data;
-    qDebug()<<"rest.cpp sai datan "+httpResponse;
+    qDebug()<<"rest.cpp sai httpRslotilta datan  "+httpResponse;
     emit httpResponseReady();
     reply->deleteLater();
     //postManager->deleteLater(); //Tämä aiheutti exen crashin
-    getManager->deleteLater();
+
+    queryManager->deleteLater();
+    qDebug()<<"queryManager tuhottu";
+
 
 
 }
@@ -54,12 +57,27 @@ void rest::LoginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
      Token="Bearer "+response_data;
-     qDebug()<<"rest.cpp sai datan "+Token;
+     qDebug()<<"rest.cpp sai LoginSlot datan "+Token;
      emit LoginResponseReady();
 
 
     reply->deleteLater();
-    postManager->deleteLater();
+    loginManager->deleteLater();
+    qDebug()<<"loginManager Tuhottu";
+}
+
+void rest::updateSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    httpResponse=response_data;
+    qDebug()<<"rest.cpp sai updateSlotin datan "+httpResponse;
+    emit updateResponseReady();
+    reply->deleteLater();
+
+
+    updateManager->deleteLater();
+    qDebug()<<"updateManager tuhottu";
+
 }
 
 void rest::getMainWindowInfoAccess(QString cardNum)
@@ -69,18 +87,17 @@ void rest::getMainWindowInfoAccess(QString cardNum)
     QJsonObject jsonObj;
     jsonObj.insert("idKortti",cardNum);
     QString site_url=Environment::getBaseUrl()+"/kortti/"+cardNum;
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"GetMainWindowinfo: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    getManager = new QNetworkAccessManager(this);
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+    queryManager = new QNetworkAccessManager(this);
+    connect(queryManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
-    reply = getManager->get(request);
-
+    reply = queryManager->get(request);
 }
 
 void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
@@ -91,15 +108,15 @@ void rest::getAccountHistory(QString cardNum)       //Tilihistoria get
     QString site_url=Environment::getBaseUrl()+"/Tilitapahtumat/"+cardNum;
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"tilitapahtumat: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    getManager = new QNetworkAccessManager(this);
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+    queryManager = new QNetworkAccessManager(this);
+    connect(queryManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
-    reply = getManager->get(request);
+    reply = queryManager->get(request);
 }
 
 void rest::getSaldo(QString cardNum)    //tilin saldo get
@@ -110,15 +127,37 @@ void rest::getSaldo(QString cardNum)    //tilin saldo get
     QString site_url=Environment::getBaseUrl()+"/Tili/"+cardNum;
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
-    //QByteArray myToken="Bearer "+response_data;
-    //request.setRawHeader(QByteArray("Authorization"),(myToken));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"saldo: "+Token;
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    getManager = new QNetworkAccessManager(this);
-    connect(getManager, SIGNAL(finished(QNetworkReply*)),
+    queryManager = new QNetworkAccessManager(this);
+    connect(queryManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(httpRequestSlot(QNetworkReply*)));
 
-    reply = getManager->get(request);
+    reply = queryManager->get(request);
+}
+
+void rest::updateSaldo(QString cardNum)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+    jsonObj.insert("tapahtumaNimi",transaction);
+    jsonObj.insert("maara",saldoAmount);
+    QString site_url=Environment::getBaseUrl()+"/transfer/"+tilityyppi ;
+    qDebug()<<"Site_url: "<<site_url;
+    QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"update Saldo: "+Token;
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+
+
+    updateManager = new QNetworkAccessManager(this);
+    connect(updateManager, SIGNAL(finished (QNetworkReply*))
+            , this, SLOT(updateSlot(QNetworkReply*)));
+
+    reply = updateManager->put(request, QJsonDocument(jsonObj).toJson());
 }
 
 
@@ -133,6 +172,23 @@ void rest::setToken(const QByteArray &newToken)
 {
     Token = newToken;
 }
+
+void rest::setTilityyppi(QString tili)
+{
+    tilityyppi = tili;
+    qDebug()<<"r"<< tili;
+}
+
+void rest::setTiliTapahtuma(QString tapahtuma, int summa)
+{
+    transaction = tapahtuma;
+    saldoAmount = summa;
+    qDebug()<<"rest.cpp sai tapahtuman tiedot: " <<tapahtuma<<summa;
+}
+
+
+
+
 
 QByteArray rest::getHttpResponse() const
 {

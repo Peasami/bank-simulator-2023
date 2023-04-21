@@ -6,6 +6,15 @@ DLLRestAPI::DLLRestAPI(QObject *parent):QObject(parent)
 {
     qDebug()<<"DLLRestApi luotu";
     pRest = new rest(this);
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(getSaldoSlot()));
+
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(accountHistorySlot()));
+
+    connect(pRest, SIGNAL(updateResponseReady()),
+            this,SLOT(updateSaldoSlot()));
+
 }
 
 DLLRestAPI::~DLLRestAPI()
@@ -29,18 +38,22 @@ void DLLRestAPI::getMainwindowInfo(QString cardNum)
     pRest->getMainWindowInfoAccess(cardNum);
 }
 
-void DLLRestAPI::getAccountHistoryInfo(QString cardNum) //tilitapahtuma tieto
+void DLLRestAPI::getAccountHistoryInfo(QString cardNum)//,QByteArray token) //tilitapahtuma tieto
 {
-    connect(pRest,SIGNAL(httpResponseReady()),
-            this,SLOT(accountHistorySlot()));
+    //pRest->setToken(token);
     pRest->getAccountHistory(cardNum);
+
 }
 
 void DLLRestAPI::getSaldoInfo(QString cardNum)      //Tilin Saldon tiedot
 {
-    connect(pRest,SIGNAL(httpResponseReady()),
-            this,SLOT(getSaldoSlot()));
+
     pRest->getSaldo(cardNum);
+}
+
+void DLLRestAPI::updateSaldoInfo(QString cardNum)
+{
+    pRest->updateSaldo(cardNum);
 }
 
 
@@ -71,8 +84,8 @@ void DLLRestAPI::httpReadySlot()
     httpResponse = pRest->getHttpResponse();
     qDebug()<<"httpReadySlot: "<<httpResponse;
     emit httpReady();
-   // delete pRest;
-   // pRest=nullptr;
+    //delete pRest;
+    //pRest=nullptr;
 }
 
 void DLLRestAPI::accountHistorySlot()   //Slotti Tilitapahtuma
@@ -93,8 +106,32 @@ void DLLRestAPI::getSaldoSlot()
     emit getSaldoSignal();
 
 
+}
+
+void DLLRestAPI::updateSaldoSlot()
+{
+    httpResponse = pRest->getHttpResponse();
+    emit updateSaldoSignal();
+}
+
+void DLLRestAPI::getTilityyppi(QString tili)
+{
+    tilityyppi = tili;
+    pRest->setTilityyppi(tili);
+    qDebug()<<"Tilityypi saatu: "<<tili;
 
 }
+
+void DLLRestAPI::receiveTransfer(QString tapahtuma, int summa)
+
+{
+    tapahtumaNimi = tapahtuma;
+    pRest->setTiliTapahtuma(tapahtuma,summa);
+    qDebug() << "rest api sai transferin:" << tapahtuma<< summa;
+
+
+}
+
 
 
 
