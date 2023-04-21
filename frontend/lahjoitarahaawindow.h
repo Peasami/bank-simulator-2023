@@ -18,14 +18,17 @@ public:
 
 signals:
     void sendCharity(QString);
-    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
+    //void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
 
 private slots:
     void charityButtonHandler();
+    void updateTimer();
 
 private:
     Ui::LahjoitaRahaaWindow *ui;
     //QStringList charityList;
+    QTimer *pQTimer;
+    short time;
 };
 
 #endif // LAHJOITARAHAAWINDOW_H

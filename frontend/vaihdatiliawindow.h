@@ -22,9 +22,12 @@ signals:
 private slots:
     void vaihdaCreditButton_handler();
     void vaihdaDebitButton_handler();
+    void updateTimer();
 
 private:
     Ui::VaihdaTiliaWindow *ui;
+    QTimer *pQTimer;
+    short time;
 };
 
 #endif // VAIHDATILIAWINDOW_H

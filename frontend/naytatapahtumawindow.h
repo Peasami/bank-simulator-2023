@@ -25,6 +25,8 @@ private:
     Ui::NaytaTapahtumaWindow *ui;
     QString lahjoitusKohde;
     QString lahjoitusMaara;
+    QTimer *pQTimer;
+    short time=5;
 };
 
 #endif // NAYTATAPAHTUMAWINDOW_H

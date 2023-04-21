@@ -22,11 +22,14 @@ private slots:
     void takaisinButtonHandler();
     void aiemmatButtonHandler();
     void uudemmatButtonHandler();
+    void updateTimer();
 
 private:
     Ui::TiliTapahtumaWindow *ui;
     rivi * pRivi;
     bool listaTesti=1;
+    QTimer *pQTimer;
+    short time;
 };
 
 #endif // TILITAPAHTUMAWINDOW_H

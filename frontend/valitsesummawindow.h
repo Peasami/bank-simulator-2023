@@ -23,11 +23,13 @@ signals:
 
 private slots:
     void summaButtonHandler();
+    void updateTimer();
 
 private:
     Ui::ValitseSummaWindow *ui;
-
+    QTimer *pQTimer;
     int testiSaldo = 150;
+    short time=10;
 };
 
 #endif // VALITSESUMMAWINDOW_H

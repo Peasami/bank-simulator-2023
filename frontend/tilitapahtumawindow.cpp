@@ -1,12 +1,16 @@
 #include "tilitapahtumawindow.h"
 #include "qdebug.h"
 #include "ui_tilitapahtumawindow.h"
+#include <QTimer>
 
 TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TiliTapahtumaWindow)
 {
     ui->setupUi(this);
+
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
 
     connect(ui->takaisinButton,SIGNAL(clicked(bool)),
             this,SLOT(takaisinButtonHandler()));
@@ -71,19 +75,37 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent) :
 TiliTapahtumaWindow::~TiliTapahtumaWindow()
 {
     delete ui;
+    qDebug()<<"TiliTapahtumaWindow imploded";
 }
 
 void TiliTapahtumaWindow::takaisinButtonHandler()
 {
     qDebug()<<"Takaisin";
+    deleteLater();
 }
 
 void TiliTapahtumaWindow::aiemmatButtonHandler()
 {
     qDebug()<<"selataan tapahtumia";
+    time=10;
 }
 
 void TiliTapahtumaWindow::uudemmatButtonHandler()
 {
     qDebug()<<"selataan tapahtumia";
+    time=10;
+}
+
+void TiliTapahtumaWindow::updateTimer()
+{
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
+    }
+
 }
