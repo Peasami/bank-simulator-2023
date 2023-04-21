@@ -2,13 +2,20 @@
 #include "qdebug.h"
 #include "rivi.h"
 #include "ui_saldowindow.h"
-
+#include <QTimer>
 
 saldoWindow::saldoWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::saldoWindow)
 {
     ui->setupUi(this);
+
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
+
+    connect(ui->takaisinButton,SIGNAL(clicked(bool)),
+    this,SLOT(takaisinButtonHandler()));
+
     if (listaTesti)
     {
         QList<rivi*> eventList;
@@ -64,9 +71,25 @@ saldoWindow::saldoWindow(QWidget *parent) :
 saldoWindow::~saldoWindow()
 {
     delete ui;
+    qDebug()<<"saldoWindow explode & imploded at the same time";
 }
 
 void saldoWindow::takaisinButtonHandler()
 {
     qDebug()<<"Takaisin";
+    deleteLater();
+}
+
+void saldoWindow::updateTimer()
+{
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
+    }
+
 }

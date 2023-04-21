@@ -1,13 +1,15 @@
 #include "lahjoitarahaawindow.h"
 #include "ui_lahjoitarahaawindow.h"
 #include <QDebug>
+#include <QTimer>
 
 LahjoitaRahaaWindow::LahjoitaRahaaWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::LahjoitaRahaaWindow)
 {
     ui->setupUi(this);
-
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
     // Käy läpi kaikki windowin napit
     for(int i=0;i<3;i++)
     {
@@ -44,6 +46,7 @@ void LahjoitaRahaaWindow::charityButtonHandler()
     }
     else
     {
+        time = 10;
     emit sendCharity(selectedCharity);
     //emit deleteWindow(this);
     deleteLater();
@@ -60,4 +63,19 @@ void LahjoitaRahaaWindow::charityButtonHandler()
         break;
     }
     */
+}
+
+void LahjoitaRahaaWindow::updateTimer()
+{
+
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+    qDebug()<<"timeout";
+    done(0);
+    pQTimer->stop();
+    deleteLater();
+    }
+
 }

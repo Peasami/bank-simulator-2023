@@ -1,11 +1,15 @@
 #include "valitsesummawindow.h"
 #include "ui_valitsesummawindow.h"
+#include <QTimer>
 
 ValitseSummaWindow::ValitseSummaWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ValitseSummaWindow)
 {
     ui->setupUi(this);
+
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
 
     setAttribute(Qt::WA_DeleteOnClose); // Olio tuhoutuu ruksia painaessa
 
@@ -55,4 +59,18 @@ void ValitseSummaWindow::summaButtonHandler()
         deleteLater();
     }
     qDebug()<<selectedSumma;
+}
+
+void ValitseSummaWindow::updateTimer()
+{
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
+    }
+
 }
