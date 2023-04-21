@@ -27,12 +27,19 @@ public slots:
     void getMainwindowInfo(QString);
     void getAccountHistoryInfo(QString);//,QByteArray);
     void getSaldoInfo(QString);
+    void updateSaldoInfo(QString);
+    void getTilityyppi(QString);
+
+    void receiveTransfer(QString, int);
+
 
 private slots:
     void loginReadySlots();
     void httpReadySlot();
     void accountHistorySlot();
     void getSaldoSlot();
+    void updateSaldoSlot();
+
 
 signals:
     void sendLoginReplySignal(bool);
@@ -40,11 +47,15 @@ signals:
     void httpReady();
     void accountHistorySignal();
     void getSaldoSignal();
-
+    void updateSaldoSignal();
 private:
     rest * pRest;
     QString loginResponse; //Token tai false
     QByteArray httpResponse;
+    QString tilityyppi;
+    QString tapahtumaNimi;
+
+
 
 };
 

@@ -3,11 +3,11 @@
 #include "dllpincode.h" // Jos jostain syystä tarvii debugata PIN-ikkunaa erikseen
 #include <QApplication>
 
-bool mWindowTest=0;     // mainwindow:n testaus päällä jos 1
+bool mWindowTest=1;     // mainwindow:n testaus päällä jos 1
 bool pinWindowTest=0;   // PINui:n testaus päällä jos 1 ja mWindowTest 0
 
 int main(int argc, char *argv[])
-{
+    {
     QApplication a(argc, argv);
     InsertCardWindow w;
 
@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
 //    }
 //    else
 //    {
-//        if(mWindowTest==1)
-//        {
+//      if(mWindowTest==1)
+//    {
 //            MainWindow w;
 //            w.show();
-//        }
+//  }
 //        else
 //        {
 //            if(pinWindowTest==1)
@@ -33,4 +33,4 @@ int main(int argc, char *argv[])
 //        }
 //    }
     return a.exec();
-}
+    }

@@ -41,7 +41,7 @@ void rest::httpRequestSlot(QNetworkReply *reply)
 
     response_data=reply->readAll();
     httpResponse=response_data;
-    qDebug()<<"rest.cpp sai datan "+httpResponse;
+    qDebug()<<"rest.cpp sai httpRslotilta datan  "+httpResponse;
     emit httpResponseReady();
     reply->deleteLater();
     //postManager->deleteLater(); //Tämä aiheutti exen crashin
@@ -57,13 +57,27 @@ void rest::LoginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
      Token="Bearer "+response_data;
-     qDebug()<<"rest.cpp sai datan "+Token;
+     qDebug()<<"rest.cpp sai LoginSlot datan "+Token;
      emit LoginResponseReady();
 
 
     reply->deleteLater();
     loginManager->deleteLater();
     qDebug()<<"loginManager Tuhottu";
+}
+
+void rest::updateSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    httpResponse=response_data;
+    qDebug()<<"rest.cpp sai updateSlotin datan "+httpResponse;
+    emit updateResponseReady();
+    reply->deleteLater();
+
+
+    updateManager->deleteLater();
+    qDebug()<<"updateManager tuhottu";
+
 }
 
 void rest::getMainWindowInfoAccess(QString cardNum)
@@ -124,6 +138,28 @@ void rest::getSaldo(QString cardNum)    //tilin saldo get
     reply = queryManager->get(request);
 }
 
+void rest::updateSaldo(QString cardNum)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+    jsonObj.insert("tapahtumaNimi",transaction);
+    jsonObj.insert("maara",saldoAmount);
+    QString site_url=Environment::getBaseUrl()+"/transfer/"+tilityyppi ;
+    qDebug()<<"Site_url: "<<site_url;
+    QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(Token));
+    qDebug()<<"update Saldo: "+Token;
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+
+
+    updateManager = new QNetworkAccessManager(this);
+    connect(updateManager, SIGNAL(finished (QNetworkReply*))
+            , this, SLOT(updateSlot(QNetworkReply*)));
+
+    reply = updateManager->put(request, QJsonDocument(jsonObj).toJson());
+}
+
 
 
 
@@ -136,6 +172,23 @@ void rest::setToken(const QByteArray &newToken)
 {
     Token = newToken;
 }
+
+void rest::setTilityyppi(QString tili)
+{
+    tilityyppi = tili;
+    qDebug()<<"r"<< tili;
+}
+
+void rest::setTiliTapahtuma(QString tapahtuma, int summa)
+{
+    transaction = tapahtuma;
+    saldoAmount = summa;
+    qDebug()<<"rest.cpp sai tapahtuman tiedot: " <<tapahtuma<<summa;
+}
+
+
+
+
 
 QByteArray rest::getHttpResponse() const
 {
