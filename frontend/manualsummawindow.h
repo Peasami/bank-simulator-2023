@@ -22,9 +22,12 @@ signals:
 public slots:
     void okClickHandler();
     void numClickHandler();
+    void updateTimer();
 
 private:
     Ui::ManualSummaWindow *ui;
+    QTimer *pQTimer;
+    short time;
 };
 
 #endif // MANUALSUMMAWINDOW_H

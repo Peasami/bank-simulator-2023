@@ -1,4 +1,5 @@
 #include "vaihdatiliawindow.h"
+#include "qtimer.h"
 #include "ui_vaihdatiliawindow.h"
 
 VaihdaTiliaWindow::VaihdaTiliaWindow(QWidget *parent) :
@@ -6,6 +7,9 @@ VaihdaTiliaWindow::VaihdaTiliaWindow(QWidget *parent) :
     ui(new Ui::VaihdaTiliaWindow)
 {
     ui->setupUi(this);
+
+    pQTimer = new QTimer(this);
+    pQTimer->start(1000); // tickrate 1sec
 
     connect(ui->vaihdaCreditButton,SIGNAL(clicked(bool)),
             this,SLOT(vaihdaCreditButton_handler()));
@@ -33,4 +37,18 @@ void VaihdaTiliaWindow::vaihdaDebitButton_handler()
 {
     emit sendIsCredit(false);
     deleteLater();
+}
+
+void VaihdaTiliaWindow::updateTimer()
+{
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
+    }
+
 }

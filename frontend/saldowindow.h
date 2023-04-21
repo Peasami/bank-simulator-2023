@@ -19,10 +19,13 @@ public:
 
 private slots:
     void takaisinButtonHandler();
+    void updateTimer();
 
 private:
     Ui::saldoWindow *ui;
     bool listaTesti=1;
+    short time=10;
+    QTimer *pQTimer;
 };
 
 #endif // SALDOWINDOW_H

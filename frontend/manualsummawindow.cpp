@@ -1,5 +1,6 @@
 #include "manualsummawindow.h"
 #include "ui_manualsummawindow.h"
+#include <QTimer>
 
 ManualSummaWindow::ManualSummaWindow(QWidget *parent) :
     QDialog(parent),
@@ -43,10 +44,24 @@ void ManualSummaWindow::okClickHandler()
 
 void ManualSummaWindow::numClickHandler()
 {
+    time=10;
     // Hakee signaalin lähettäjän nimen, ja poistaa ensimmäisen kirjaimen
     QObject * buttonSender = sender();
     QString selectedSumma = buttonSender->objectName();
     selectedSumma.remove(0,1); // Poistetaan ensimmäinen kirjain
 
     ui->summaEdit->insert(selectedSumma);
+}
+
+void ManualSummaWindow::updateTimer()
+{
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
+    }
 }
