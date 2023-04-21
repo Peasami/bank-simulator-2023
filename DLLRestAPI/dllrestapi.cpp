@@ -11,6 +11,10 @@ DLLRestAPI::DLLRestAPI(QObject *parent):QObject(parent)
 
     connect(pRest,SIGNAL(httpResponseReady()),
             this,SLOT(accountHistorySlot()));
+
+    connect(pRest, SIGNAL(updateResponseReady()),
+            this,SLOT(updateSaldoSlot()));
+
 }
 
 DLLRestAPI::~DLLRestAPI()
@@ -45,6 +49,11 @@ void DLLRestAPI::getSaldoInfo(QString cardNum)      //Tilin Saldon tiedot
 {
 
     pRest->getSaldo(cardNum);
+}
+
+void DLLRestAPI::updateSaldoInfo(QString cardNum)
+{
+    pRest->updateSaldo(cardNum);
 }
 
 
@@ -98,6 +107,31 @@ void DLLRestAPI::getSaldoSlot()
 
 
 }
+
+void DLLRestAPI::updateSaldoSlot()
+{
+    httpResponse = pRest->getHttpResponse();
+    emit updateSaldoSignal();
+}
+
+void DLLRestAPI::getTilityyppi(QString tili)
+{
+    tilityyppi = tili;
+    pRest->setTilityyppi(tili);
+    qDebug()<<"Tilityypi saatu: "<<tili;
+
+}
+
+void DLLRestAPI::receiveTransfer(QString tapahtuma, int summa)
+
+{
+    tapahtumaNimi = tapahtuma;
+    pRest->setTiliTapahtuma(tapahtuma,summa);
+    qDebug() << "rest api sai transferin:" << tapahtuma<< summa;
+
+
+}
+
 
 
 

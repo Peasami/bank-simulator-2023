@@ -13,7 +13,7 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
             this,SLOT(receiveCardNumberFromDLL(QString)));
 
     ///TESTI KOODI DEBUGGAUSTA VARTEN ILMAN KORTINLUKIJAA///
-    //receiveCardNumberFromDLL("06000626a5");
+    receiveCardNumberFromDLL("06000d8977");
 
     //Funktiokutsu lukijan avaamiseksi
     pCardReader->openRFIDReader();
@@ -135,6 +135,7 @@ void InsertCardWindow::httpReadySlot()
 {
     disconnect(pRestApi, SIGNAL(httpReady()),
             this, SLOT(httpReadySlot()));
+
     pMainWindow = new MainWindow(this,cardNumber,pRestApi);//,token);
 
     connect(pMainWindow,SIGNAL(loggedOut(bool)),
