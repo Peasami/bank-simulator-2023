@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
     connect(qApp, &QApplication::focusChanged,
             this,&MainWindow::applicationFocusChanged);
 
-    pSaldo = new saldoWindow(this);
+
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
     connect(ui->nostaRahaaButton,SIGNAL(clicked(bool)),
             this,SLOT(nostaRahaaButton_handler()));
 
-    pTiliTapahtuma = new TiliTapahtumaWindow(this);
+
     connect(ui->tilitapahtumatButton,SIGNAL(clicked(bool)),
             this,SLOT(tilitapahtumatButton_handler()));
 
@@ -90,6 +90,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::saldoButton_handler()
 {
+    pSaldo = new saldoWindow(this);
     connect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
 
@@ -161,6 +162,7 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
+    pTiliTapahtuma = new TiliTapahtumaWindow(this);
     connect(RestApi, SIGNAL(accountHistorySignal()),
             this,SLOT(printAccountHistoryDataSlot()));
 
