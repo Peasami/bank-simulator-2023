@@ -141,9 +141,9 @@ void rest::getSaldo(QString cardNum)    //tilin saldo get
 void rest::updateSaldo(QString cardNum)
 {
     QJsonObject jsonObj;
-    jsonObj.insert("idKortti ",cardNum);
-    jsonObj.insert(" tapahtumaNimi",transaction);
-    jsonObj.insert("maara ",saldoAmount);
+    jsonObj.insert("idKortti",cardNum);
+    jsonObj.insert("tapahtumaNimi",transaction);
+    jsonObj.insert("maara",saldoAmount);
     QString site_url=Environment::getBaseUrl()+"/transfer/"+tilityyppi ;
     qDebug()<<"Site_url: "<<site_url;
     QNetworkRequest request((site_url));
