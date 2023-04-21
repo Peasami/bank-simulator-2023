@@ -59,6 +59,9 @@ void InsertCardWindow::loggedOutSlot(bool state)
         //Mainwindowin lopeta nappi kytkee lukijan yhteyden takaisin
         connect(pCardReader,SIGNAL(cardReadSignal(QString)),
                 this,SLOT(receiveCardNumberFromDLL(QString)));
+
+        //Kun mainwindowi tuhotaan niin tuhotaan myös restApiDLL
+        pRestApi->deleteLater();
         qDebug()<<"lukija connect";
     }
 
