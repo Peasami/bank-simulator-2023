@@ -65,6 +65,7 @@ private:
     short mainTime = 30;
     QString cardNumber;
     QByteArray token;
+    QString targetCharity;
 signals:
 
     void sendTransfer(QString, int);

@@ -176,6 +176,8 @@ void MainWindow::receiveIsCredit(bool b)
 
 void MainWindow::receiveCharity(QString charity)
 {
+    targetCharity = charity; // Asetetaan privaattimuuttuja, jotta tieto voidaan lähettää backendiin
+
     // kun saadaan lahjoituskohde, tehdään olio ja aukaistaan ikkuna jossa valitaan lahjoituksen määrä
     pValitseSumma = new ValitseSummaWindow(this);
     connect(pValitseSumma,SIGNAL(sendSumma(QString)), // ValitseSumman sendSumma signaali yhdistetään receiveCharitySummaan
@@ -210,7 +212,7 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
     pNaytaTapahtuma->updateInfo();
     pNaytaTapahtuma->show();
 
-    emit CharityTransfer("lahjoitus", charitySumma.toInt());
+    emit CharityTransfer("lahjoitus, "+targetCharity, charitySumma.toInt());
     disconnect(this,SIGNAL(CharityTransfer(QString,int)),
                RestApi,SLOT(receiveTransfer(QString,int)));
     connect(RestApi, SIGNAL(updateSaldoSignal()),
