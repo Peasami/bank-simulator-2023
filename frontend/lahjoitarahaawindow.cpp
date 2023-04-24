@@ -10,6 +10,7 @@ LahjoitaRahaaWindow::LahjoitaRahaaWindow(QWidget *parent) :
     ui->setupUi(this);
     pQTimer = new QTimer(this);
     pQTimer->start(1000); // tickrate 1sec
+
     // Käy läpi kaikki windowin napit
     for(int i=0;i<3;i++)
     {
@@ -20,9 +21,9 @@ LahjoitaRahaaWindow::LahjoitaRahaaWindow(QWidget *parent) :
                 this,SLOT(charityButtonHandler()));
 
 
-        ///// Lisää nappien nimet charityList listaan
-        ///charityList.append(ui->leftCharitiesLayout->itemAt(i)->widget()->objectName());
-        ///charityList.append(ui->rightCharitiesLayout->itemAt(i)->widget()->objectName());
+        // Lisää nappien nimet charityList listaan
+        charityList.append(ui->leftCharitiesLayout->itemAt(i)->widget()->objectName());
+        charityList.append(ui->rightCharitiesLayout->itemAt(i)->widget()->objectName());
 
     }
 }
@@ -47,22 +48,30 @@ void LahjoitaRahaaWindow::charityButtonHandler()
     else
     {
         time = 10;
-    emit sendCharity(selectedCharity);
-    //emit deleteWindow(this);
-    deleteLater();
-    }
-    /** //etsii charityList -listasta napin nimeä vastaavan indeksin, jotta voidaan käyttää switch casea
-    switch(charityList.indexOf(buttonSender->objectName()))
-    {
-    case 0:
-        qDebug()<<"pelastakaalapset";
-        break;
+        ///emit sendCharity(selectedCharity);
 
-    case 1:
-        qDebug()<<"syöpäsäätiö";
-        break;
+        //etsii charityList -listasta napin nimeä vastaavan indeksin, jotta voidaan käyttää switch casea
+        switch(charityList.indexOf(buttonSender->objectName()))
+        {
+        case 0:
+            emit sendCharity("Pelastakaa Lapset");
+            break;
+        case 1:
+            emit sendCharity("Syöpäsäätiö");
+            break;
+        case 2:
+            emit sendCharity("Punainen Risti");
+            break;
+        case 3:
+            emit sendCharity("Mieli RY");
+            break;
+        case 4:
+            emit sendCharity("Pelastusarmeija");
+            break;
+        }
+
+        deleteLater();
     }
-    */
 }
 
 void LahjoitaRahaaWindow::updateTimer()
@@ -72,10 +81,10 @@ void LahjoitaRahaaWindow::updateTimer()
     qDebug()<<time;
     if(time == 0)
     {
-    qDebug()<<"timeout";
-    done(0);
-    pQTimer->stop();
-    deleteLater();
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
     }
 
 }

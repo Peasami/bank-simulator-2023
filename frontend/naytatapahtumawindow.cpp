@@ -25,6 +25,7 @@ void NaytaTapahtumaWindow::setLahjoitusMaara(const QString &newLahjoitusMaara)
 void NaytaTapahtumaWindow::setLahjoitusKohde(const QString &newLahjoitusKohde)
 {
     lahjoitusKohde = newLahjoitusKohde;
+    lahjoitusKohde.remove("Button");
 }
 
 void NaytaTapahtumaWindow::updateInfo()
