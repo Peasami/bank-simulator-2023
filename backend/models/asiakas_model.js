@@ -2,7 +2,7 @@ const db = require('../database');
 
 const Asiakas = {
   getAll: function(callback) {
-    return db.query('select * from asiakas', callback);
+    return db.query('select * from Asiakas', callback);
   },
   getById: function(id, callback) {
     return db.query('select * from Asiakas where idAsiakas=?', [id], callback);
