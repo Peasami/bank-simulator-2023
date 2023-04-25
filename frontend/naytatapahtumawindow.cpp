@@ -9,10 +9,12 @@ NaytaTapahtumaWindow::NaytaTapahtumaWindow(QWidget *parent) :
     ui->setupUi(this);
     pQTimer = new QTimer(this);
     pQTimer->start(1000); // tickrate 1sec
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 NaytaTapahtumaWindow::~NaytaTapahtumaWindow()
 {
+    emit endSession();
     delete ui;
     qDebug()<<"NaytaTapahtumaWindow tuhottu";
 }

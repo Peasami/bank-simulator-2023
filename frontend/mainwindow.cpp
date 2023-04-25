@@ -149,8 +149,6 @@ void MainWindow::nostaRahaaButton_handler()
     pValitseSumma->open();
     connect(this,SIGNAL(sendTransfer(QString,int)),
             RestApi,SLOT(receiveTransfer(QString,int)));
-    connect(pValitseSumma, SIGNAL(endSession()),
-            this,SLOT(transactionDone()));
 
     qDebug()<<"nosta rahaa";
 
@@ -204,6 +202,9 @@ void MainWindow::receiveCharity(QString charity)
 void MainWindow::receiveCharitySumma(QString charitySumma)
 {
     qDebug()<<"receiveCharitySumma(): "<<charitySumma;
+
+    connect(pNaytaTapahtuma, SIGNAL(endSession()),
+            this,SLOT(TransactionDone()));
 
     // Annetaan lahjoituksen määrä näytäTapahtumalle
     pNaytaTapahtuma->setLahjoitusMaara(charitySumma);

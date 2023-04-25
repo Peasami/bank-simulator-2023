@@ -21,6 +21,9 @@ public:
     void updateInfo();
     void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
 
+signals:
+    void endSession();
+
 private:
     Ui::NaytaTapahtumaWindow *ui;
     QString lahjoitusKohde;
