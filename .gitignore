@@ -1,5 +1,5 @@
 backend/node_modules/
-backend/*.env/
+backend/*.env
 frontend/build/
 frontend/*.user
 DLLPinCode/build/
