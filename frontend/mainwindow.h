@@ -46,7 +46,7 @@ private slots:
     void printSaldoDataSlot();
     void printAccountHistoryDataSlot();
     void receiveTransferDataSlot();
-
+    void TransactionDone();
     void openManualCharitySumma();
     void openManualNostoSumma();
     void mainTimer();
@@ -71,6 +71,7 @@ signals:
     void sendTransfer(QString, int);
     void CharityTransfer(QString,int);
     void cardType(QString);
+
 
 
 

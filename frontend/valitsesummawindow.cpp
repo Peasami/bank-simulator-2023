@@ -50,7 +50,7 @@ void ValitseSummaWindow::summaButtonHandler()
         qDebug()<<"isNumber";
         if(selectedSumma.toInt() > testiSaldo){
             qDebug()<<"Ei tarpeeksi saldoa!";
-            done(0);
+            done(0);            
             deleteLater();
         }
         testiSaldo -= selectedSumma.toInt();

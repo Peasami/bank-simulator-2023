@@ -149,6 +149,8 @@ void MainWindow::nostaRahaaButton_handler()
     pValitseSumma->open();
     connect(this,SIGNAL(sendTransfer(QString,int)),
             RestApi,SLOT(receiveTransfer(QString,int)));
+    connect(pValitseSumma, SIGNAL(endSession()),
+            this,SLOT(transactionDone()));
 
     qDebug()<<"nosta rahaa";
 
@@ -272,6 +274,11 @@ void MainWindow::receiveTransferDataSlot()
 {
     QByteArray TransferData = RestApi->getHttpResponse();
     qDebug()<< "exe vastaan otti datan,joka on: "<<TransferData;
+}
+
+void MainWindow::TransactionDone()
+{
+    deleteLater();
 }
 
 
