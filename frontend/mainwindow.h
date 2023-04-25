@@ -65,13 +65,10 @@ private:
     short mainTime = 30;
     QString cardNumber;
     QByteArray token;
-<<<<<<< HEAD
     QByteArray accountHistoryData;
     QByteArray saldoData;
     bool credit;                    // tarvitaan Saldoon ja Tilitapahtumiin
-=======
     QString targetCharity;
->>>>>>> origin
 signals:
 
     void sendTransfer(QString, int);
