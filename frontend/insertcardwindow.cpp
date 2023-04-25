@@ -33,7 +33,7 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     QWidget::show();
 
     ///TESTI KOODI DEBUGGAUSTA VARTEN ILMAN KORTINLUKIJAA///
-    receiveCardNumberFromDLL("06000d8977");
+    //receiveCardNumberFromDLL("06000d8977");
 }
 
 
@@ -161,9 +161,8 @@ void InsertCardWindow::httpReadySlot()
 
     switch(cardType.toInt()){
     case 0:
-        delete pMainWindow;
-        pMainWindow=nullptr;
-        return;
+        qDebug()<<"Kortilla "+cardNumber<<"debit ja credit molemmat nollia";
+       return;
     case 1:
         pMainWindow->IsCredit(true);
         pMainWindow->disableVaihdaBtn();
