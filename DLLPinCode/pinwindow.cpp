@@ -80,6 +80,7 @@ void pinwindow::on_okButton_clicked()
     yritykset--;
     ui->lineEdit->clear();
     pin = "";
+    time=10;
 }
 // Aikakatkaisu-toiminto, jolla suljetaan PIN UI
 // jos käyttäjä ei tee mitään 10 sekunttiin.
