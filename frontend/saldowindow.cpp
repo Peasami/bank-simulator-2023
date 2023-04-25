@@ -4,14 +4,16 @@
 #include "ui_saldowindow.h"
 #include <QTimer>
 
-saldoWindow::saldoWindow(QWidget *parent) :
+saldoWindow::saldoWindow(QWidget *parent, bool a) :
     QDialog(parent),
     ui(new Ui::saldoWindow)
 {
     ui->setupUi(this);
 
     pQTimer = new QTimer(this);
-    pQTimer->start(1000); // tickrate 1sec
+    pQTimer->start(1000);               // tickrate 1sec
+    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
+            this,SLOT(updateTimer()));
 
     connect(ui->takaisinButton,SIGNAL(clicked(bool)),
     this,SLOT(takaisinButtonHandler()));
@@ -29,29 +31,23 @@ saldoWindow::saldoWindow(QWidget *parent) :
         rivi_1.setTime("1.4.2023");
         rivi_1.setEvent("Nosto");
         rivi_1.setMaara("100");
-        rivi_1.setSaldo("30");
         rivi_2.setTime("3.4.2023");
         rivi_2.setEvent("Palkka");
         rivi_2.setMaara("500");
-        rivi_2.setSaldo("530");
         rivi_3.setTime("4.4.2023");
         rivi_3.setEvent("Vesimaksu");
         rivi_3.setMaara("60");
-        rivi_3.setSaldo("470");
         rivi_4.setTime("4.4.2023");
         rivi_4.setEvent("Kauppa");
         rivi_4.setMaara("150");
-        rivi_4.setSaldo("320");
         rivi_5.setTime("6.4.2023");
         rivi_5.setEvent("Sudenpennut");
         rivi_5.setMaara("90");
-        rivi_5.setSaldo("230");
 
         QStandardItemModel *table_model = new QStandardItemModel(eventList.size(),4);
         table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Pvm"));
         table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Tapahtuma"));
         table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Maara"));
-        table_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Tilin Saldo"));
 
         for (int row = 0; row < eventList.size(); ++row) {
             QStandardItem *pTime = new QStandardItem((eventList[row]->getTime()));
@@ -60,8 +56,6 @@ saldoWindow::saldoWindow(QWidget *parent) :
             table_model->setItem(row, 1, pEvent);
             QStandardItem *pMaara = new QStandardItem((eventList[row]->getMaara()));
             table_model->setItem(row, 2, pMaara);
-            QStandardItem *pSaldo = new QStandardItem((eventList[row]->getSaldo()));
-            table_model->setItem(row, 3, pSaldo);
         }
 
         ui->tapahtumaTable->setModel(table_model);

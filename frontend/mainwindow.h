@@ -65,6 +65,9 @@ private:
     short mainTime = 30;
     QString cardNumber;
     QByteArray token;
+    QByteArray accountHistoryData;
+    QByteArray saldoData;
+    bool credit;                    // tarvitaan Saldoon ja Tilitapahtumiin
     QString targetCharity;
 signals:
 
