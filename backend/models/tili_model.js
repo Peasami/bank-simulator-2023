@@ -5,7 +5,7 @@ const Tili = {
     return db.query('select * from Tili', callback);
   },
   getById: function(id, callback) {
-    return db.query('SELECT SaldoDebit, SaldoCredit, pvm, TapahtumaNimi, SummaDebit, SummaCredit FROM tilitapahtumat JOIN Tili ON tilitapahtumat.idTili=Tili.idTili JOIN Kortti ON Tili.idTili=Kortti.idTili WHERE Kortti.idKortti=? ORDER BY pvm DESC LIMIT 5;', [id], callback);
+    return db.query('SELECT SaldoDebit, SaldoCredit, pvm, TapahtumaNimi, SummaDebit, SummaCredit FROM Tilitapahtumat JOIN Tili ON Tilitapahtumat.idTili=Tili.idTili JOIN Kortti ON Tili.idTili=Kortti.idTili WHERE Kortti.idKortti=? ORDER BY pvm DESC LIMIT 5;', [id], callback);
   },
   add: function(Tili, callback) {
     return db.query(
