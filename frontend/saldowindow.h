@@ -13,7 +13,7 @@ class saldoWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit saldoWindow(QWidget *parent = nullptr);
+    explicit saldoWindow(QWidget *parent = nullptr, bool a=0);
     ~saldoWindow();
 
 

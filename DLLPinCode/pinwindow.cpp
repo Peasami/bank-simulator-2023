@@ -77,9 +77,10 @@ void pinwindow::on_okButton_clicked()
         emit sendNumberToInterface(pin);
     }
 
-    yritykset--;
+    //yritykset--;
     ui->lineEdit->clear();
     pin = "";
+    time=10;
 }
 // Aikakatkaisu-toiminto, jolla suljetaan PIN UI
 // jos käyttäjä ei tee mitään 10 sekunttiin.
@@ -105,4 +106,5 @@ void pinwindow::updateTimer()
 void pinwindow::setInfoText(QString info)
 {
     ui->label->setText(info);
+    yritykset--;
 }

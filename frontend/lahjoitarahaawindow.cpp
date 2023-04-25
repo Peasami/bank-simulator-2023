@@ -9,8 +9,9 @@ LahjoitaRahaaWindow::LahjoitaRahaaWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     pQTimer = new QTimer(this);
-    pQTimer->start(1000); // tickrate 1sec
-
+    pQTimer->start(1000);               // tickrate 1sec
+    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
+            this,SLOT(updateTimer()));
     // Käy läpi kaikki windowin napit
     for(int i=0;i<3;i++)
     {

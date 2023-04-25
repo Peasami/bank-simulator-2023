@@ -8,8 +8,9 @@ NaytaTapahtumaWindow::NaytaTapahtumaWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     pQTimer = new QTimer(this);
-    pQTimer->start(1000); // tickrate 1sec
-    setAttribute(Qt::WA_DeleteOnClose);
+    pQTimer->start(1000);               // tickrate 1sec
+    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
+            this,SLOT(updateTimer()));
 }
 
 NaytaTapahtumaWindow::~NaytaTapahtumaWindow()

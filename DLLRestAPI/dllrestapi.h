@@ -2,7 +2,7 @@
 #ifndef DLLRESTAPI_H
 #define DLLRESTAPI_H
 #include <QDebug>
-#include<QObject>
+#include <QObject>
 #include "DLLRestAPI_global.h"
 #include "rest.h"
 
