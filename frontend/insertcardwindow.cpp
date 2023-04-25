@@ -32,6 +32,9 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     /*delete pMainWindow;
     pMainWindow = nullptr;*/
     QWidget::show();
+
+    ///TESTI KOODI DEBUGGAUSTA VARTEN ILMAN KORTINLUKIJAA///
+    receiveCardNumberFromDLL("06000d8977");
 }
 
 
