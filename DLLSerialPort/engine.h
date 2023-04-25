@@ -12,8 +12,6 @@ class Engine : public QObject
 public:
     Engine(QObject * parent = nullptr);
     ~Engine();
-
-public slots:
     bool openSerialPort();
 
 private slots:
