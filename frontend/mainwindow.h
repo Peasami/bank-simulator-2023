@@ -51,7 +51,6 @@ private slots:
     void openManualNostoSumma();
     void mainTimer();
     void applicationFocusChanged(QWidget *oldWidget, QWidget *newWidget);
-    void deleteWindowSlot(QWidget *);
 private:
     Ui::MainWindow *ui;
     VaihdaTiliaWindow * pVaihdaTilia;
@@ -66,6 +65,7 @@ private:
     short mainTime = 30;
     QString cardNumber;
     QByteArray token;
+    QString targetCharity;
 signals:
 
     void sendTransfer(QString, int);
