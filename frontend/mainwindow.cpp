@@ -108,8 +108,6 @@ void MainWindow::vaihdaTiliButton_handler()
     pVaihdaTilia = new VaihdaTiliaWindow(this);
     connect(pVaihdaTilia,SIGNAL(sendIsCredit(bool)),
             this,SLOT(receiveIsCredit(bool)));
-    connect(pVaihdaTilia,SIGNAL(deleteWindow(QWidget*)),
-            this, SLOT(deleteWindowSlot(QWidget*)));
 
     qDebug()<<"vaihda tiliä";
     pVaihdaTilia->open();
@@ -129,8 +127,6 @@ void MainWindow::lahjoitaButton_handler()
     pLahjoitaRahaa = new LahjoitaRahaaWindow(this);
     connect(pLahjoitaRahaa,SIGNAL(sendCharity(QString)),
             this,SLOT(receiveCharity(QString)));
-    connect(pLahjoitaRahaa,SIGNAL(deleteWindow(QWidget*)),
-            this, SLOT(deleteWindowSlot(QWidget*)));
 
 
     qDebug()<<"lahjoita";
@@ -151,8 +147,6 @@ void MainWindow::nostaRahaaButton_handler()
 
     connect(pValitseSumma,SIGNAL(requestManualSumma()),
             this,SLOT(openManualNostoSumma()));
-    connect(pValitseSumma,SIGNAL(deleteWindow(QWidget*)),
-            this, SLOT(deleteWindowSlot(QWidget*)));
     pValitseSumma->open();
     connect(this,SIGNAL(sendTransfer(QString,int)),
             RestApi,SLOT(receiveTransfer(QString,int)));
@@ -163,7 +157,6 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
-
 
     connect(RestApi, SIGNAL(accountHistorySignal()),
             this,SLOT(printAccountHistoryDataSlot()));
@@ -184,6 +177,8 @@ void MainWindow::receiveIsCredit(bool b)
 
 void MainWindow::receiveCharity(QString charity)
 {
+    targetCharity = charity; // Asetetaan privaattimuuttuja, jotta tieto voidaan lähettää backendiin
+
     // kun saadaan lahjoituskohde, tehdään olio ja aukaistaan ikkuna jossa valitaan lahjoituksen määrä
     pValitseSumma = new ValitseSummaWindow(this);
     connect(pValitseSumma,SIGNAL(sendSumma(QString)), // ValitseSumman sendSumma signaali yhdistetään receiveCharitySummaan
@@ -191,8 +186,6 @@ void MainWindow::receiveCharity(QString charity)
 
     connect(pValitseSumma,SIGNAL(requestManualSumma()),
             this,SLOT(openManualCharitySumma()));
-    connect(pValitseSumma,SIGNAL(deleteWindow(QWidget*)),
-            this, SLOT(deleteWindowSlot(QWidget*)));
 
     pValitseSumma->open();
 
@@ -220,7 +213,7 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
     pNaytaTapahtuma->updateInfo();
     pNaytaTapahtuma->show();
 
-    emit CharityTransfer("lahjoitus", charitySumma.toInt());
+    emit CharityTransfer("lahjoitus, "+targetCharity, charitySumma.toInt());
     disconnect(this,SIGNAL(CharityTransfer(QString,int)),
                RestApi,SLOT(receiveTransfer(QString,int)));
     connect(RestApi, SIGNAL(updateSaldoSignal()),
@@ -294,8 +287,6 @@ void MainWindow::openManualCharitySumma()
     pManualSumma = new ManualSummaWindow(this);
     connect(pManualSumma,SIGNAL(sendSumma(QString)),
             this,SLOT(receiveCharitySumma(QString)));
-    connect(pManualSumma,SIGNAL(deleteWindow(QWidget*)),
-            this, SLOT(deleteWindowSlot(QWidget*)));
     pManualSumma->open();
 }
 
@@ -307,8 +298,6 @@ void MainWindow::openManualNostoSumma()
     pManualSumma = new ManualSummaWindow(this);
     connect(pManualSumma,SIGNAL(sendSumma(QString)),
             this,SLOT(receiveNostoSumma(QString)));
-    connect(pManualSumma,SIGNAL(deleteWindow(QWidget*)),
-            this, SLOT(deleteWindowSlot(QWidget*)));
     pManualSumma->open();
 }
 
@@ -337,12 +326,3 @@ void MainWindow::applicationFocusChanged(QWidget *oldWidget, QWidget *newWidget)
         mainTime=30;
     }
 }
-
-
-
-void MainWindow::deleteWindowSlot(QWidget * pWindow)
-{
-    delete pWindow;
-    pWindow = nullptr;
-}
-

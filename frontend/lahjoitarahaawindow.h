@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::LahjoitaRahaaWindow *ui;
-    //QStringList charityList;
+    QStringList charityList;
     QTimer *pQTimer;
     short time;
 };
