@@ -13,8 +13,6 @@ class DLLSERIALPORT_EXPORT DLLSerialPort : public QObject
 public:
     DLLSerialPort(QObject * parent = nullptr);
     ~DLLSerialPort();
-
-public slots:
     bool openRFIDReader();
 
 private slots:
