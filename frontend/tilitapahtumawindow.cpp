@@ -1,16 +1,21 @@
 #include "tilitapahtumawindow.h"
 #include "qdebug.h"
+#include "qjsondocument.h"
+#include "qjsonobject.h"
 #include "ui_tilitapahtumawindow.h"
 #include <QTimer>
+#include <QJsonArray>
 
-TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent) :
+TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, bool credit) :     // Bool = credit
     QDialog(parent),
     ui(new Ui::TiliTapahtumaWindow)
 {
     ui->setupUi(this);
 
     pQTimer = new QTimer(this);
-    pQTimer->start(1000); // tickrate 1sec
+    pQTimer->start(1000);               // tickrate 1sec
+    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
+            this,SLOT(updateTimer()));
 
     connect(ui->takaisinButton,SIGNAL(clicked(bool)),
             this,SLOT(takaisinButtonHandler()));
@@ -19,57 +24,64 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent) :
     connect(ui->aiemmatButton,SIGNAL(clicked(bool)),
             this,SLOT(aiemmatButtonHandler()));
 
+/*    QList<QStandardItem> eventList;
+    rivi rivi_1, rivi_2, rivi_3, rivi_4, rivi_5;
+    eventList.append(&rivi_1);
+    eventList.append(&rivi_2);
+    eventList.append(&rivi_3);
+    eventList.append(&rivi_4);
+    eventList.append(&rivi_5);
+
     if (listaTesti) //tekee esimerkkilistan jos listaTesti = 1
     {
-        QList<rivi*> eventList;
-        rivi rivi_1, rivi_2, rivi_3, rivi_4, rivi_5;
-        eventList.append(&rivi_1);
-        eventList.append(&rivi_2);
-        eventList.append(&rivi_3);
-        eventList.append(&rivi_4);
-        eventList.append(&rivi_5);
 
         rivi_1.setTime("1.4.2023");
         rivi_1.setEvent("Nosto");
         rivi_1.setMaara("100");
-        rivi_1.setSaldo("30");
         rivi_2.setTime("3.4.2023");
         rivi_2.setEvent("Palkka");
         rivi_2.setMaara("500");
-        rivi_2.setSaldo("530");
         rivi_3.setTime("4.4.2023");
         rivi_3.setEvent("Vesimaksu");
         rivi_3.setMaara("60");
-        rivi_3.setSaldo("470");
         rivi_4.setTime("4.4.2023");
         rivi_4.setEvent("Kauppa");
         rivi_4.setMaara("150");
-        rivi_4.setSaldo("320");
         rivi_5.setTime("6.4.2023");
         rivi_5.setEvent("Sudenpennut");
         rivi_5.setMaara("90");
-        rivi_5.setSaldo("230");
 
-        QStandardItemModel *table_model = new QStandardItemModel(eventList.size(),4);
-        table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Pvm"));
-        table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Tapahtuma"));
-        table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Maara"));
-        table_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Tilin Saldo"));
+    }
+*/
+    QJsonDocument doc = QJsonDocument::fromJson(tiliData);
+    QJsonArray jsonArray = doc.array();
+    //QList<QStandardItem> rivi;
 
-        for (int row = 0; row < eventList.size(); ++row) {
-            QStandardItem *pTime = new QStandardItem((eventList[row]->getTime()));
-            table_model->setItem(row, 0, pTime);
-            QStandardItem *pEvent = new QStandardItem((eventList[row]->getEvent()));
-            table_model->setItem(row, 1, pEvent);
-            QStandardItem *pMaara = new QStandardItem((eventList[row]->getMaara()));
-            table_model->setItem(row, 2, pMaara);
-            QStandardItem *pSaldo = new QStandardItem((eventList[row]->getSaldo()));
-            table_model->setItem(row, 3, pSaldo);
+    QStandardItemModel *taulukkoMalli = new QStandardItemModel(5,3,this);
+    taulukkoMalli->setHeaderData(0, Qt::Horizontal, QObject::tr("Pvm"));
+    taulukkoMalli->setHeaderData(1, Qt::Horizontal, QObject::tr("Tapahtuma"));
+    taulukkoMalli->setHeaderData(2, Qt::Horizontal, QObject::tr("Maara"));
+
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        QJsonObject obj = jsonArray[i].toObject();
+        QList<QStandardItem*> row;
+        row << new QStandardItem(obj.value("pvm").toString());
+        row << new QStandardItem(obj.value("TapahtumaNimi").toString());
+        if (!credit)
+        {
+        row << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
         }
-
-        ui->tapahtumaTable->setModel(table_model);
+        else
+        {
+        row << new QStandardItem(QString::number(obj.value("SummaCredit").toDouble()));
+        }
+        taulukkoMalli->appendRow(row);
     }
 
+    ui->tapahtumaTable->setModel(taulukkoMalli);
 }
 
 TiliTapahtumaWindow::~TiliTapahtumaWindow()
