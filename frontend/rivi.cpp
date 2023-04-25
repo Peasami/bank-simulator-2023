@@ -26,16 +26,6 @@ void rivi::setEvent(const QString &newEvent)
     event = newEvent;
 }
 
-QString rivi::getSaldo() const
-{
-    return saldo;
-}
-
-void rivi::setSaldo(const QString &newSaldo)
-{
-    saldo = newSaldo;
-}
-
 QString rivi::getMaara() const
 {
     return maara;

@@ -9,7 +9,9 @@ ValitseSummaWindow::ValitseSummaWindow(QWidget *parent) :
     ui->setupUi(this);
 
     pQTimer = new QTimer(this);
-    pQTimer->start(1000); // tickrate 1sec
+    pQTimer->start(1000);               // tickrate 1sec
+    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
+            this,SLOT(updateTimer()));
 
     setAttribute(Qt::WA_DeleteOnClose); // Olio tuhoutuu ruksia painaessa
 

@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
     connect(qApp, &QApplication::focusChanged,
             this,&MainWindow::applicationFocusChanged);
 
-    pSaldo = new saldoWindow(this);
+
     connect(ui->saldoButton,SIGNAL(clicked(bool)),
             this,SLOT(saldoButton_handler()));
 
@@ -49,7 +49,6 @@ MainWindow::MainWindow(QWidget *parent, QString cardNum, DLLRestAPI *pointer)//,
     connect(ui->nostaRahaaButton,SIGNAL(clicked(bool)),
             this,SLOT(nostaRahaaButton_handler()));
 
-    pTiliTapahtuma = new TiliTapahtumaWindow(this);
     connect(ui->tilitapahtumatButton,SIGNAL(clicked(bool)),
             this,SLOT(tilitapahtumatButton_handler()));
 
@@ -64,10 +63,12 @@ void MainWindow::SetUserName(QString name)
 void MainWindow::IsCredit(bool isCredit)
 {
     if(isCredit == true){
+        credit=1;
         ui->tiliLabel->setText("Credit");
         emit cardType("Credit");
     }
     else{
+        credit=0;
         ui->tiliLabel->setText("Debit");
         emit cardType("Debit");
     }
@@ -90,6 +91,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::saldoButton_handler()
 {
+    pSaldo = new saldoWindow(this,credit);
     connect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
 
@@ -161,12 +163,14 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
+
+
     connect(RestApi, SIGNAL(accountHistorySignal()),
             this,SLOT(printAccountHistoryDataSlot()));
-
-
-    //QString cardNum = "06000d8977";   //testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
-    RestApi->getAccountHistoryInfo(cardNumber);//,token);
+    RestApi->getAccountHistoryInfo(cardNumber);
+    pTiliTapahtuma = new TiliTapahtumaWindow(this,accountHistoryData,credit);
+    //QString cardNum = "06000d8977";   // testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
+    //,token);
     qDebug()<<"tilitapahtumat";
     pTiliTapahtuma->open();
 }
@@ -252,7 +256,7 @@ void MainWindow::printSaldoDataSlot()
 {
     disconnect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
-    QByteArray saldoData = RestApi->getHttpResponse();
+    saldoData = RestApi->getHttpResponse();
     qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
 
 
@@ -265,11 +269,11 @@ void MainWindow::printAccountHistoryDataSlot()
             this,SLOT(printAccountHistoryDataSlot()));
 
 
-    QByteArray accountHistoryData = RestApi->getHttpResponse();
+    accountHistoryData = RestApi->getHttpResponse();
 
     qDebug() << "exe vastaan otti datan, joka on: " << accountHistoryData;
 
-    accountHistoryData.clear();
+    //accountHistoryData.clear();
 }
 
 void MainWindow::receiveTransferDataSlot()
