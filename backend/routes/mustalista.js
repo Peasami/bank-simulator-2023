@@ -43,7 +43,7 @@ function(request, response) {
     if (err) {
       response.json(err);
     } else {
-        response.json(dbResult.locked);
+        response.json(dbResult[0][0].locked);
     }
   });
 });

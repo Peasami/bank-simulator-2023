@@ -166,7 +166,7 @@ void rest::getBlacklist(QString cardNum)
     QJsonObject jsonObj;
     jsonObj.insert("idKortti",cardNum);
 
-    QString site_url=Environment::getBaseUrl()+"/mustalista/check/"+cardNum;
+    QString site_url=Environment::getBaseUrl()+"/mustalista/check/";
     qDebug()<<"get blacklist"<<site_url;
     QNetworkRequest request((site_url));
 
