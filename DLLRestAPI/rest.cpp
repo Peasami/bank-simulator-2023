@@ -162,10 +162,11 @@ void rest::updateSaldo(QString cardNum)
 
 void rest::getBlacklist(QString cardNum)
 {
+    qDebug()<<"rest cpp:n getblacklist sai datan"<<cardNum;
     QJsonObject jsonObj;
     jsonObj.insert("idKortti",cardNum);
 
-    QString site_url=Environment::getBaseUrl()+"/mustalista/check/";
+    QString site_url=Environment::getBaseUrl()+"/mustalista/check/"+cardNum;
     qDebug()<<"get blacklist"<<site_url;
     QNetworkRequest request((site_url));
 
@@ -177,7 +178,7 @@ void rest::getBlacklist(QString cardNum)
     connect(updateManager, SIGNAL(finished(QNetworkReply*))
             , this, SLOT(updateSlot(QNetworkReply*)));
 
-    reply = updateManager->post(request, QJsonDocument(jsonObj).toJson());
+    reply = updateManager->put(request, QJsonDocument(jsonObj).toJson());
 }
 
 

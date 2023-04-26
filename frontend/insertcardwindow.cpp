@@ -190,6 +190,7 @@ void InsertCardWindow::checkIfBlacklisted()
     disconnect(pRestApi,SIGNAL(blacklistSignal()),
             this,SLOT(checkIfBlacklisted()));
     QByteArray blacklistData = pRestApi->getHttpResponse();
+    qDebug()<<"blacklist data "<<blacklistData;
     QJsonDocument json_doc = QJsonDocument::fromJson(blacklistData);
     QJsonArray json_array = json_doc.array();
     int state = 0;
@@ -198,6 +199,7 @@ void InsertCardWindow::checkIfBlacklisted()
         QJsonObject json_obj = value.toObject();
         state += (json_obj["idKortti"].toInt());
     }
+    qDebug()<<"exessä state "<<state;
     if(state == 0)
     {
         pPinCode = new DLLPinCode(this);

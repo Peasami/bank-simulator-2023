@@ -37,7 +37,7 @@ function(request, response) {
   });
 });
 
-router.post('/check', 
+router.put('/check', 
 function(request, response) {
     mustattu.check_if_card_locked(request.body, function(err, dbResult) {
     if (err) {
