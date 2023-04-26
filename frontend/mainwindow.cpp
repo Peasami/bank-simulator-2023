@@ -202,12 +202,10 @@ void MainWindow::receiveCharity(QString charity)
     qDebug()<<"recieveCharity(): "<<charity;
 }
 
+// Kun lahjoitettava summa on valittu toisesta ikkunasta, palataan tähän funktioon
 void MainWindow::receiveCharitySumma(QString charitySumma)
 {
     qDebug()<<"receiveCharitySumma(): "<<charitySumma;
-
-    connect(pNaytaTapahtuma, SIGNAL(endSession()),
-            this,SLOT(TransactionDone()));
 
     // Annetaan lahjoituksen määrä näytäTapahtumalle
     pNaytaTapahtuma->setTapahtumaMaara(charitySumma+"€");
@@ -217,13 +215,16 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
     // päivitetään ui ja näytetään
     pNaytaTapahtuma->updateInfo();
 
+    // Lähetetään DLLRestApille transfer -tapahtuman nimi ja määrä
     emit CharityTransfer("lahjoitus, "+targetCharity, charitySumma.toInt());
     disconnect(this,SIGNAL(CharityTransfer(QString,int)),
                RestApi,SLOT(receiveTransfer(QString,int)));
+
+    // Kun DLLRestApi lähettää signaalin, saa tiedon oliko tilillä saldoa vai ei
     connect(RestApi, SIGNAL(updateSaldoSignal()),
             this, SLOT(receiveTransferDataSlot()));
 
-
+    // DLLRestApiin kortin numero talteen
     RestApi->updateSaldoInfo(cardNumber);
 
 
@@ -265,6 +266,7 @@ void MainWindow::printSaldoDataSlot()
 
 }
 
+
 void MainWindow::printAccountHistoryDataSlot()
 
 {
@@ -279,6 +281,7 @@ void MainWindow::printAccountHistoryDataSlot()
     //accountHistoryData.clear();
 }
 
+// Hakee tiedon oliko tilillä saldoa transferiin vai ei
 void MainWindow::receiveTransferDataSlot()
 {
     QByteArray TransferData = RestApi->getHttpResponse();
