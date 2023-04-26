@@ -1,6 +1,7 @@
 #ifndef TILITAPAHTUMAWINDOW_H
 #define TILITAPAHTUMAWINDOW_H
 
+#include "qjsonarray.h"
 #include "rivi.h"
 #include <QDialog>
 #include <qstandarditemmodel.h>
@@ -27,11 +28,16 @@ private slots:
 
 private:
     Ui::TiliTapahtumaWindow *ui;
+    QStandardItemModel *taulukkoMalli;
+    QJsonArray jsonArray;
     rivi * pRivi;
     bool listaTesti=1;
     QTimer *pQTimer;
-    short time;
-    short page=0;
+    short time=10;
+    short sivu=0;
+    short eventList=0;
+    short edellinenSivu=0;
+    bool identity=0;
     //QJsonArray * json_array;
 };
 

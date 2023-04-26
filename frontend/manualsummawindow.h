@@ -27,7 +27,7 @@ public slots:
 private:
     Ui::ManualSummaWindow *ui;
     QTimer *pQTimer;
-    short time;
+    short time=10;
 };
 
 #endif // MANUALSUMMAWINDOW_H
