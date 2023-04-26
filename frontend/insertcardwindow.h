@@ -29,6 +29,7 @@ public slots:
 private slots:
         void loginReadySlots();
         void httpReadySlot();
+        void checkIfBlacklisted();
 
 private:
     Ui::InsertCardWindow *ui;

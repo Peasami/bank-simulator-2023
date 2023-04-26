@@ -33,13 +33,14 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     QWidget::show();
 
     ///TESTI KOODI DEBUGGAUSTA VARTEN ILMAN KORTINLUKIJAA///
-    receiveCardNumberFromDLL("06000d8977");
+    //receiveCardNumberFromDLL("06000d8977");
+
 }
 
 
 void InsertCardWindow::validateLogin()
 {
-    pRestApi = new DLLRestAPI(this);
+
     connect(pRestApi, SIGNAL(loginReady()),
             this,SLOT(loginReadySlots()));
 
@@ -79,10 +80,12 @@ void InsertCardWindow::receiveCardNumberFromDLL(QString cardNum)
 {
     qDebug()<<"EXE Vastaanottti DLLSerialPortilta kortinnumeron "<<cardNum;
     cardNumber = cardNum;
-    pPinCode = new DLLPinCode(this);
-    connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
-            this,SLOT(receivePinNumberFromDLL(QString)));
-    pPinCode->openPinWindow();
+    pRestApi = new DLLRestAPI(this);
+    connect(pRestApi,SIGNAL(blacklistSignal()),
+            this,SLOT(checkIfBlacklisted()));
+    pRestApi->checkBlacklist(cardNumber);
+
+
     //loggedOutSlot(false);
 
 }
@@ -182,4 +185,31 @@ void InsertCardWindow::httpReadySlot()
     pMainWindow->show();
 
     qDebug()<<"Insertcardwindowiin response: "<<username;
+}
+
+void InsertCardWindow::checkIfBlacklisted()
+{
+    disconnect(pRestApi,SIGNAL(blacklistSignal()),
+            this,SLOT(checkIfBlacklisted()));
+    QByteArray blacklistData = pRestApi->getHttpResponse();
+    QJsonDocument json_doc = QJsonDocument::fromJson(blacklistData);
+    QJsonArray json_array = json_doc.array();
+    int state = 0;
+
+    foreach (const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        state += (json_obj["idKortti"].toInt());
+    }
+    if(state == 0)
+    {
+        pPinCode = new DLLPinCode(this);
+        connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
+                this,SLOT(receivePinNumberFromDLL(QString)));
+        pPinCode->openPinWindow();
+    }
+    else
+    {
+        qDebug()<<"kortti lukittu";
+        ui->infoLabel->setText("KORTTI LUKITTU!");
+    }
 }

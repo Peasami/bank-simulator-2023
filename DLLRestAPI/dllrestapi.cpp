@@ -15,6 +15,8 @@ DLLRestAPI::DLLRestAPI(QObject *parent):QObject(parent)
     connect(pRest, SIGNAL(updateResponseReady()),
             this,SLOT(updateSaldoSlot()));
 
+    connect(pRest, SIGNAL(updateResponseReady()),
+            this,SLOT(blacklistSlot()));
 }
 
 DLLRestAPI::~DLLRestAPI()
@@ -114,6 +116,12 @@ void DLLRestAPI::updateSaldoSlot()
     emit updateSaldoSignal();
 }
 
+void DLLRestAPI::blacklistSlot()
+{
+    httpResponse = pRest->getHttpResponse();
+    emit blacklistSignal();
+}
+
 void DLLRestAPI::getTilityyppi(QString tili)
 {
     tilityyppi = tili;
@@ -130,6 +138,13 @@ void DLLRestAPI::receiveTransfer(QString tapahtuma, int summa)
     qDebug() << "rest api sai transferin:" << tapahtuma<< summa;
 
 
+}
+
+void DLLRestAPI::checkBlacklist(QString cardNum)
+{
+    connect(pRest,SIGNAL(httpResponseReady()),
+            this,SLOT(httpReadySlot()));
+    pRest->getBlacklist(cardNum);
 }
 
 

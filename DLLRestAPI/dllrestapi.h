@@ -19,7 +19,7 @@ public:
     //void setToken(const QString &newToken);
 
     const QByteArray &getHttpResponse() const;
-
+    void checkBlacklist(QString);
 
 
 public slots:
@@ -29,7 +29,6 @@ public slots:
     void getSaldoInfo(QString);
     void updateSaldoInfo(QString);
     void getTilityyppi(QString);
-
     void receiveTransfer(QString, int);
 
 
@@ -39,7 +38,7 @@ private slots:
     void accountHistorySlot();
     void getSaldoSlot();
     void updateSaldoSlot();
-
+    void blacklistSlot();
 
 signals:
     void sendLoginReplySignal(bool);
@@ -48,6 +47,7 @@ signals:
     void accountHistorySignal();
     void getSaldoSignal();
     void updateSaldoSignal();
+    void blacklistSignal();
 private:
     rest * pRest;
     QString loginResponse; //Token tai false
