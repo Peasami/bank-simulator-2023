@@ -4,6 +4,7 @@
 #include "rivi.h"
 #include <QDialog>
 #include <qstandarditemmodel.h>
+#include <QByteArray>
 
 
 namespace Ui {
@@ -15,7 +16,7 @@ class TiliTapahtumaWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit TiliTapahtumaWindow(QWidget *parent = nullptr);
+    explicit TiliTapahtumaWindow(QWidget *parent = nullptr, QByteArray tiliData="", bool credit=0);
     ~TiliTapahtumaWindow();
 
 private slots:
@@ -30,6 +31,8 @@ private:
     bool listaTesti=1;
     QTimer *pQTimer;
     short time;
+    short page=0;
+    //QJsonArray * json_array;
 };
 
 #endif // TILITAPAHTUMAWINDOW_H

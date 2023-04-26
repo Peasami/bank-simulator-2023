@@ -11,6 +11,7 @@ DLLPinCode::~DLLPinCode()
 {
     delete pinOlio;
     pinOlio = nullptr;
+    //pinOlio->deleteLater();
     qDebug()<<"pincode dll tuhottu";
 }
 
