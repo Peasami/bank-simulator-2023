@@ -132,8 +132,9 @@ void MainWindow::lahjoitaButton_handler()
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
-    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan
-    // lahjoituksen kohde ja määrä talteen muuttujiin
+    // Tehdään olio näytäTapahtumaWindowista, jotta sinne saadaan
+    // lahjoituksen kohde ja määrä talteen muuttujiin.
+    // Timeriä tähän ikkunaan ei alusteta konstruktorissa
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
 
 
@@ -275,6 +276,8 @@ void MainWindow::printAccountHistoryDataSlot()
 void MainWindow::receiveTransferDataSlot()
 {
     QByteArray TransferData = RestApi->getHttpResponse();
+    disconnect(RestApi,SIGNAL(updateSaldoSignal()),
+               this,SLOT(receiveTransferDataSlot()));
     qDebug()<< "exe vastaan otti datan,joka on: "<<TransferData;
 }
 

@@ -19,7 +19,9 @@ public:
     void setLahjoitusMaara(const QString &newLahjoitusMaara);
     void setLahjoitusKohde(const QString &newLahjoitusKohde);
     void updateInfo();
-    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
+
+public slots:
+    void updateTimer();
 
 signals:
     void endSession();
