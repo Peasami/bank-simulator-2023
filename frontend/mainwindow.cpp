@@ -191,7 +191,8 @@ void MainWindow::receiveCharity(QString charity)
     pValitseSumma->open();
 
     // Annetaan kohteen nimi näytäTapahtumalle
-    pNaytaTapahtuma->setTapahtumaNimi(charity);
+    pNaytaTapahtuma->setTapahtumaNimi(charity+" kiittää!");
+    pNaytaTapahtuma->setTapahtumaInfo("Kiito lahjoituksesta!");
 
     connect(this,SIGNAL(CharityTransfer(QString,int)),
               RestApi,SLOT(receiveTransfer(QString,int)));
@@ -209,7 +210,7 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
             this,SLOT(TransactionDone()));
 
     // Annetaan lahjoituksen määrä näytäTapahtumalle
-    pNaytaTapahtuma->setTapahtumaMaara(charitySumma);
+    pNaytaTapahtuma->setTapahtumaMaara(charitySumma+"€");
 
 
 
@@ -246,7 +247,12 @@ void MainWindow::receiveNostoSumma(QString nostoSumma)
 
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
 
-
+    pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
+    pNaytaTapahtuma->setTapahtumaMaara(nostoSumma+"€");
+    pNaytaTapahtuma->setTapahtumaNimi("");
+    pNaytaTapahtuma->setTapahtumaInfo("Nostettu: ");
+    pNaytaTapahtuma->updateInfo();
+    pNaytaTapahtuma->show();
 }
 
 void MainWindow::printSaldoDataSlot()

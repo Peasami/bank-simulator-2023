@@ -18,6 +18,7 @@ public:
 
     void setTapahtumaMaara(const QString &newTapahtumaMaara);
     void setTapahtumaNimi(const QString &newTapahtumaNimi);
+    void setTapahtumaInfo(const QString &newTapahtumaInfo);
     void updateInfo();
 
 public slots:
@@ -30,6 +31,7 @@ private:
     Ui::NaytaTapahtumaWindow *ui;
     QString tapahtumaNimi;
     QString tapahtumaMaara;
+    QString tapahtumaInfo;
     QTimer *pQTimer;
     short time=5;
 };

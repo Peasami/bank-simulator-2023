@@ -27,10 +27,16 @@ void NaytaTapahtumaWindow::setTapahtumaNimi(const QString &newTapahtumaNimi)
     tapahtumaNimi = newTapahtumaNimi;
 }
 
+void NaytaTapahtumaWindow::setTapahtumaInfo(const QString &newTapahtumaInfo)
+{
+    tapahtumaInfo = newTapahtumaInfo;
+}
+
 void NaytaTapahtumaWindow::updateInfo()
 {
     ui->maaraLabel->setText(tapahtumaMaara);
     ui->kohdeLabel->setText(tapahtumaNimi);
+    ui->infoLabel->setText(tapahtumaInfo);
 
     // Timeri aloitetaan täällä eikä konstruktorissa, sillä tämä ikkuna
     // luodaan samaan aikaan kun valitseCharitySumma -ikkuna
