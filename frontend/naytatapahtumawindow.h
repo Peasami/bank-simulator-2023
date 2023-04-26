@@ -19,6 +19,7 @@ public:
     void setTapahtumaMaara(const QString &newTapahtumaMaara);
     void setTapahtumaNimi(const QString &newTapahtumaNimi);
     void setTapahtumaInfo(const QString &newTapahtumaInfo);
+    void startTimer();
     void updateInfo();
 
 public slots:

@@ -32,6 +32,13 @@ void NaytaTapahtumaWindow::setTapahtumaInfo(const QString &newTapahtumaInfo)
     tapahtumaInfo = newTapahtumaInfo;
 }
 
+void NaytaTapahtumaWindow::startTimer()
+{
+    pQTimer->start(1000);               // tickrate 1sec
+    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
+            this,SLOT(updateTimer()));
+}
+
 void NaytaTapahtumaWindow::updateInfo()
 {
     ui->maaraLabel->setText(tapahtumaMaara);
@@ -40,9 +47,7 @@ void NaytaTapahtumaWindow::updateInfo()
 
     // Timeri aloitetaan täällä eikä konstruktorissa, sillä tämä ikkuna
     // luodaan samaan aikaan kun valitseCharitySumma -ikkuna
-    pQTimer->start(1000);               // tickrate 1sec
-    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
-            this,SLOT(updateTimer()));
+
 }
 void NaytaTapahtumaWindow::updateTimer()
 {

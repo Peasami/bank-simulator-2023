@@ -192,7 +192,7 @@ void MainWindow::receiveCharity(QString charity)
 
     // Annetaan kohteen nimi näytäTapahtumalle
     pNaytaTapahtuma->setTapahtumaNimi(charity+" kiittää!");
-    pNaytaTapahtuma->setTapahtumaInfo("Kiito lahjoituksesta!");
+    pNaytaTapahtuma->setTapahtumaInfo("Kiitos lahjoituksesta!");
 
     connect(this,SIGNAL(CharityTransfer(QString,int)),
               RestApi,SLOT(receiveTransfer(QString,int)));
@@ -216,7 +216,6 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
 
     // päivitetään ui ja näytetään
     pNaytaTapahtuma->updateInfo();
-    pNaytaTapahtuma->show();
 
     emit CharityTransfer("lahjoitus, "+targetCharity, charitySumma.toInt());
     disconnect(this,SIGNAL(CharityTransfer(QString,int)),
@@ -233,8 +232,9 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
 
 void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
-
+    // Lähettää DLLRestApille pyynnön nostosta, ja disconnectaa signaalin
     emit sendTransfer("nosto",nostoSumma.toInt());
+
     disconnect(this,SIGNAL(sendTransfer(QString,int)),
                RestApi,SLOT(receiveTransfer(QString,int)));
 
@@ -248,11 +248,11 @@ void MainWindow::receiveNostoSumma(QString nostoSumma)
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
 
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
+    qDebug()<<"In ReceiveNostoSumma(), saldoData Näyttää: "<<saldoData;
     pNaytaTapahtuma->setTapahtumaMaara(nostoSumma+"€");
     pNaytaTapahtuma->setTapahtumaNimi("");
     pNaytaTapahtuma->setTapahtumaInfo("Nostettu: ");
     pNaytaTapahtuma->updateInfo();
-    pNaytaTapahtuma->show();
 }
 
 void MainWindow::printSaldoDataSlot()
@@ -260,7 +260,7 @@ void MainWindow::printSaldoDataSlot()
     disconnect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
     saldoData = RestApi->getHttpResponse();
-    qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
+    qDebug() << "printSaldoDataSlot exessä vastaan otti datan, joka on:" <<saldoData;
 
 
 }
@@ -284,7 +284,23 @@ void MainWindow::receiveTransferDataSlot()
     QByteArray TransferData = RestApi->getHttpResponse();
     disconnect(RestApi,SIGNAL(updateSaldoSignal()),
                this,SLOT(receiveTransferDataSlot()));
-    qDebug()<< "exe vastaan otti datan,joka on: "<<TransferData;
+    qDebug()<< "receiveTransferDataSlot exessä vastaan otti datan,joka on: "<<TransferData;
+
+    // Jos tilillä on saldoa, TransferData == 1, muuten 0
+    if(TransferData.toInt() == 1){          // Näytetään ikkuna ja aloitetaan timeri
+        qDebug()<<"TransferData == 1";
+        pNaytaTapahtuma->startTimer();
+        pNaytaTapahtuma->show();
+    }
+    else{                                   // NaytaTapahtuma tyhjennetään ja kerrotaan "ei saldoa"
+        qDebug()<<"TransferData != 1";
+        pNaytaTapahtuma->setTapahtumaNimi("EI SALDOA");
+        pNaytaTapahtuma->setTapahtumaInfo("");
+        pNaytaTapahtuma->setTapahtumaMaara("");
+        pNaytaTapahtuma->updateInfo();
+        pNaytaTapahtuma->startTimer();
+        pNaytaTapahtuma->show();
+    }
 }
 
 void MainWindow::TransactionDone()
