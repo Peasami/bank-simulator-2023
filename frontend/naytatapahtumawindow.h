@@ -16,8 +16,8 @@ public:
     explicit NaytaTapahtumaWindow(QWidget *parent = nullptr);
     ~NaytaTapahtumaWindow();
 
-    void setLahjoitusMaara(const QString &newLahjoitusMaara);
-    void setLahjoitusKohde(const QString &newLahjoitusKohde);
+    void setTapahtumaMaara(const QString &newTapahtumaMaara);
+    void setTapahtumaNimi(const QString &newTapahtumaNimi);
     void updateInfo();
 
 public slots:
@@ -28,8 +28,8 @@ signals:
 
 private:
     Ui::NaytaTapahtumaWindow *ui;
-    QString lahjoitusKohde;
-    QString lahjoitusMaara;
+    QString tapahtumaNimi;
+    QString tapahtumaMaara;
     QTimer *pQTimer;
     short time=5;
 };

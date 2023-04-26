@@ -191,7 +191,7 @@ void MainWindow::receiveCharity(QString charity)
     pValitseSumma->open();
 
     // Annetaan kohteen nimi näytäTapahtumalle
-    pNaytaTapahtuma->setLahjoitusKohde(charity);
+    pNaytaTapahtuma->setTapahtumaNimi(charity);
 
     connect(this,SIGNAL(CharityTransfer(QString,int)),
               RestApi,SLOT(receiveTransfer(QString,int)));
@@ -209,7 +209,7 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
             this,SLOT(TransactionDone()));
 
     // Annetaan lahjoituksen määrä näytäTapahtumalle
-    pNaytaTapahtuma->setLahjoitusMaara(charitySumma);
+    pNaytaTapahtuma->setTapahtumaMaara(charitySumma);
 
 
 

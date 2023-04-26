@@ -13,25 +13,24 @@ NaytaTapahtumaWindow::NaytaTapahtumaWindow(QWidget *parent) :
 
 NaytaTapahtumaWindow::~NaytaTapahtumaWindow()
 {
-    emit endSession();
     delete ui;
     qDebug()<<"NaytaTapahtumaWindow tuhottu";
 }
 
-void NaytaTapahtumaWindow::setLahjoitusMaara(const QString &newLahjoitusMaara)
+void NaytaTapahtumaWindow::setTapahtumaMaara(const QString &newTapahtumaMaara)
 {
-    lahjoitusMaara = newLahjoitusMaara;
+    tapahtumaMaara = newTapahtumaMaara;
 }
 
-void NaytaTapahtumaWindow::setLahjoitusKohde(const QString &newLahjoitusKohde)
+void NaytaTapahtumaWindow::setTapahtumaNimi(const QString &newTapahtumaNimi)
 {
-    lahjoitusKohde = newLahjoitusKohde;
+    tapahtumaNimi = newTapahtumaNimi;
 }
 
 void NaytaTapahtumaWindow::updateInfo()
 {
-    ui->maaraLabel->setText(lahjoitusMaara);
-    ui->kohdeLabel->setText(lahjoitusKohde);
+    ui->maaraLabel->setText(tapahtumaMaara);
+    ui->kohdeLabel->setText(tapahtumaNimi);
 
     // Timeri aloitetaan täällä eikä konstruktorissa, sillä tämä ikkuna
     // luodaan samaan aikaan kun valitseCharitySumma -ikkuna
