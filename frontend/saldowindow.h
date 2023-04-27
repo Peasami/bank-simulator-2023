@@ -14,6 +14,7 @@ class saldoWindow : public QDialog
     Q_OBJECT
 
 public:
+    // konstruktorissa lisäparametrit kortin tyypille ja tilin datalle
     explicit saldoWindow(QWidget *parent = nullptr, QByteArray tiliData="", bool credit=0);
     ~saldoWindow();
 

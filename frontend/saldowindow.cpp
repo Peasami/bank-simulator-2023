@@ -10,8 +10,8 @@ saldoWindow::saldoWindow(QWidget *parent, QByteArray tiliData, bool credit) :
     QDialog(parent),
     ui(new Ui::saldoWindow)
 {
+    // normaaleja alustustoimenpiteitä
     ui->setupUi(this);
-
     pQTimer = new QTimer(this);
     pQTimer->start(1000);               // tickrate 1sec
     connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
@@ -20,7 +20,7 @@ saldoWindow::saldoWindow(QWidget *parent, QByteArray tiliData, bool credit) :
     connect(ui->takaisinButton,SIGNAL(clicked(bool)),
     this,SLOT(takaisinButtonHandler()));
 
-    /*if (listaTesti)
+    /*if (listaTesti)       // vanhaa testikoodia
     {
         QList<rivi*> eventList;
         rivi rivi_1, rivi_2, rivi_3, rivi_4, rivi_5;
@@ -46,23 +46,27 @@ saldoWindow::saldoWindow(QWidget *parent, QByteArray tiliData, bool credit) :
         rivi_5.setEvent("Sudenpennut");
         rivi_5.setMaara("90");
     }*/
+    //siirretään data parempaan muotoon
     qDebug()<<"tilitapahtumat sai datan: "+tiliData;
     QJsonDocument doc = QJsonDocument::fromJson(tiliData);
     qDebug()<<doc;
     jsonArray = doc.array();
     qDebug()<<"Arrayn sisällä on "<<jsonArray;
 
+    // tehdään taulukon raamit
     QStandardItemModel *table_model = new QStandardItemModel(0,3);
     table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Pvm"));
     table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Tapahtuma"));
     table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Maara"));
 
+    // kirjoitetaan tilin saldo näkyviin
     QJsonObject saldo=jsonArray[0].toObject();
     if (credit)
         ui->saldoEdit->setText(QString::number(saldo.value("SaldoCredit").toDouble()));
     else
         ui->saldoEdit->setText(QString::number(saldo.value("SaldoDebit").toDouble()));
 
+    // tehdään taulukkoon enintään 5 riviä
     short kierros=0;
     for (short eventList=0; eventList < jsonArray.size()&&kierros<5; ++eventList) {
 
@@ -99,6 +103,7 @@ saldoWindow::~saldoWindow()
 
 void saldoWindow::takaisinButtonHandler()
 {
+    // tuhotaan ikkuna poistuttaessa
     qDebug()<<"Takaisin";
     deleteLater();
 }

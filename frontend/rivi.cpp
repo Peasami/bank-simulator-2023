@@ -1,4 +1,4 @@
-
+// OBSOLETE TEST CODE NOT IN USE
 #include "rivi.h"
 
 rivi::rivi()

@@ -1,3 +1,7 @@
+/****************************************
+ * Näyttää tilitapahtumia 5 kerrallaan  *
+ ****************************************/
+
 #include "tilitapahtumawindow.h"
 #include "qdebug.h"
 #include "qjsondocument.h"
@@ -10,13 +14,14 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     QDialog(parent),
     ui(new Ui::TiliTapahtumaWindow)
 {
+    // normaaleja alustustoimenpiteitä
     ui->setupUi(this);
     identity=credit;
     pQTimer = new QTimer(this);
     pQTimer->start(1000);               // tickrate 1sec
     connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
             this,SLOT(updateTimer()));
-
+    // yhdistetään napit handlereihin
     connect(ui->takaisinButton,SIGNAL(clicked(bool)),
             this,SLOT(takaisinButtonHandler()));
     connect(ui->uudetButton,SIGNAL(clicked(bool)),
@@ -24,7 +29,7 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     connect(ui->aiemmatButton,SIGNAL(clicked(bool)),
             this,SLOT(aiemmatButtonHandler()));
 
-    //QList<rivi*> eventList;
+    //QList<rivi*> eventList;   vanhaa legacykoodia
     /*rivi rivi_1, rivi_2, rivi_3, rivi_4, rivi_5;
     eventList.append(&rivi_1);
     eventList.append(&rivi_2);
@@ -32,7 +37,7 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     eventList.append(&rivi_4);
     eventList.append(&rivi_5);
     */
-
+    // otetaan data vastaan ja siirretään JSONarray:in
     qDebug()<<"tilitapahtumat sai datan: "+tiliData;
     QJsonDocument doc = QJsonDocument::fromJson(tiliData);
     qDebug()<<doc;
@@ -40,7 +45,7 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     qDebug()<<"Arrayn sisällä on "<<jsonArray;
 
 
-/*
+/*  vanhaa legacykoodia
     rivi_1.setTime(obj.value("pvm").toString());
     rivi_1.setEvent("Nosto");
     rivi_1.setMaara("100");
@@ -57,20 +62,27 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     rivi_5.setEvent("Sudenpennut");
     rivi_5.setMaara("90");
 */
+
+    // luodaan taulukko ja siihen 3 saraketta
     taulukkoMalli = new QStandardItemModel(0,3,this);
     taulukkoMalli->setHeaderData(0, Qt::Horizontal, QObject::tr("Pvm"));
     taulukkoMalli->setHeaderData(1, Qt::Horizontal, QObject::tr("Tapahtuma"));
     taulukkoMalli->setHeaderData(2, Qt::Horizontal, QObject::tr("Maara"));
 
-
-    //insertItem(int index, QListWidgetItem *item)        void	insertRow(int index, const QList<QStandardItem *> &items)
-
-    short kierros=0;
+    /****************************
+     * Viedään data taulukkoon  *
+     ****************************/
+    short kierros=0;    // indeksimuuttuja rivejä varten
     for (; eventList < jsonArray.size()&&kierros<5; ++eventList)
     {
 
         QJsonObject obj = jsonArray[eventList].toObject();
         qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
+        /****************************
+         * jos datapiste on sopiva, *
+         * viedään se taulukkoon,   *
+         * kunnes siinä on 5 riviä  *
+         ****************************/
         if ((!credit && obj.value("SummaDebit").toDouble() > 0) || (credit && obj.value("SummaCredit").toDouble() > 0))
         {
             QList<QStandardItem*> eventList;
@@ -89,12 +101,11 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
             kierros++;
         }
     }
-
     ui->tapahtumaTable->setModel(taulukkoMalli);
-    ui->uudetButton->setEnabled(false);
+    ui->uudetButton->setEnabled(false); // alusta ei pääse uudempiin
     if (eventList+1>=jsonArray.size())
     {
-        ui->aiemmatButton->setEnabled(false);
+        ui->aiemmatButton->setEnabled(false);   // jos datapisteet kaikki ovat jo taulukossa, disabloi nappi
     }
 }
 
@@ -114,6 +125,7 @@ void TiliTapahtumaWindow::aiemmatButtonHandler()
 {
     qDebug()<<"selataan tapahtumia";
     time=10;
+    // taulukkonavigaation apumuuttujien hallintaa
     edellinenSivu=sivu;
     sivu=eventList;
     short kierros=0;
@@ -138,24 +150,25 @@ void TiliTapahtumaWindow::aiemmatButtonHandler()
         }
 
     }
-    taulukkoMalli->setRowCount(kierros);
+    taulukkoMalli->setRowCount(kierros);    // varmistetaan taulukon koko
+    // hallinnoidaan nappien toimivuutta
     if (eventList+1>=jsonArray.size())
     {
         ui->aiemmatButton->setEnabled(false);
     }
     ui->uudetButton->setEnabled(true);
-
 }
 
 void TiliTapahtumaWindow::uudemmatButtonHandler()
 {
     qDebug()<<"selataan tapahtumia";
     time=10;
+    //navigaation apumuuttujien hallintaa
     eventList=edellinenSivu;
     sivu=edellinenSivu;
     edellinenSivu=0;
     short kierros=0;
-    taulukkoMalli->setRowCount(5);
+    taulukkoMalli->setRowCount(5);  // varmistetaan taulukon koko
     /*if (taulukkoMalli->rowCount()<5)
     {
         for (kierros = taulukkoMalli->rowCount(); kierros < 5; ++kierros)
@@ -164,8 +177,7 @@ void TiliTapahtumaWindow::uudemmatButtonHandler()
             taulukkoMalli->appendRow(kierros);
         }
     }*/
-
-    //kierros=0;
+    // 5 rivin sisältö ylikirjoitetaan
     for (;eventList < jsonArray.size()&&kierros<5; ++eventList) {
         QJsonObject obj = jsonArray[eventList].toObject();
         qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
@@ -188,14 +200,15 @@ void TiliTapahtumaWindow::uudemmatButtonHandler()
         }
 
     }
+    // hallinnoidaan nappien toimivuutta
     ui->aiemmatButton->setEnabled(true);
     if (sivu==0)
     {
         ui->uudetButton->setEnabled(false);
-        eventList=0;
-    }
-    taulukkoMalli->setRowCount(5);
+        eventList=0;                // siirretään indeksi alkuun jos aloitussivulla
+    }                               // tärkeä toisen napin toimivuuden kannalta
 
+    taulukkoMalli->setRowCount(5);  // varmistetaan taulukon koko
 }
 
 void TiliTapahtumaWindow::updateTimer()
@@ -209,5 +222,4 @@ void TiliTapahtumaWindow::updateTimer()
         pQTimer->stop();
         deleteLater();
     }
-
 }

@@ -1,5 +1,6 @@
 /*
  * Tämä luokka on (testi)Tilitapahtumien kirjaamista varten
+ * OBSOLETE
  */
 #ifndef RIVI_H
 #define RIVI_H
