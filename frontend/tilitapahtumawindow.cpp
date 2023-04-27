@@ -141,10 +141,7 @@ void TiliTapahtumaWindow::aiemmatButtonHandler()
         }
 
     }
-    if (kierros<5)
-    {
-        taulukkoMalli->removeRows(kierros,5-kierros);
-    }
+    taulukkoMalli->setRowCount(kierros);
     if (eventList+1>=jsonArray.size())
     {
         ui->aiemmatButton->setEnabled(false);
@@ -161,18 +158,17 @@ void TiliTapahtumaWindow::uudemmatButtonHandler()
     sivu=edellinenSivu;
     edellinenSivu=0;
     short kierros=0;
-    if (taulukkoMalli->rowCount()<5)
+    taulukkoMalli->setRowCount(5);
+    /*if (taulukkoMalli->rowCount()<5)
     {
         for (kierros = taulukkoMalli->rowCount(); kierros < 5; ++kierros)
         {
             QList<QStandardItem*> kierros;
             taulukkoMalli->appendRow(kierros);
         }
-    }
-    ui->aiemmatButton->setEnabled(true);
-    if (eventList==0)
-        ui->uudetButton->setEnabled(false);
-    kierros=0;
+    }*/
+
+    //kierros=0;
     for (;eventList < jsonArray.size()&&kierros<5; ++eventList) {
         QJsonObject obj = jsonArray[eventList].toObject();
         qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
@@ -195,6 +191,14 @@ void TiliTapahtumaWindow::uudemmatButtonHandler()
         }
 
     }
+    ui->aiemmatButton->setEnabled(true);
+    if (sivu==0)
+    {
+        ui->uudetButton->setEnabled(false);
+        eventList=0;
+    }
+    taulukkoMalli->setRowCount(5);
+
 }
 
 void TiliTapahtumaWindow::updateTimer()

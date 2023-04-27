@@ -51,34 +51,41 @@ saldoWindow::saldoWindow(QWidget *parent, QByteArray tiliData, bool credit) :
     qDebug()<<doc;
     jsonArray = doc.array();
     qDebug()<<"Arrayn sisällä on "<<jsonArray;
-        QStandardItemModel *table_model = new QStandardItemModel(0,4);
-        table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Pvm"));
-        table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Tapahtuma"));
-        table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Maara"));
 
-        short kierros=0;
-        for (; eventList < jsonArray.size()&&kierros<5; ++eventList) {
+    QStandardItemModel *table_model = new QStandardItemModel(0,3);
+    table_model->setHeaderData(0, Qt::Horizontal, QObject::tr("Pvm"));
+    table_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Tapahtuma"));
+    table_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Maara"));
 
-            QJsonObject obj = jsonArray[eventList].toObject();
-            qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
-            if ((!credit && obj.value("SummaDebit").toDouble() > 0) || (credit && obj.value("SummaCredit").toDouble() > 0))
+    QJsonObject saldo=jsonArray[0].toObject();
+    if (credit)
+        ui->saldoEdit->setText(QString::number(saldo.value("SaldoCredit").toDouble()));
+    else
+        ui->saldoEdit->setText(QString::number(saldo.value("SaldoDebit").toDouble()));
+
+    short kierros=0;
+    for (short eventList=0; eventList < jsonArray.size()&&kierros<5; ++eventList) {
+
+        QJsonObject obj = jsonArray[eventList].toObject();
+        qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
+        if ((!credit && obj.value("SummaDebit").toDouble() > 0) || (credit && obj.value("SummaCredit").toDouble() > 0))
+        {
+
+            QList<QStandardItem*> eventList;
+            eventList << new QStandardItem(obj.value("pvm").toString());
+            eventList << new QStandardItem(obj.value("TapahtumaNimi").toString());
+            if (!credit)
             {
-
-                QList<QStandardItem*> eventList;
-                eventList << new QStandardItem(obj.value("pvm").toString());
-                eventList << new QStandardItem(obj.value("TapahtumaNimi").toString());
-                if (!credit)
-                {
-                    eventList << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
-                }
-                else
-                {
-                    eventList << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
-                }
-
-                taulukkoMalli->appendRow(eventList);
-                kierros++;
+                eventList << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
             }
+            else
+            {
+                eventList << new QStandardItem(QString::number(obj.value("SummaCredit").toDouble()));
+            }
+
+            table_model->appendRow(eventList);
+            kierros++;
+        }
 
         ui->tapahtumaTable->setModel(table_model);
     }

@@ -35,8 +35,9 @@ private:
     QTimer *pQTimer;
     short time=10;
     short sivu=0;
-    short eventList=0;
     short edellinenSivu=0;
+    short eventList=0;
+    short index=0;
     bool identity=0;
     //QJsonArray * json_array;
 };

@@ -25,11 +25,8 @@ private slots:
 private:
     Ui::saldoWindow *ui;
     QJsonArray jsonArray;
-    QStandardItemModel *taulukkoMalli;
     QTimer * pQTimer;
     short time=10;
-    short eventList=0;
-    bool identity=0;
 };
 
 #endif // SALDOWINDOW_H
