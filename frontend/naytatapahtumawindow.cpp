@@ -8,9 +8,7 @@ NaytaTapahtumaWindow::NaytaTapahtumaWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     pQTimer = new QTimer(this);
-    pQTimer->start(1000);               // tickrate 1sec
-    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
-            this,SLOT(updateTimer()));
+    qDebug()<<"NaytaTapahtumaWindow luotu";
 }
 
 NaytaTapahtumaWindow::~NaytaTapahtumaWindow()
@@ -19,18 +17,46 @@ NaytaTapahtumaWindow::~NaytaTapahtumaWindow()
     qDebug()<<"NaytaTapahtumaWindow tuhottu";
 }
 
-void NaytaTapahtumaWindow::setLahjoitusMaara(const QString &newLahjoitusMaara)
+void NaytaTapahtumaWindow::setTapahtumaMaara(const QString &newTapahtumaMaara)
 {
-    lahjoitusMaara = newLahjoitusMaara;
+    tapahtumaMaara = newTapahtumaMaara;
 }
 
-void NaytaTapahtumaWindow::setLahjoitusKohde(const QString &newLahjoitusKohde)
+void NaytaTapahtumaWindow::setTapahtumaNimi(const QString &newTapahtumaNimi)
 {
-    lahjoitusKohde = newLahjoitusKohde;
+    tapahtumaNimi = newTapahtumaNimi;
+}
+
+void NaytaTapahtumaWindow::setTapahtumaInfo(const QString &newTapahtumaInfo)
+{
+    tapahtumaInfo = newTapahtumaInfo;
+}
+
+void NaytaTapahtumaWindow::startTimer()
+{
+    pQTimer->start(1000);               // tickrate 1sec
+    connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
+            this,SLOT(updateTimer()));
 }
 
 void NaytaTapahtumaWindow::updateInfo()
 {
-    ui->maaraLabel->setText(lahjoitusMaara);
-    ui->kohdeLabel->setText(lahjoitusKohde);
+    ui->maaraLabel->setText(tapahtumaMaara);
+    ui->kohdeLabel->setText(tapahtumaNimi);
+    ui->infoLabel->setText(tapahtumaInfo);
+}
+
+void NaytaTapahtumaWindow::updateTimer()
+{
+
+    time--;
+    qDebug()<<time;
+    if(time == 0)
+    {
+        qDebug()<<"timeout";
+        done(0);
+        pQTimer->stop();
+        deleteLater();
+    }
+
 }

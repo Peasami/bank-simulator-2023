@@ -16,15 +16,23 @@ public:
     explicit NaytaTapahtumaWindow(QWidget *parent = nullptr);
     ~NaytaTapahtumaWindow();
 
-    void setLahjoitusMaara(const QString &newLahjoitusMaara);
-    void setLahjoitusKohde(const QString &newLahjoitusKohde);
+    void setTapahtumaMaara(const QString &newTapahtumaMaara);
+    void setTapahtumaNimi(const QString &newTapahtumaNimi);
+    void setTapahtumaInfo(const QString &newTapahtumaInfo);
+    void startTimer();
     void updateInfo();
-    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
+
+public slots:
+    void updateTimer();
+
+signals:
+    void endSession();
 
 private:
     Ui::NaytaTapahtumaWindow *ui;
-    QString lahjoitusKohde;
-    QString lahjoitusMaara;
+    QString tapahtumaNimi;
+    QString tapahtumaMaara;
+    QString tapahtumaInfo;
     QTimer *pQTimer;
     short time=5;
 };

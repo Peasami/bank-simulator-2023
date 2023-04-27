@@ -132,8 +132,9 @@ void MainWindow::lahjoitaButton_handler()
     qDebug()<<"lahjoita";
     pLahjoitaRahaa->open();
 
-    // Tehdään olio näytäTapahtumasta, jotta sinne saadaan
-    // lahjoituksen kohde ja määrä talteen muuttujiin
+    // Tehdään olio näytäTapahtumaWindowista, jotta sinne saadaan
+    // lahjoituksen kohde ja määrä talteen muuttujiin.
+    // Timeriä tähän ikkunaan ei alusteta konstruktorissa
     pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
 
 
@@ -190,7 +191,8 @@ void MainWindow::receiveCharity(QString charity)
     pValitseSumma->open();
 
     // Annetaan kohteen nimi näytäTapahtumalle
-    pNaytaTapahtuma->setLahjoitusKohde(charity);
+    pNaytaTapahtuma->setTapahtumaNimi(charity+" kiittää!");
+    pNaytaTapahtuma->setTapahtumaInfo("Kiitos lahjoituksesta!");
 
     connect(this,SIGNAL(CharityTransfer(QString,int)),
               RestApi,SLOT(receiveTransfer(QString,int)));
@@ -200,26 +202,29 @@ void MainWindow::receiveCharity(QString charity)
     qDebug()<<"recieveCharity(): "<<charity;
 }
 
+// Kun lahjoitettava summa on valittu toisesta ikkunasta, palataan tähän funktioon
 void MainWindow::receiveCharitySumma(QString charitySumma)
 {
     qDebug()<<"receiveCharitySumma(): "<<charitySumma;
 
     // Annetaan lahjoituksen määrä näytäTapahtumalle
-    pNaytaTapahtuma->setLahjoitusMaara(charitySumma);
+    pNaytaTapahtuma->setTapahtumaMaara(charitySumma+"€");
 
 
 
     // päivitetään ui ja näytetään
     pNaytaTapahtuma->updateInfo();
-    pNaytaTapahtuma->show();
 
+    // Lähetetään DLLRestApille transfer -tapahtuman nimi ja määrä
     emit CharityTransfer("lahjoitus, "+targetCharity, charitySumma.toInt());
     disconnect(this,SIGNAL(CharityTransfer(QString,int)),
                RestApi,SLOT(receiveTransfer(QString,int)));
+
+    // Kun DLLRestApi lähettää signaalin, saa tiedon oliko tilillä saldoa vai ei
     connect(RestApi, SIGNAL(updateSaldoSignal()),
             this, SLOT(receiveTransferDataSlot()));
 
-
+    // DLLRestApiin kortin numero talteen
     RestApi->updateSaldoInfo(cardNumber);
 
 
@@ -228,8 +233,9 @@ void MainWindow::receiveCharitySumma(QString charitySumma)
 
 void MainWindow::receiveNostoSumma(QString nostoSumma)
 {
-
+    // Lähettää DLLRestApille pyynnön nostosta, ja disconnectaa signaalin
     emit sendTransfer("nosto",nostoSumma.toInt());
+
     disconnect(this,SIGNAL(sendTransfer(QString,int)),
                RestApi,SLOT(receiveTransfer(QString,int)));
 
@@ -242,7 +248,12 @@ void MainWindow::receiveNostoSumma(QString nostoSumma)
 
     qDebug()<<"receiveNostoSumma(): "<<nostoSumma;
 
-
+    pNaytaTapahtuma = new NaytaTapahtumaWindow(this);
+    qDebug()<<"In ReceiveNostoSumma(), saldoData Näyttää: "<<saldoData;
+    pNaytaTapahtuma->setTapahtumaMaara(nostoSumma+"€");
+    pNaytaTapahtuma->setTapahtumaNimi("");
+    pNaytaTapahtuma->setTapahtumaInfo("Nostettu: ");
+    pNaytaTapahtuma->updateInfo();
 }
 
 void MainWindow::printSaldoDataSlot()
@@ -250,10 +261,11 @@ void MainWindow::printSaldoDataSlot()
     disconnect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
     saldoData = RestApi->getHttpResponse();
-    qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
+    qDebug() << "printSaldoDataSlot exessä vastaan otti datan, joka on:" <<saldoData;
 
 
 }
+
 
 void MainWindow::printAccountHistoryDataSlot()
 
@@ -269,10 +281,34 @@ void MainWindow::printAccountHistoryDataSlot()
     //accountHistoryData.clear();
 }
 
+// Hakee tiedon oliko tilillä saldoa transferiin vai ei
 void MainWindow::receiveTransferDataSlot()
 {
     QByteArray TransferData = RestApi->getHttpResponse();
-    qDebug()<< "exe vastaan otti datan,joka on: "<<TransferData;
+    disconnect(RestApi,SIGNAL(updateSaldoSignal()),
+               this,SLOT(receiveTransferDataSlot()));
+    qDebug()<< "receiveTransferDataSlot exessä vastaan otti datan,joka on: "<<TransferData;
+
+    // Jos tilillä on saldoa, TransferData == 1, muuten 0
+    if(TransferData.toInt() == 1){          // Näytetään ikkuna ja aloitetaan timeri
+        qDebug()<<"TransferData == 1";
+        pNaytaTapahtuma->startTimer();
+        pNaytaTapahtuma->show();
+    }
+    else{                                   // NaytaTapahtuma tyhjennetään ja kerrotaan "ei saldoa"
+        qDebug()<<"TransferData != 1";
+        pNaytaTapahtuma->setTapahtumaNimi("EI SALDOA");
+        pNaytaTapahtuma->setTapahtumaInfo("");
+        pNaytaTapahtuma->setTapahtumaMaara("");
+        pNaytaTapahtuma->updateInfo();
+        pNaytaTapahtuma->startTimer();
+        pNaytaTapahtuma->show();
+    }
+}
+
+void MainWindow::TransactionDone()
+{
+    deleteLater();
 }
 
 

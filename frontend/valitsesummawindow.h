@@ -19,8 +19,7 @@ public:
 signals:
     void sendSumma(QString);
     void requestManualSumma();
-    void deleteWindow(QWidget* = nullptr); // Voidaan kutsua antamalla pointteri, tuhoaa pointterin osoittaman olion.
-
+    void endSession();
 private slots:
     void summaButtonHandler();
     void updateTimer();

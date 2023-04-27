@@ -26,6 +26,8 @@ private:
     bool listaTesti=1;
     short time=10;
     QTimer *pQTimer;
+
+
 };
 
 #endif // SALDOWINDOW_H
