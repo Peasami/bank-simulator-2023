@@ -11,7 +11,8 @@ ManualSummaWindow::ManualSummaWindow(QWidget *parent) :
     // OKButtonille ja Clearbuttonille omat handlerit
     connect(ui->OKButton, SIGNAL(clicked(bool)),
             this,SLOT(okClickHandler()));
-
+    connect(ui->ClearButton, SIGNAL(clicked(bool)),
+            this,SLOT(clearClickHandler()));
 
     // Käy läpi kaikki buttonLayout widgetit
     for(int i=0;i<ui->buttonLayout->count();i++)
@@ -37,9 +38,15 @@ void ManualSummaWindow::okClickHandler()
 {
     qDebug()<<"ManualSummaWindow";
     QString manualSummaEdit = ui->summaEdit->text();
-    emit sendSumma(manualSummaEdit);
+    if (manualSummaEdit > 0)
+        emit sendSumma(manualSummaEdit);
     qDebug()<<manualSummaEdit;
     deleteLater();
+}
+
+void ManualSummaWindow::clearClickHandler()
+{
+    ui->summaEdit->clear();
 }
 
 void ManualSummaWindow::numClickHandler()
