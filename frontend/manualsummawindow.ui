@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Anna Summa</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -206,7 +206,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>Clear</string>
          </property>
         </widget>
        </item>

@@ -19,8 +19,9 @@ public:
 signals:
     void sendSumma(QString);
 
-public slots:
+private slots:
     void okClickHandler();
+    void clearClickHandler();
     void numClickHandler();
     void updateTimer();
 

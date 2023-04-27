@@ -6,35 +6,48 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>399</width>
-    <height>292</height>
+    <width>711</width>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Saldo</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0" rowspan="2" colspan="2">
-    <widget class="QTableView" name="tapahtumaTable">
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>95</number>
-     </attribute>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Tilin Saldo:</string>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="saldoEdit">
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="saldoEdit"/>
+   <item row="2" column="0" rowspan="2" colspan="2">
+    <widget class="QTableView" name="tapahtumaTable">
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>72</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>218</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>40</number>
+     </attribute>
+    </widget>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <widget class="QPushButton" name="takaisinButton">
      <property name="text">
       <string>Takaisin</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Tilin Saldo:</string>
      </property>
     </widget>
    </item>

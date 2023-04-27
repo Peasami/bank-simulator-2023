@@ -25,6 +25,12 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <widget class="QLabel" name="tiliNimiLabel">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -33,7 +39,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>24</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -48,7 +54,7 @@
        <widget class="QLabel" name="tiliLabel">
         <property name="font">
          <font>
-          <pointsize>20</pointsize>
+          <pointsize>14</pointsize>
          </font>
         </property>
         <property name="text">
@@ -207,7 +213,7 @@
      <x>0</x>
      <y>0</y>
      <width>722</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

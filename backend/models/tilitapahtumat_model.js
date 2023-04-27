@@ -8,7 +8,7 @@ const tapahtuma =
     },
     getById: function(id, callback)
     {
-        return db.query('SELECT DATE_FORMAT(pvm,"%d.%m.%Y") as pvm, TapahtumaNimi, SummaDebit, SummaCredit FROM Tilitapahtumat JOIN Tili ON Tilitapahtumat.idTili=Tili.idTili JOIN Kortti ON Tili.idTili=Kortti.idTili WHERE Kortti.idKortti=? ORDER BY pvm DESC;', [id], callback);
+        return db.query('SELECT DATE_FORMAT(pvm,"%d.%m.%Y") as pvm, TapahtumaNimi, SummaDebit, SummaCredit FROM Tilitapahtumat JOIN Tili ON Tilitapahtumat.idTili=Tili.idTili JOIN Kortti ON Tili.idTili=Kortti.idTili WHERE Kortti.idKortti=? ORDER BY idTilitapahtumat DESC;', [id], callback);
     },
     add: function(tilitapahtumat, callback)
     {
