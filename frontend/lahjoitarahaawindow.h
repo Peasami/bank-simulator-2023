@@ -28,7 +28,7 @@ private:
     Ui::LahjoitaRahaaWindow *ui;
     QStringList charityList;
     QTimer *pQTimer;
-    short time=10;
+    short time = 5;
 };
 
 #endif // LAHJOITARAHAAWINDOW_H

@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="0">
-      <widget class="QLabel" name="thankYouLabel">
+      <widget class="QLabel" name="infoLabel">
        <property name="font">
         <font>
          <pointsize>16</pointsize>
