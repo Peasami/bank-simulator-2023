@@ -91,12 +91,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::saldoButton_handler()
 {
-    pSaldo = new saldoWindow(this,credit);
+
     connect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
 
-    qDebug()<<"saldo";
-    pSaldo->open();
     //QString cardNum = "06000d8977"; //testi joka hakee tuolla kortilla sen saldon
     qDebug()<<" saldobuttonin  mainwindowissa kortinnumero on "+cardNumber;
     RestApi->getSaldoInfo(cardNumber);
@@ -158,15 +156,15 @@ void MainWindow::nostaRahaaButton_handler()
 
 void MainWindow::tilitapahtumatButton_handler()
 {
-
+    RestApi->getAccountHistoryInfo(cardNumber);
     connect(RestApi, SIGNAL(accountHistorySignal()),
             this,SLOT(printAccountHistoryDataSlot()));
-    RestApi->getAccountHistoryInfo(cardNumber);
-    pTiliTapahtuma = new TiliTapahtumaWindow(this,accountHistoryData,credit);
+
+    /*pTiliTapahtuma = new TiliTapahtumaWindow(this,accountHistoryData,credit);
     //QString cardNum = "06000d8977";   // testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
     //,token);
     qDebug()<<"tilitapahtumat";
-    pTiliTapahtuma->open();
+    pTiliTapahtuma->open();*/
 }
 
 
@@ -261,7 +259,10 @@ void MainWindow::printSaldoDataSlot()
     disconnect(RestApi, SIGNAL(getSaldoSignal()),
             this,SLOT(printSaldoDataSlot()));
     saldoData = RestApi->getHttpResponse();
-    qDebug() << "printSaldoDataSlot exessä vastaan otti datan, joka on:" <<saldoData;
+    pSaldo = new saldoWindow(this,saldoData,credit);
+    qDebug()<<"saldo";
+    pSaldo->open();
+    qDebug() << "exe vastaan otti datan, joka on: " <<saldoData;
 
 
 }
@@ -275,6 +276,12 @@ void MainWindow::printAccountHistoryDataSlot()
 
 
     accountHistoryData = RestApi->getHttpResponse();
+    //RestApi->getAccountHistoryInfo(cardNumber);
+    pTiliTapahtuma = new TiliTapahtumaWindow(this,accountHistoryData,credit);
+    //QString cardNum = "06000d8977";   // testi, joka hakee tuolla kortinnumerolla sen tilitapahtumat
+    //,token);
+    qDebug()<<"tilitapahtumat";
+    pTiliTapahtuma->open();
 
     qDebug() << "exe vastaan otti datan, joka on: " << accountHistoryData;
 

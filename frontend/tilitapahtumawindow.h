@@ -1,7 +1,12 @@
+/****************************************
+ * Tilitapahtumaikkunan header,         *
+ * tarkempi informaatio cpp-tiedostossa *
+ ****************************************/
 #ifndef TILITAPAHTUMAWINDOW_H
 #define TILITAPAHTUMAWINDOW_H
 
-#include "rivi.h"
+#include "qjsonarray.h"
+// #include "rivi.h"
 #include <QDialog>
 #include <qstandarditemmodel.h>
 #include <QByteArray>
@@ -16,6 +21,7 @@ class TiliTapahtumaWindow : public QDialog
     Q_OBJECT
 
 public:
+    // konstruktorissa lisäparametrit kortin tyypille ja tilin datalle
     explicit TiliTapahtumaWindow(QWidget *parent = nullptr, QByteArray tiliData="", bool credit=0);
     ~TiliTapahtumaWindow();
 
@@ -26,12 +32,23 @@ private slots:
     void updateTimer();
 
 private:
+    /********************************
+     * kommentoidut muuttujat ja    *
+     * funktiot ovat turhia         *
+     ********************************/
+
     Ui::TiliTapahtumaWindow *ui;
-    rivi * pRivi;
-    bool listaTesti=1;
+    QStandardItemModel *taulukkoMalli;
+    QJsonArray jsonArray;
+    //rivi * pRivi;
+    //bool listaTesti=1;
     QTimer *pQTimer;
-    short time;
-    short page=0;
+    short time=10;
+    short sivu=0;
+    short edellinenSivu=0;
+    short eventList=0;      // pysyvä indeksimuuttuja
+    //short index=0;
+    bool identity=0;        // 0=debit, 1=credit
     //QJsonArray * json_array;
 };
 

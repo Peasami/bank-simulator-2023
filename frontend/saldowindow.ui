@@ -29,7 +29,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLineEdit" name="lineEdit"/>
+    <widget class="QLineEdit" name="saldoEdit"/>
    </item>
    <item row="3" column="0" colspan="2">
     <widget class="QPushButton" name="takaisinButton">

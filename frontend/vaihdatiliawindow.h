@@ -27,7 +27,7 @@ private slots:
 private:
     Ui::VaihdaTiliaWindow *ui;
     QTimer *pQTimer;
-    short time;
+    short time=10;
 };
 
 #endif // VAIHDATILIAWINDOW_H

@@ -1,6 +1,7 @@
 #ifndef SALDOWINDOW_H
 #define SALDOWINDOW_H
 
+#include "qjsonarray.h"
 #include <QDialog>
 #include <qstandarditemmodel.h>
 
@@ -13,7 +14,8 @@ class saldoWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit saldoWindow(QWidget *parent = nullptr, bool a=0);
+    // konstruktorissa lisäparametrit kortin tyypille ja tilin datalle
+    explicit saldoWindow(QWidget *parent = nullptr, QByteArray tiliData="", bool credit=0);
     ~saldoWindow();
 
 
@@ -23,11 +25,9 @@ private slots:
 
 private:
     Ui::saldoWindow *ui;
-    bool listaTesti=1;
+    QJsonArray jsonArray;
+    QTimer * pQTimer;
     short time=10;
-    QTimer *pQTimer;
-
-
 };
 
 #endif // SALDOWINDOW_H
