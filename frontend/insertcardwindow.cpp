@@ -7,6 +7,11 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     ui(new Ui::InsertCardWindow)
 {
     ui->setupUi(this);
+
+    pTimer = new QTimer(this);
+    connect(pTimer,SIGNAL(timeout()),
+            this,SLOT(clearTextTimeout()));
+
     pCardReader = new DLLSerialPort(this);
 
     connect(pCardReader,SIGNAL(cardReadSignal(QString)),
@@ -116,6 +121,7 @@ void InsertCardWindow::loginReadySlots()
     {
         ui->infoLabel->setText("EI YHTEYTTÄ TIETOKANTAAN!");
         pPinCode->deleteLater();
+        pTimer->start(4000);
         qDebug()<<"ei yhteyttä tietokantaan";
     }
     else
@@ -136,7 +142,6 @@ void InsertCardWindow::loginReadySlots()
         {
             attempts--;
             ui->infoLabel->clear();
-            qDebug()<<"Väärä pin";
             QString info = "VÄÄRÄ PIN!";
             pPinCode->writeInfoText(info);
         }
@@ -148,6 +153,9 @@ void InsertCardWindow::loginReadySlots()
         pRestApi->addToBlacklist(cardNumber);
         attempts = 3;
         ui->infoLabel->setText("Lukitsimme kortin, ota yhteys pankkiin!");
+        pPinCode->deleteLater();
+        pTimer->start(4000);
+
     }
 
 
@@ -235,13 +243,21 @@ void InsertCardWindow::checkIfBlacklisted()
         {
             qDebug()<<"kortti lukittu";
             ui->infoLabel->setText("KORTTI LUKITTU!");
+            pTimer->start(4000);
         }
     }
     else
     {
         ui->infoLabel->setText("EI YHTEYTTÄ TIETOKANTAAN!");
+        pTimer->start(4000);
     }
 
+}
+
+void InsertCardWindow::clearTextTimeout()
+{
+    ui->infoLabel->clear();
+    pTimer->stop();
 }
 /*
 void InsertCardWindow::blacklistUpdated()
