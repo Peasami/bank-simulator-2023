@@ -66,13 +66,13 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     //insertItem(int index, QListWidgetItem *item)        void	insertRow(int index, const QList<QStandardItem *> &items)
 
     short kierros=0;
-    for (; eventList < jsonArray.size()&&kierros<5; ++eventList) {
+    for (; eventList < jsonArray.size()&&kierros<5; ++eventList)
+    {
 
         QJsonObject obj = jsonArray[eventList].toObject();
         qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
         if ((!credit && obj.value("SummaDebit").toDouble() > 0) || (credit && obj.value("SummaCredit").toDouble() > 0))
         {
-
             QList<QStandardItem*> eventList;
             eventList << new QStandardItem(obj.value("pvm").toString());
             eventList << new QStandardItem(obj.value("TapahtumaNimi").toString());
@@ -88,8 +88,6 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
             taulukkoMalli->appendRow(eventList);
             kierros++;
         }
-        //index++;
-
     }
 
     ui->tapahtumaTable->setModel(taulukkoMalli);
@@ -98,7 +96,6 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     {
         ui->aiemmatButton->setEnabled(false);
     }
-    //ui->;
 }
 
 TiliTapahtumaWindow::~TiliTapahtumaWindow()
