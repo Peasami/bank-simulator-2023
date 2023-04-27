@@ -33,21 +33,22 @@ private slots:
 
 private:
     /********************************
-     * kommentoidut muuttujat ja    *
-     * funktiot ovat turhia         *
+     * pois kommentoidut muuttujat  *
+     * ja funktiot ovat turhia      *
      ********************************/
 
     Ui::TiliTapahtumaWindow *ui;
     QStandardItemModel *taulukkoMalli;
     QJsonArray jsonArray;
+    void updateTable();
     //rivi * pRivi;
     //bool listaTesti=1;
     QTimer *pQTimer;
     short time=10;
     short sivu=0;
-    short edellinenSivu=0;
-    short eventList=0;      // pysyvä indeksimuuttuja
-    //short index=0;
+    short sivuMaara=0;
+    //short eventList=0;
+    short index=0;          // pysyvä indeksimuuttuja
     bool identity=0;        // 0=debit, 1=credit
     //QJsonArray * json_array;
 };
