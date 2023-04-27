@@ -83,7 +83,7 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
          * viedään se taulukkoon,   *
          * kunnes siinä on 5 riviä  *
          ****************************/
-        if ((!credit && obj.value("SummaDebit").toDouble() > 0) || (credit && obj.value("SummaCredit").toDouble() > 0))
+        if ((!credit && obj.value("SummaDebit").toDouble() > 0) || (credit && obj.value("SummaCredit").toDouble()) > 0)
         {
             QList<QStandardItem*> eventList;
             eventList << new QStandardItem(obj.value("pvm").toString());
@@ -94,7 +94,7 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
             }
             else
             {
-                eventList << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
+                eventList << new QStandardItem(QString::number(obj.value("SummaCredit").toDouble()));
             }
 
             taulukkoMalli->appendRow(eventList);
