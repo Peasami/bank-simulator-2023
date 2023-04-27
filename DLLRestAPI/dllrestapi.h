@@ -20,6 +20,7 @@ public:
 
     const QByteArray &getHttpResponse() const;
     void checkBlacklist(QString);
+    void addToBlacklist(QString);
 
 
 public slots:
@@ -39,6 +40,7 @@ private slots:
     void getSaldoSlot();
     void updateSaldoSlot();
     void blacklistSlot();
+    //void updateBlacklistSlot();
 
 signals:
     void sendLoginReplySignal(bool);
@@ -48,6 +50,7 @@ signals:
     void getSaldoSignal();
     void updateSaldoSignal();
     void blacklistSignal();
+    //void updateBlacklistSignal();
 private:
     rest * pRest;
     QString loginResponse; //Token tai false

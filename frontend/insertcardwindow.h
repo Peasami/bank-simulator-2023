@@ -30,6 +30,7 @@ private slots:
         void loginReadySlots();
         void httpReadySlot();
         void checkIfBlacklisted();
+        //void blacklistUpdated();
 
 private:
     Ui::InsertCardWindow *ui;
@@ -40,6 +41,8 @@ private:
     MainWindow * pMainWindow;
     DLLRestAPI * pRestApi;
     DLLPinCode * pPinCode;
+    short attempts = 3;
+    void createRestApi();
 
 
 #endif // INSERTCARDWINDOW_H
