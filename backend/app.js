@@ -13,6 +13,7 @@ var asiakasRouter = require('./routes/asiakas');
 const tili_asiakasRouter = require('./routes/tili_asiakas');
 var korttiRouter = require('./routes/kortti');
 var transferRouter = require('./routes/transfer');
+var mustalistaRouter = require('./routes/mustalista');
 var app = express();
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
+app.use('/mustalista', mustalistaRouter);
 app.use(authenticateToken);
 app.use('/tilitapahtumat', tilitapahtumatRouter);
 app.use('/tili', tiliRouter);
@@ -31,6 +33,7 @@ app.use('/asiakas', asiakasRouter);
 app.use('/tili_asiakas', tili_asiakasRouter);
 app.use('/kortti', korttiRouter);
 app.use('/transfer', transferRouter);
+
 
 
 function authenticateToken(req, res, next) {

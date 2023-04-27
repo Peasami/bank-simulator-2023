@@ -6,6 +6,7 @@
 #include "dllrestapi.h"
 #include "dllpincode.h"
 #include "mainwindow.h"
+#include <QTimer>
 
 namespace Ui {
 class InsertCardWindow;
@@ -29,6 +30,9 @@ public slots:
 private slots:
         void loginReadySlots();
         void httpReadySlot();
+        void checkIfBlacklisted();
+        //void blacklistUpdated();
+        void clearTextTimeout();
 
 private:
     Ui::InsertCardWindow *ui;
@@ -39,7 +43,9 @@ private:
     MainWindow * pMainWindow;
     DLLRestAPI * pRestApi;
     DLLPinCode * pPinCode;
-
+    short attempts = 3;
+    void createRestApi();
+    QTimer * pTimer;
 
 #endif // INSERTCARDWINDOW_H
 

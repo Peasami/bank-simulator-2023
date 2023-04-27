@@ -7,6 +7,11 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     ui(new Ui::InsertCardWindow)
 {
     ui->setupUi(this);
+
+    pTimer = new QTimer(this);
+    connect(pTimer,SIGNAL(timeout()),
+            this,SLOT(clearTextTimeout()));
+
     pCardReader = new DLLSerialPort(this);
 
     connect(pCardReader,SIGNAL(cardReadSignal(QString)),
@@ -32,7 +37,7 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     /*delete pMainWindow;
     pMainWindow = nullptr;*/
     QWidget::show();
-
+    createRestApi();
     ///TESTI KOODI DEBUGGAUSTA VARTEN ILMAN KORTINLUKIJAA///
     //receiveCardNumberFromDLL("06000d8977");
 }
@@ -40,7 +45,7 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
 
 void InsertCardWindow::validateLogin()
 {
-    pRestApi = new DLLRestAPI(this);
+
     connect(pRestApi, SIGNAL(loginReady()),
             this,SLOT(loginReadySlots()));
 
@@ -64,8 +69,13 @@ void InsertCardWindow::loggedOutSlot(bool state)
                 this,SLOT(receiveCardNumberFromDLL(QString)));
 
         //Kun mainwindowi tuhotaan niin tuhotaan myös restApiDLL
-        pRestApi->deleteLater();
-        qDebug()<<"lukija connect";
+        //pRestApi->deleteLater();
+        delete pRestApi;
+        pRestApi=nullptr;
+        createRestApi();
+
+
+        qDebug()<<"lukija connect ja restapi luotu uudelleen";
     }
 
 }
@@ -78,12 +88,15 @@ InsertCardWindow::~InsertCardWindow()
 
 void InsertCardWindow::receiveCardNumberFromDLL(QString cardNum)
 {
+    ui->infoLabel->clear();
     qDebug()<<"EXE Vastaanottti DLLSerialPortilta kortinnumeron "<<cardNum;
     cardNumber = cardNum;
-    pPinCode = new DLLPinCode(this);
-    connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
-            this,SLOT(receivePinNumberFromDLL(QString)));
-    pPinCode->openPinWindow();
+
+    connect(pRestApi,SIGNAL(blacklistSignal()),
+            this,SLOT(checkIfBlacklisted()));
+    pRestApi->checkBlacklist(cardNumber);
+
+
     //loggedOutSlot(false);
 
 }
@@ -97,16 +110,19 @@ void InsertCardWindow::receivePinNumberFromDLL(QString pin)
 
 void InsertCardWindow::loginReadySlots()
 {
+    disconnect(pRestApi, SIGNAL(loginReady()),
+            this,SLOT(loginReadySlots()));
+
     QString response=pRestApi->getLoginResponse();
     token = response.toUtf8();
-    qDebug()<<"Saatiin restapi dll:ltä vastaus "+response;
-                    qDebug()<<response.length();
+    qDebug()<<"Saatiin restapi dll:ltä vastaus "+response;                    
 
 
     if(QString::compare(response,"Bearer -4078")==0 || response.length()<8)
     {
         ui->infoLabel->setText("EI YHTEYTTÄ TIETOKANTAAN!");
         pPinCode->deleteLater();
+        pTimer->start(4000);
         qDebug()<<"ei yhteyttä tietokantaan";
     }
     else
@@ -125,11 +141,22 @@ void InsertCardWindow::loginReadySlots()
         }
         else
         {
+            attempts--;
             ui->infoLabel->clear();
-            qDebug()<<"Väärä pin";
             QString info = "VÄÄRÄ PIN!";
             pPinCode->writeInfoText(info);
         }
+    }
+    if(attempts == 0)
+    {
+        //connect(pRestApi,SIGNAL(updateBlacklistSignal()),
+                    //this,SLOT(blacklistUpdated()));
+        pRestApi->addToBlacklist(cardNumber);
+        attempts = 3;
+        ui->infoLabel->setText("Lukitsimme kortin, ota yhteys pankkiin!");
+        pPinCode->deleteLater();
+        pTimer->start(4000);
+
     }
 
 
@@ -182,4 +209,64 @@ void InsertCardWindow::httpReadySlot()
     pMainWindow->show();
 
     qDebug()<<"Insertcardwindowiin response: "<<username;
+}
+
+void InsertCardWindow::checkIfBlacklisted()
+{
+    disconnect(pRestApi,SIGNAL(blacklistSignal()),
+            this,SLOT(checkIfBlacklisted()));
+    QByteArray blacklistData = pRestApi->getHttpResponse();
+    qDebug()<<"blacklist data "<<blacklistData;
+    /*
+    QJsonDocument json_doc = QJsonDocument::fromJson(blacklistData);
+    QJsonArray json_array = json_doc.array();
+    int state = 0;
+
+    foreach (const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        state += (json_obj["idKortti"].toInt());
+    }
+    */
+    if(blacklistData != "")
+    {
+
+        int state = blacklistData.toInt();
+        qDebug()<<"exessä state "<<state;
+        if(state == 0)
+        {
+            qDebug()<<"PIN OLIO LUODAAN";
+            pPinCode = new DLLPinCode(this);
+            connect(pPinCode,SIGNAL(pinNumberSignal(QString)),
+                    this,SLOT(receivePinNumberFromDLL(QString)));
+            pPinCode->openPinWindow();
+        }
+        else
+        {
+            qDebug()<<"kortti lukittu";
+            ui->infoLabel->setText("KORTTI LUKITTU!");
+            pTimer->start(4000);
+        }
+    }
+    else
+    {
+        ui->infoLabel->setText("EI YHTEYTTÄ TIETOKANTAAN!");
+        pTimer->start(4000);
+    }
+
+}
+
+void InsertCardWindow::clearTextTimeout()
+{
+    ui->infoLabel->clear();
+    pTimer->stop();
+}
+/*
+void InsertCardWindow::blacklistUpdated()
+{
+    qDebug()<<"DLLrestapiin viety kortti";
+}
+*/
+void InsertCardWindow::createRestApi()
+{
+    pRestApi = new DLLRestAPI(this);
 }

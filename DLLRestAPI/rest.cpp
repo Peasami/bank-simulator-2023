@@ -154,10 +154,52 @@ void rest::updateSaldo(QString cardNum)
 
 
     updateManager = new QNetworkAccessManager(this);
-    connect(updateManager, SIGNAL(finished (QNetworkReply*))
+    connect(updateManager, SIGNAL(finished(QNetworkReply*))
             , this, SLOT(updateSlot(QNetworkReply*)));
 
     reply = updateManager->put(request, QJsonDocument(jsonObj).toJson());
+}
+
+void rest::getBlacklist(QString cardNum)
+{
+    qDebug()<<"rest cpp:n getblacklist sai datan"<<cardNum;
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+
+    QString site_url=Environment::getBaseUrl()+"/mustalista/check/";
+    qDebug()<<"get blacklist"<<site_url;
+    QNetworkRequest request((site_url));
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+
+
+    updateManager = new QNetworkAccessManager(this);
+    connect(updateManager, SIGNAL(finished(QNetworkReply*))
+            , this, SLOT(updateSlot(QNetworkReply*)));
+
+    reply = updateManager->put(request, QJsonDocument(jsonObj).toJson());
+}
+
+void rest::updateBlacklist(QString cardNum)
+{
+    qDebug()<<"rest cpp vie blacklist datan "<<cardNum;
+    QJsonObject jsonObj;
+    jsonObj.insert("idKortti",cardNum);
+
+    QString site_url=Environment::getBaseUrl()+"/mustalista/";
+    qDebug()<<"get blacklist "<<site_url;
+    QNetworkRequest request((site_url));
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+
+
+    updateManager = new QNetworkAccessManager(this);
+    connect(updateManager, SIGNAL(finished(QNetworkReply*))
+            , this, SLOT(updateSlot(QNetworkReply*)));
+
+    reply = updateManager->post(request, QJsonDocument(jsonObj).toJson());
 }
 
 

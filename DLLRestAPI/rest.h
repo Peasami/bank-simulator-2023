@@ -38,6 +38,8 @@ public slots:
     void getAccountHistory(QString);
     void getSaldo(QString); //tilitapahtumaSlotti
     void updateSaldo(QString);
+    void getBlacklist(QString);
+    void updateBlacklist(QString);
 
 private:
     QByteArray httpResponse;       // säilöö httpresponsen serveriltä //Tämän muutin byteArreyksi
