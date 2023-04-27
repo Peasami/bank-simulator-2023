@@ -17,7 +17,8 @@ InsertCardWindow::InsertCardWindow(QWidget *parent) :
     connect(pCardReader,SIGNAL(cardReadSignal(QString)),
             this,SLOT(receiveCardNumberFromDLL(QString)));
 
-
+    ///TESTI KOODI DEBUGGAUSTA VARTEN ILMAN KORTINLUKIJAA///
+    receiveCardNumberFromDLL("06000d8977");
 
     //Funktiokutsu lukijan avaamiseksi
     pCardReader->openRFIDReader();

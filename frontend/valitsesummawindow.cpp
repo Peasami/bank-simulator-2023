@@ -44,19 +44,17 @@ void ValitseSummaWindow::summaButtonHandler()
     if(selectedSumma.at(0).isLetter()) // Jos nappi on "valise muu summa" -nappi
     {
         qDebug()<<"isLetter";
+
+        // Mainwindowille signaali, ja avataan manualsummawindow
         emit requestManualSumma();
         deleteLater();
     }
     else
     {
         qDebug()<<"isNumber";
-        if(selectedSumma.toInt() > testiSaldo){
-            qDebug()<<"Ei tarpeeksi saldoa!";
-            done(0);
-            deleteLater();
-        }
-        testiSaldo -= selectedSumma.toInt();
-        qDebug()<<"Nostit "<<selectedSumma<<"€. Saldosi: "<<testiSaldo;
+        qDebug()<<"Nostit "<<selectedSumma;
+
+        // lähetetään mainwindowiin
         emit sendSumma(selectedSumma);
         deleteLater();
     }
