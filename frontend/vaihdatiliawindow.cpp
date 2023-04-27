@@ -13,6 +13,8 @@ VaihdaTiliaWindow::VaihdaTiliaWindow(QWidget *parent) :
     connect(pQTimer, SIGNAL(timeout()), // Timerin signaali
             this,SLOT(updateTimer()));
 
+
+    // Yhdistetään nappien signaalit
     connect(ui->vaihdaCreditButton,SIGNAL(clicked(bool)),
             this,SLOT(vaihdaCreditButton_handler()));
 
@@ -30,6 +32,7 @@ VaihdaTiliaWindow::~VaihdaTiliaWindow()
 // Painetaan Credit -nappia
 void VaihdaTiliaWindow::vaihdaCreditButton_handler()
 {
+    // lähetetään mainwindowille
     emit sendIsCredit(true);
     deleteLater();
 }
@@ -37,6 +40,7 @@ void VaihdaTiliaWindow::vaihdaCreditButton_handler()
 // Painetaan Dedit -nappia
 void VaihdaTiliaWindow::vaihdaDebitButton_handler()
 {
+    // lähetetään mainwindowille
     emit sendIsCredit(false);
     deleteLater();
 }

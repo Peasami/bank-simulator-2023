@@ -44,11 +44,8 @@ void NaytaTapahtumaWindow::updateInfo()
     ui->maaraLabel->setText(tapahtumaMaara);
     ui->kohdeLabel->setText(tapahtumaNimi);
     ui->infoLabel->setText(tapahtumaInfo);
-
-    // Timeri aloitetaan täällä eikä konstruktorissa, sillä tämä ikkuna
-    // luodaan samaan aikaan kun valitseCharitySumma -ikkuna
-
 }
+
 void NaytaTapahtumaWindow::updateTimer()
 {
 
