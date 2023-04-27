@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mustattu = require('../models/mustalista_model');
 
+//Tarpeeton reitti. Käytettiin ainoastaan debuggaugseen
 router.get('/',
     function(request, response){
         mustattu.getAll(function(err, dbResult){
@@ -20,7 +21,8 @@ function(request, response) {
     if (err) {
       response.json(err);
     } else {
-      response.json(request.body);
+      //response.json(request.body);
+      response.json(dbResult.affectedRows);
     }
   });
 });
@@ -32,7 +34,7 @@ function(request, response) {
     if (err) {
       response.json(err);
     } else {
-      response.json(dbResult);
+      response.json(dbResult.affectedRows);
     }
   });
 });
