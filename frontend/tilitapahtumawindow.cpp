@@ -29,19 +29,20 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     connect(ui->aiemmatButton,SIGNAL(clicked(bool)),
             this,SLOT(aiemmatButtonHandler()));
 
-    //QList<rivi*> eventList;   vanhaa legacykoodia
+    //QList<rivi*> alkuIndeksi;   vanhaa legacykoodia
     /*rivi rivi_1, rivi_2, rivi_3, rivi_4, rivi_5;
-    eventList.append(&rivi_1);
-    eventList.append(&rivi_2);
-    eventList.append(&rivi_3);
-    eventList.append(&rivi_4);
-    eventList.append(&rivi_5);
+    alkuIndeksi.append(&rivi_1);
+    alkuIndeksi.append(&rivi_2);
+    alkuIndeksi.append(&rivi_3);
+    alkuIndeksi.append(&rivi_4);
+    alkuIndeksi.append(&rivi_5);
     */
     // otetaan data vastaan ja siirretään JSONarray:in
     qDebug()<<"tilitapahtumat sai datan: "+tiliData;
     QJsonDocument doc = QJsonDocument::fromJson(tiliData);
     qDebug()<<doc;
-    jsonArray = doc.array();
+    //jsonArray = doc.array();
+    QJsonArray tempArray=doc.array();
     qDebug()<<"Arrayn sisällä on "<<jsonArray;
 
 
@@ -72,41 +73,30 @@ TiliTapahtumaWindow::TiliTapahtumaWindow(QWidget *parent, QByteArray tiliData, b
     /****************************
      * Viedään data taulukkoon  *
      ****************************/
-    short kierros=0;    // indeksimuuttuja rivejä varten
-    for (; eventList < jsonArray.size()&&kierros<5; ++eventList)
+
+    for (; index < tempArray.size(); ++index)
     {
 
-        QJsonObject obj = jsonArray[eventList].toObject();
-        qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
+        QJsonObject obj = tempArray[index].toObject();
+        qDebug()<<"kierros "<<index+1<<" ja objektin sisus: "<<obj;
         /****************************
          * jos datapiste on sopiva, *
-         * viedään se taulukkoon,   *
-         * kunnes siinä on 5 riviä  *
+         * viedään se taulukkoon    *
          ****************************/
         if ((!credit && obj.value("SummaDebit").toDouble() > 0) || (credit && obj.value("SummaCredit").toDouble()) > 0)
         {
-            QList<QStandardItem*> eventList;
-            eventList << new QStandardItem(obj.value("pvm").toString());
-            eventList << new QStandardItem(obj.value("TapahtumaNimi").toString());
-            if (!credit)
-            {
-                eventList << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
-            }
-            else
-            {
-                eventList << new QStandardItem(QString::number(obj.value("SummaCredit").toDouble()));
-            }
-
-            taulukkoMalli->appendRow(eventList);
-            kierros++;
+            jsonArray.append(obj);
         }
     }
+    updateTable();
     ui->tapahtumaTable->setModel(taulukkoMalli);
     ui->uudetButton->setEnabled(false); // alusta ei pääse uudempiin
-    if (eventList+1>=jsonArray.size())
+    sivuMaara=(jsonArray.size()+4)/5;
+    if (sivuMaara==1)
     {
         ui->aiemmatButton->setEnabled(false);   // jos datapisteet kaikki ovat jo taulukossa, disabloi nappi
     }
+
 }
 
 TiliTapahtumaWindow::~TiliTapahtumaWindow()
@@ -125,34 +115,10 @@ void TiliTapahtumaWindow::aiemmatButtonHandler()
 {
     qDebug()<<"selataan tapahtumia";
     time=10;
-    // taulukkonavigaation apumuuttujien hallintaa
-    edellinenSivu=sivu;
-    sivu=eventList;
-    short kierros=0;
-    for (;eventList < jsonArray.size()&&kierros<5; ++eventList) {
-        QJsonObject obj = jsonArray[eventList].toObject();
-        qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
-        if ((!identity && obj.value("SummaDebit").toDouble() > 0) || (identity && obj.value("SummaCredit").toDouble() > 0))
-        {
-            QList<QStandardItem*> eventList;
-            eventList << new QStandardItem(obj.value("pvm").toString());
-            eventList << new QStandardItem(obj.value("TapahtumaNimi").toString());
-            if (!identity)
-            {
-                eventList << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
-            }
-            else
-            {
-                eventList << new QStandardItem(QString::number(obj.value("SummaCredit").toDouble()));
-            }
-            taulukkoMalli->insertRow(kierros,eventList);
-            kierros++;
-        }
-
-    }
-    taulukkoMalli->setRowCount(kierros);    // varmistetaan taulukon koko
+    sivu++;
+    updateTable();
     // hallinnoidaan nappien toimivuutta
-    if (eventList+1>=jsonArray.size())
+    if (sivu==sivuMaara-1)
     {
         ui->aiemmatButton->setEnabled(false);
     }
@@ -163,52 +129,12 @@ void TiliTapahtumaWindow::uudemmatButtonHandler()
 {
     qDebug()<<"selataan tapahtumia";
     time=10;
-    //navigaation apumuuttujien hallintaa
-    eventList=edellinenSivu;
-    sivu=edellinenSivu;
-    edellinenSivu=0;
-    short kierros=0;
-    taulukkoMalli->setRowCount(5);  // varmistetaan taulukon koko
-    /*if (taulukkoMalli->rowCount()<5)
-    {
-        for (kierros = taulukkoMalli->rowCount(); kierros < 5; ++kierros)
-        {
-            QList<QStandardItem*> kierros;
-            taulukkoMalli->appendRow(kierros);
-        }
-    }*/
-    // 5 rivin sisältö ylikirjoitetaan
-    for (;eventList < jsonArray.size()&&kierros<5; ++eventList) {
-        QJsonObject obj = jsonArray[eventList].toObject();
-        qDebug()<<"kierros "<<eventList+1<<" ja objektin sisus: "<<obj;
-        if ((!identity && obj.value("SummaDebit").toDouble() > 0) || (identity && obj.value("SummaCredit").toDouble() > 0))
-        {
-            eventList++;
-            QList<QStandardItem*> eventList;
-            eventList << new QStandardItem(obj.value("pvm").toString());
-            eventList << new QStandardItem(obj.value("TapahtumaNimi").toString());
-            if (!identity)
-            {
-                eventList << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
-            }
-            else
-            {
-                eventList << new QStandardItem(QString::number(obj.value("SummaCredit").toDouble()));
-            }
-            taulukkoMalli->insertRow(kierros,eventList);
-            kierros++;
-        }
-
-    }
+    sivu--;
+    updateTable();
     // hallinnoidaan nappien toimivuutta
     ui->aiemmatButton->setEnabled(true);
     if (sivu==0)
-    {
         ui->uudetButton->setEnabled(false);
-        eventList=0;                // siirretään indeksi alkuun jos aloitussivulla
-    }                               // tärkeä toisen napin toimivuuden kannalta
-
-    taulukkoMalli->setRowCount(5);  // varmistetaan taulukon koko
 }
 
 void TiliTapahtumaWindow::updateTimer()
@@ -221,5 +147,28 @@ void TiliTapahtumaWindow::updateTimer()
         done(0);
         pQTimer->stop();
         deleteLater();
+    }
+}
+
+void TiliTapahtumaWindow::updateTable()
+{
+    short alkuIndeksi=sivu*5;
+    short loppuIndeksi=qMin(alkuIndeksi+5,jsonArray.size());
+    taulukkoMalli->clear();
+    for (; alkuIndeksi < loppuIndeksi; ++alkuIndeksi)
+    {
+        QJsonObject obj =jsonArray[alkuIndeksi].toObject();
+        QList<QStandardItem*> alkuIndeksi;
+        alkuIndeksi << new QStandardItem(obj.value("pvm").toString());
+        alkuIndeksi << new QStandardItem(obj.value("TapahtumaNimi").toString());
+        if (!identity)
+        {
+            alkuIndeksi << new QStandardItem(QString::number(obj.value("SummaDebit").toDouble()));
+        }
+        else
+        {
+            alkuIndeksi << new QStandardItem(QString::number(obj.value("SummaCredit").toDouble()));
+        }
+        taulukkoMalli->appendRow(alkuIndeksi);
     }
 }
