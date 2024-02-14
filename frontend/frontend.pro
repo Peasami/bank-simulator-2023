@@ -50,20 +50,20 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../DLLSerialPort/build/release/ -lDLLSerialPort
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../DLLSerialPort/build/debug/ -lDLLSerialPort
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-DLLSerialPort-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/release/ -lDLLSerialPort
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-DLLSerialPort-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/debug/ -lDLLSerialPort
 
 INCLUDEPATH += $$PWD/../DLLSerialPort
 DEPENDPATH += $$PWD/../DLLSerialPort
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../DLLRestAPI/build/release/ -lDLLRestAPI
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../DLLRestAPI/build/debug/ -lDLLRestAPI
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-DLLRestAPI-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/release/ -lDLLRestAPI
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-DLLRestAPI-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/debug/ -lDLLRestAPI
 
 INCLUDEPATH += $$PWD/../DLLRestAPI
 DEPENDPATH += $$PWD/../DLLRestAPI
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../DLLPinCode/build/release/ -lDLLPinCode
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../DLLPinCode/build/debug/ -lDLLPinCode
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-DLLPinCode-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/release/ -lDLLPinCode
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-DLLPinCode-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/debug/ -lDLLPinCode
 
 INCLUDEPATH += $$PWD/../DLLPinCode
 DEPENDPATH += $$PWD/../DLLPinCode

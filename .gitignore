@@ -8,3 +8,4 @@ DLLSerialPort/build/
 DLLSerialPort/*.user
 DLLRestAPI/build/
 DLLRestAPI/*.user
+build-*
