@@ -95,6 +95,8 @@ void InsertCardWindow::receiveCardNumberFromDLL(QString cardNum)
 
 
     //loggedOutSlot(false);
+    //pMainWindow = new MainWindow(this,cardNumber,pRestApi);
+    //pMainWindow->show();
 
 }
 
