@@ -17,6 +17,8 @@ This project uses an electronic card reader, and multiple cards with different I
 
 - **other .sql files** - procedures for manipulating the database
 
-## ER-diagrammi
+## Database
 
 <img src="ER_diagrammi_v4.png">
+
+The database was hosted using [Uniform Server](http://www.uniformserver.com/) to host it locally.
